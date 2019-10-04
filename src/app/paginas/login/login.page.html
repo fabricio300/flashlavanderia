@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+<div class="parte centrar" id="part1">
+  <div class="centrar" style="margin: auto;">
+      <img src="../../../assets/imagenes/flaswash12.png" class="imagen">
+
+      <ion-button color="secondary"
+        (click)="go('part1')"
+      >
+        Iniciar sesion
+      </ion-button>
+    
+      <ion-button color="secondary">
+          Registrar
+      </ion-button>
+
+  </div>
+  
+
+</div>
+
+
+<div class="parte centrar" id="part2">
+  
+  <form class="formulario">
+
+    <label>
+      <img src="../../../assets/imagenes/user.png" style="width:20px;">
+      Nombre de usuario:</label>
+    <ion-input placeholder="Nombre"></ion-input>
+
+    <label>
+        <img src="../../../assets/imagenes/store.png" style="width:20px;">
+      Nombre de la Empresa:</label>
+    <ion-input placeholder="Empresa"></ion-input>
+
+    <label>
+      <img src="../../../assets/imagenes/key.png" style="width:20px;">
+      Contraseña:</label>
+    <ion-input type="password" placeholder="****"></ion-input>
+
+      <label class="centrar" style="font-size: 13px; color:#394a6d; cursor: pointer;">
+        <img src="../../../assets/imagenes/information.png" style="width:18px;  margin-right: 3px;">
+        ¿olvidaste tu contraseña?</label>
+  </form>
+  
+  <ion-button color="tertiary" 
+  (click)="cultar()"
+  [routerLink]="['/inicio']">
+    Aceptar
+  </ion-button>
+
+  <ion-button
+  (click)="go('part2')"
+  >
+      Cancelar
+    </ion-button>
+</div>
+
+
+</ion-content>

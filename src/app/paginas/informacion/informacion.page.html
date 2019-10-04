@@ -1,0 +1,193 @@
+<ion-header>
+  <ion-toolbar color=primary>
+      <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+        </ion-buttons>
+    <ion-title>Informacion</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="fondo">
+
+    <div class="conteBotones centrar">
+
+      <div 
+      
+      class="opcion centrar" 
+      (click)="mostrar(1)"
+      [ngClass]="{'normal':opcionActual!=1, 'actual':opcionActual==1}">
+
+          <label class="centrar">
+            <img src="../../../assets/iconos/washing-machine2.png" style="width: 20px; margin: 3px;">
+            Servicios
+          </label>
+
+      </div>
+
+      <div 
+      (click)="mostrar(2)"
+      class="opcion centrar "
+      [ngClass]="{'normal':opcionActual!=2, 'actual':opcionActual==2}"
+      >
+          <label class="centrar">
+              <img src="../../../assets/iconos/store.png" style="width: 20px; margin: 3px;">
+              Ofertas
+            </label>
+
+      </div>
+
+      <div 
+      (click)="mostrar(3)"
+      class="opcion centrar "
+      [ngClass]="{'normal':opcionActual!=3, 'actual':opcionActual==3}"
+      >
+
+          <label class="centrar">
+              <img src="../../../assets/iconos/store.png" style="width: 20px; margin: 3px;">
+              Información
+            </label>
+      </div>
+      
+
+
+
+    
+
+
+      </div>
+
+
+
+    <div class="contScroll">
+
+
+      <div 
+      [ngClass]="{'quitar':opcionActual!=1, 'parte':opcionActual==1}"
+      style="background: chartreuse;"></div>
+
+      <div 
+      [ngClass]="{'quitar':opcionActual!=2, 'parte':opcionActual==2}"
+      style="background: chocolate;"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <div 
+      [ngClass]="{'quitar':opcionActual!=3, 'parte':opcionActual==3}">
+
+        <p style="margin: 5px; color: white;">Imagenes de precentación:</p>
+        <div class="contFotos centrarIZ">
+
+            <div class="contImagen centrar" style="position: relative" *ngFor="let ima of imagenes">
+              <img src="{{ima.url}}" alt="">
+
+              <div class="iconCont centrar">
+                  <img       
+                  src="../../../assets/iconos/rubbish-bin-delete-button.png" class="iconx">
+                 
+              </div>
+              
+            </div>
+
+        </div>
+        
+        
+        <button class="botonMore centrar">
+            <img src="../../../assets/iconos/upload.png" width="40px;" style="cursor: pointer;">
+            <ion-input type="file"
+            accept="image/*"
+            (change)="selecionarImagen($event)"
+            ></ion-input>
+        </button>
+
+
+
+
+
+        <div id="lista_imagenes"></div>
+
+        <div class="conDatosEmpresa">
+
+          <label >Nombre de la compañia:</label>
+          <ion-input placeholder="Nombre"></ion-input>
+
+          
+          <label >Dirección del local:</label>
+          <ion-input placeholder="Dirección"></ion-input>
+
+
+          <label >Correo:</label>
+          <ion-input placeholder="Correo"></ion-input>
+
+
+          <label>Tel:</label>
+          <ion-input placeholder="000-000-0000"></ion-input>
+
+
+          
+        </div>
+    
+        
+      </div>
+
+
+
+
+
+
+    </div>
+
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <ion-item >
+    <ion-button>
+      Cancelar
+    </ion-button>
+    <ion-button>
+        Guardar
+      </ion-button>
+
+  </ion-item>
+</ion-content>

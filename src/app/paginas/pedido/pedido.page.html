@@ -1,0 +1,191 @@
+<ion-header>
+  <ion-toolbar color=primary>
+      <ion-buttons slot="start">
+          <ion-back-button></ion-back-button>
+        </ion-buttons>
+    <ion-title>Pedido</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="info">
+
+    <div class="datosClinete">
+      <h3 style="color: #e5e5e5">datos del cliente:</h3>
+
+      <label >
+        <img src="../../../assets/iconos/user.png" width="20px">
+        Nombre del cliente:</label>
+      <p >{{pedido.nombreCliente}}</p>
+
+      <label >
+          <img src="../../../assets/iconos/pin.png" width="20px">
+        Dirección:</label>
+      <p>Dirección</p>
+
+      <label >
+          <img src="../../../assets/iconos/call-answer (1).png" width="20px">
+        Tel:</label>
+      <p>000-000-0000</p>
+
+    </div>
+
+    <div class="status centrar">
+
+      <div class="centrar status2" style="padding-bottom: 12px;"
+          
+      [ngClass]="{'nuevo':pedido.status=='Nuevo pedido', 
+      'cancelado':pedido.status=='Cancelado',
+      'lavanderia':pedido.status=='En proceso',
+      'encalino1':pedido.status=='Entregando',
+      'encalino2':pedido.status=='A lavanderia',
+      'recojer':pedido.status=='Recogiendo'
+      }"
+      >
+
+          <h6 style="width: 100%; text-align: center;">Status:</h6>
+      
+          <label class="centrar" style="font-size: 15px;">
+            <img src="{{pedido.icon}}" style="width: 40px;" [ngClass]="{'rota-horizontal':pedido.status=='A lavanderia'}">
+            {{pedido.status}}
+          </label>
+           
+            <label style="margin-top:10px; font-size: 13px; ">
+               
+              Solicitado:<br>
+              {{pedido.horaSolicitud}}
+              
+            </label>
+
+            
+            
+      </div>
+
+      
+        
+    </div>
+
+
+    <div class="serviciosS">
+      <h3 style="color: #1089ff;">
+        Servicios pedidos:
+      </h3>
+
+      <p>servicio 1</p>
+      <p>servicio 2</p>
+      <p>servicio 3</p>
+      <p>servicio 4</p>
+
+    </div>
+
+
+
+
+    <div class="detalles">
+      <h3 style="color: goldenrod;">Indicaciones:</h3>
+      <p>Las indicaciones para los fármacos están reguladas estrictamente por los organismos internacionales, nacionales, regionales o locales. También por colegios profesionales o por instituciones específicas</p>
+    </div>
+
+    <div class="datosServicio centrar">
+      <h3 style="width: 100%; color: #23374d;">
+           
+        Datos del pedido:</h3>
+
+      <div class="parte centrarIZ">
+        <label  class="centrarIZ">
+            <img src="../../../assets/iconos/coin.png" width="20px;" style="margin: 3px;">
+          presio:
+        </label>
+
+      
+            <img 
+            *ngIf="!editarPrecion && pedido.status=='Nuevo pedido' || pedido.status=='Recogiendo'" 
+            
+            (click)="editar(1)"
+            src="../../../assets/iconos/pencil-edit-button.png" width="25px;" style=" margin: 5px; cursor: pointer;">
+    
+
+        <ion-label  style="margin-left: 5px; color: gray;" *ngIf="!editarPrecion" >
+            {{presio}} $
+        </ion-label>
+
+        <ion-input   type='number' placeholder="{{presio}}" [(ngModel)]="presio" *ngIf="editarPrecion" class="edit">
+        </ion-input>
+
+       
+        
+        <div class="conteBotones" *ngIf="editarPrecion">
+          
+                <img 
+                (click)="guardar(1)"
+                src="../../../assets/iconos/save.png" width="25px;" style="margin: 7px; cursor: pointer;">
+            
+  
+              <img 
+              (click)="cancelar(1)"
+              src="../../../assets/iconos/errorr.png" width="25px;" style="margin: 7px; cursor: pointer;">
+        
+        
+        </div>
+
+      </div>
+
+
+
+
+
+
+      <div class="parte centrarIZ">
+          <label class="centrarIZ" >
+            <img src="../../../assets/iconos/clock-circular-outline.png" width="20px;" style="margin: 3px;">
+            Entrega estimada en:
+          </label>
+  
+          
+              <img 
+             *ngIf="!editarTiempo && pedido.status=='Nuevo pedido' || pedido.status=='Recogiendo' "
+              (click)="editar(2)"
+              src="../../../assets/iconos/pencil-edit-button.png" width="25px;" style=" margin: 5px; cursor: pointer;">
+            
+
+
+            <ion-label  style="margin-left: 5px; color: gray;" *ngIf="!editarTiempo" >
+                {{tiempo}} horas
+            </ion-label>
+
+            <ion-input type='time'  [(ngModel)]="tiempo" class="edit2" *ngIf="editarTiempo">
+            </ion-input>
+
+
+              <div class="conteBotones" *ngIf="editarTiempo">
+                  
+                      <img 
+                      (click)="guardar(2)"
+                      src="../../../assets/iconos/save.png" width="25px;" style="margin: 7px; cursor: pointer;">
+                 
+                
+                      <img 
+                      (click)=" cancelar(2)"
+                      src="../../../assets/iconos/errorr.png" width="25px;" style="margin: 7px; cursor: pointer;">
+                   
+                    
+                </div>
+        </div>
+
+    </div>
+
+  </div>
+
+  <ion-item color="secondary" *ngIf="pedido.status!='Cancelado'">
+    <ion-button 
+    [routerLink]="['/repartidor']"
+    color=tertiary style="width: 49%; height: 80%; margin: auto; font-size: 12px;">
+      Asingnar repartidor
+    </ion-button>
+      <ion-button  color=tertiary style="width: 49%; height: 80%; margin: auto; font-size: 12px;" >
+          finalizar
+        </ion-button>
+  </ion-item>
+
+</ion-content>

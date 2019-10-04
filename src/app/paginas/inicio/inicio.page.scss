@@ -1,0 +1,110 @@
+.filtros{
+    width: 100%;
+    height: auto;
+    background: gray;
+    position: fixed;
+    z-index: 90;
+}
+
+.contPedido{
+    
+    width: 47%;
+    height: 140px;
+    //background: gray;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px;
+    
+}
+
+.centraIZ{
+    justify-content:left;
+    align-items: center;
+    align-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.centrar{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.mitad{
+    //background: red; 
+    width: 50%;
+    font-size: 13px;
+}
+
+.cancelado{
+    background: #ff0000;
+    color: aliceblue;
+
+}
+
+.nuevo{
+    background: #8a00d4;
+    color: white;
+}
+
+.lavanderia{
+    background: #1089ff;
+    color: #e5e5e5
+}
+
+.encalino1{
+    background: #94fc13;
+    color: #032d3c;
+}
+
+.encalino2{
+    background: #032d3c;
+    color: #94fc13;
+}
+
+.recojer{
+    background: #23374d;
+    color: #e5e5e5;
+}
+
+
+.rota-horizontal{
+    -webkit-transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+
+.imagen{
+    width: 40px;
+}
+
+
+
+
+@media(max-width:600px){
+    .contPedido{
+    
+        width: 90%;
+        margin: auto;
+        margin-bottom: 10px;
+    }
+
+    label{
+        font-size: 8px;
+    }
+
+    p{
+        font-size: 11px;
+    }
+
+    .imagen{
+        width: 35px;
+    }
+
+   
+
+}

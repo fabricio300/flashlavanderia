@@ -1,0 +1,168 @@
+.fondo{
+    width: 95%;
+    height: 89%;
+    margin: auto;
+    background: #252525;
+    margin-top: 12px;
+}
+
+.conteBotones{
+    background: white;
+    height: 20%;
+    width: 100%;;
+}
+
+.opcion{
+    width: 33%;
+    height: 100%;
+    border: 2px solid white;
+    margin: auto;
+    cursor: pointer;
+    //background: #414141;
+    color: white;
+}
+
+.normal{
+    background: #414141;
+}
+
+.actual{
+    background: #252525;
+    
+}
+
+
+.centrar{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.contScroll{
+    //background: yellowgreen;
+    width: 100%;
+    height: 80%;
+    overflow-y: scroll;
+   
+}
+
+.contFotos{
+    width: 100%;
+    min-height: 140px;
+    background: #414141;
+}
+
+.parte{
+    width: 100%; height: 100%;
+}
+
+.quitar{
+    display: none;
+    overflow: hidden;
+}
+
+.conDatosEmpresa{
+    width: 100%;
+    padding: 10px;
+    //background: brown;
+    height: auto;
+}
+
+.conDatosEmpresa::content label{
+    font-size: 13px;
+    color: #BDBDBD;
+}
+
+.conDatosEmpresa::content ion-input{
+    font-size: 15px;
+    color: white;
+    border-bottom: 1px solid #BDBDBD;
+}
+
+
+.botonMore{
+    width: 50px;
+    height: 50px;
+    background: transparent;
+    overflow: hidden;
+    float: right;
+    position: relative;
+    border-radius: 50%;
+    outline: none;
+    margin: 5px;
+    
+}
+
+.botonMore::content ion-input{
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px; 
+    opacity: 0;
+    cursor: pointer;
+}
+
+.contImagen{
+    position: relative;
+    width: auto;
+    height: 140px;
+    margin: 10px;
+}
+
+.contImagen::content img{
+        max-height: 98%;
+        width: auto;
+        border-radius: 5px;
+}
+
+.iconCont{
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    background: #252525;
+    border-radius: 50%;
+    border: 2px solid #252525;
+    bottom: 0px;
+   
+}
+
+.iconx{
+
+    width: 20px !important;
+    height: auto;
+    cursor: pointer;
+   
+}
+
+
+::-webkit-scrollbar{
+    width: 10px;
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: gray; 
+    border-radius: 5px;
+}
+
+.centrarIZ{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    align-items: center;
+}
+
+@media(max-width:600px){
+    ::-webkit-scrollbar{
+        width: 0px;
+        background-color: transparent;
+    }
+
+    
+    .contImagen{
+        height: auto;
+        max-width: 44%;
+       
+    }
+}

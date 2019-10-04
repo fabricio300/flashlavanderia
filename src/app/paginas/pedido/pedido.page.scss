@@ -1,0 +1,156 @@
+.info{
+    widows: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+   // background: gray;
+}
+
+.datosClinete{
+   background:#23374d;
+    width: 70%;
+    height: auto;
+    padding: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.datosClinete::content p{
+    margin-left: 25px;
+    color: #52de97;
+    font-size: 13px;
+}
+.datosClinete::content label{
+    color: #AEAEAE;
+}
+
+.status{
+    width: 30%;
+    //background: blue;
+
+}
+
+
+
+.centrar{
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.centrarIZ{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
+    align-items: center;
+}
+
+.serviciosS,.detalles{
+    //background: blueviolet;
+    width: 50%;
+    height: auto;
+    padding: 10px;
+}
+
+.datosServicio{
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    margin-bottom: 40px;
+}
+
+.detalles::content p{
+    color: #af0404;
+}
+.parte{
+    width: 50%;
+    height: auto;
+   
+   // background: red;
+}
+.conteBotones{
+    height: auto;
+    width: 100%;
+    overflow: hidden;
+  //  background: #3c9d9b;
+}
+
+.parte::content label{
+    width: 100%;
+    text-align: left;
+    font-size: 12px;
+    color: #AEAEAE;
+}
+
+
+.edit{
+    width: 100px;
+    color: #3c9d9b;
+    border-bottom: 1px solid blueviolet;
+}
+
+
+.edit2{
+    width: 100px;
+    color: #3c9d9b;
+    border-bottom: 1px solid #394a6d;
+}
+
+.status2{
+    //background: chartreuse; 
+    height: auto; 
+    width: 100px;
+    border-radius: 10px;
+}
+
+
+.cancelado{
+    background: #ff0000;
+    color: aliceblue;
+
+}
+
+.recojer{
+    background: #23374d;
+    color: #e5e5e5;
+}
+.rota-horizontal{
+    -webkit-transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    transform: scaleX(-1);
+    filter: FlipH;
+    -ms-filter: "FlipH";
+}
+
+.nuevo{
+    background: #8a00d4;
+    color: white;
+}
+
+.lavanderia{
+    background: #1089ff;
+    color: #e5e5e5
+}
+
+.encalino1{
+    background: #94fc13;
+    color: #032d3c;
+}
+
+.encalino2{
+    background: #032d3c;
+    color: #94fc13;
+}
+
+
+
+@media(max-width:600px){
+    .serviciosS,.detalles,.datosServicio{
+        //background: blueviolet;
+        width: 100%;
+    }
+
+    
+}

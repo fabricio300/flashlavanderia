@@ -1,0 +1,202 @@
+<ion-header style="z-index: 100;">
+  <ion-toolbar color="primary" >
+    <ion-buttons slot="start">
+      <ion-button (click)="openFirst()">
+        <ion-icon name="menu" ></ion-icon>
+      </ion-button>
+    </ion-buttons>
+       <ion-input placeholder="Busca un pedido"></ion-input>
+
+       <ion-buttons slot="end">
+        <ion-button style="font-size: 15px;">
+          <img src="../../../assets/iconos/search.png" style="width: 16px; ">
+        </ion-button>
+       
+        <ion-button *ngIf="!viewFilters" (click)="vewFiltros()">
+          <img src="../../../assets/iconos/filter.png" style="width: 16px;">
+        </ion-button>
+
+        <ion-button style="font-size: 15px;"
+        
+        *ngIf="viewFilters" (click)="vewFiltros()">
+          <img src="../../../assets/iconos/filter (1).png" style="width: 16px;">
+        </ion-button>
+      </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+    <ion-menu side="start" menuId="first" style="position: fixed; z-index: 100;">
+        <ion-header>
+          <ion-toolbar color="dark">
+            <img src="../../../assets/iconos/flaswash11.png" style="max-width:100%; height: auto; ">
+            <ion-title>Menu</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content color="secondary">
+          
+         
+
+            <ion-item color="secondary" *ngFor="let op of menuflash"
+            routerLink="{{op.url}}"
+            (click)="closeFirst()"
+            >
+                <img src="{{op.icon}}" style="width: 20px; margin: 3px;">
+              {{op.titulo}}
+            </ion-item>
+
+
+          
+            
+            <ion-item color="secondary" >
+                <img src="../../../assets/iconos/close.png" style="width: 20px; margin: 3px;">
+                Cerrar sesion
+            </ion-item>
+           
+     
+        </ion-content>
+      </ion-menu>
+      <ion-router-outlet main></ion-router-outlet>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <div class="filtros" id="filtro"> 
+
+        <ion-item color="medium" *ngFor="let filtro of filtros">
+          <ion-checkbox style="margin:6px;"></ion-checkbox>
+           {{filtro}}
+        </ion-item>
+
+
+      
+     
+
+
+        <ion-item  color="medium" >
+          <ion-button slot="end" (click)="vewFiltros()">
+            Cancelar
+          </ion-button>
+          <ion-button slot="end">
+            buscar
+          </ion-button>
+        </ion-item>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      <h1 style="margin: 10px;">Pedidos:</h1>
+
+
+
+<div class="centraIZ">
+
+  
+      <div class="contPedido centrar" style="cursor: pointer;" *ngFor="let pedido  of pedidos" 
+      
+      >
+
+      <ion-button 
+      (click)="irApedido(pedido)"
+
+      class="contPedido" style="width: 100%; height: 120px;" color='none'
+      
+      [ngClass]="{'nuevo':pedido.status=='Nuevo pedido', 
+                  'cancelado':pedido.status=='Cancelado',
+                  'lavanderia':pedido.status=='En proceso',
+                  'encalino1':pedido.status=='Entregando',
+                  'encalino2':pedido.status=='A lavanderia',
+                  'recojer':pedido.status=='Recogiendo'
+      }"
+      
+      >
+
+      
+        <div  class="centraIZ mitad" >
+          <label style="padding: 5px;">
+              <p>{{pedido.nombreCliente}} </p>
+              <p style="max-width: 50%">{{pedido.horaSolicitud}}</p>
+          </label>
+        </div  >
+
+        <div class="mitad centrar">
+          <p style="width: 100%; text-align: center;">status:</p>
+          <label class="centraIZ">
+              <img src="{{pedido.icon}}" class="imagen"  [ngClass]="{'rota-horizontal':pedido.status=='A lavanderia'}">
+              <p style="margin-left: 5px;">
+                {{pedido.status}}
+              </p>
+          </label>
+            
+        </div>
+      </ion-button>
+      </div>
+
+
+    </div>
+
+
+
+
+
+
+
+  
+</ion-content>
