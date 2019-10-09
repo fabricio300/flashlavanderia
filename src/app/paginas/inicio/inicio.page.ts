@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
 
+import { Socket } from 'ngx-socket-io';
+
+
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.page.html',
@@ -87,8 +90,16 @@ export class InicioPage implements OnInit {
 
   constructor(
     private menu: MenuController,
-    private router:Router
-  ) { }
+    private router:Router,
+    private socket: Socket
+  ) { 
+
+    socket.on('mensajeServidor',function(data){
+      console.log('data=',data);
+      
+    })
+
+  }
 
   ngOnInit() {
     this.ocultarFiltro()
