@@ -1,0 +1,467 @@
+<ion-header>
+  <ion-toolbar color=primary>
+    <ion-buttons>
+      <ion-back-button>
+
+      </ion-back-button>
+      <ion-title>registro</ion-title>
+    </ion-buttons>
+    
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+
+
+  <div class="cont2">
+
+    <div class="parte"  id="Servicios">
+     
+
+
+<!------------------------------------------------menu servicios---------------------------------------------------------------------->
+      <div class="menuServices centrar">
+        <p style="width: 100%; height: 10px; font-size: 12px; margin-left: 10px;">Servicios:</p>
+        <button *ngFor="let option of this.efectos.tiposDeServicios" class="opcionMenu centrar"
+        [ngClass]="{'actual':this.efectos.actual==option.id}"
+        (click)="this.efectos.actualNew(option.id)"
+        >
+            <img src="{{option.icon}}" style="width: 17px;">
+        </button>
+
+      </div>
+
+<!------------------------------------------------menu servicios fin---------------------------------------------------------------------->
+    
+
+
+<!------------------------------------------------ver servicios---------------------------------------------------------------------->
+      <div class="viewServicio" style="border-bottom: 1px solid gray ;">
+    
+        <div *ngIf="this.efectos.actual==1" class="vewTipoServico " >
+            <h5 class="indentificador2">Lavandería:</h5>
+            <div *ngFor="let lavado of lavanderia"  class="itemX centrar">
+
+              <div style="width: 70%;">
+                  <label>Lavado de {{lavado.servicio}} ${{lavado.precio}} por {{lavado.unidad}}</label>
+                  <p>Descripción: {{lavado.descripcion}}</p>
+              </div>
+
+
+              <div class="centrar" style="width: 30%; height: auto;">
+                  <button class="editordelete centrar"
+                  (click)="editar(lavado,1)"
+                  >
+                      <img src="../../../assets/Registro/pencil-edit-button.png" style="width: 15px;">
+                  </button>
+                  <button class="editordelete centrar">
+                      <img src="../../../assets/Registro/rubbish-bin-delete-button.png" style="width: 15px;">
+                  </button>
+              </div>
+
+              
+
+            </div>
+        </div>
+
+        <div *ngIf="this.efectos.actual==2" class="vewTipoServico" >
+            <h5 class="indentificador2">Tintoreria:</h5>
+            <div *ngFor="let tinto of tintoreria"  class="itemX centrar">
+              <div style="width: 70%;">
+                  <label>{{tinto.servicio}} ${{tinto.precio}} por {{tinto.unidad}}</label>
+                  <p>Descripción: {{tinto.descripcion}}</p>
+              </div>
+                
+                <div class="centrar" style="width: 30%; height: auto; ">
+                    <button class="editordelete centrar"
+                    (click)="editar(tinto,2)"
+                    >
+                        <img src="../../../assets/Registro/pencil-edit-button.png" style="width: 15px;">
+                    </button>
+                    <button class="editordelete centrar">
+                        <img src="../../../assets/Registro/rubbish-bin-delete-button.png" style="width: 15px;">
+                    </button>
+                </div>
+
+
+              </div>
+
+
+            
+
+
+          </div>
+
+          <div *ngIf="this.efectos.actual==3" class="vewTipoServico" >
+              <h5 class="indentificador2">Planchado:</h5>
+              <div *ngFor="let plan of planchado"  class="itemX centrar">
+               
+               
+                <div style="width: 70%;">
+                    <label> ${{plan.precio}} por {{plan.unidad}}</label>
+                    <p>Descripción: {{plan.descripcion}}</p>
+                </div>
+
+                  <div class="centrar" style="width: 30%; height: auto; ">
+                      <button class="editordelete centrar"
+                      (click)="editar(plan,3)"
+                      >
+                          <img src="../../../assets/Registro/pencil-edit-button.png" style="width: 15px;">
+                      </button>
+                      <button class="editordelete centrar">
+                          <img src="../../../assets/Registro/rubbish-bin-delete-button.png" style="width: 15px;">
+                      </button>
+                  </div>
+                </div>
+          </div>
+
+
+          
+            <div *ngIf="this.efectos.actual==4" class="vewTipoServico" >
+                <h5 class="indentificador2">Ofertas y promociones:</h5>
+                <div *ngFor="let ofer of ofertas"  class="itemX centrar">
+                  <div style="width: 70%;">
+                      <label>Titulo: {{ofer.titulo}}</label>
+                    <p>Descripción: {{ofer.descripcion}}</p>
+                  </div>
+                  
+
+                    
+                  <div class="centrar" style="width: 30%; height: auto; ">
+                      <button class="editordelete centrar"
+                      (click)="editar(ofer,4)"
+                      >
+                          <img src="../../../assets/Registro/pencil-edit-button.png" style="width: 15px;">
+                      </button>
+                      <button class="editordelete centrar">
+                          <img src="../../../assets/Registro/rubbish-bin-delete-button.png" style="width: 15px;">
+                    </button>
+                  </div>
+                </div>
+            </div>
+
+              <div *ngIf="this.efectos.actual==5" class="vewTipoServico" >
+                  <h5 class="indentificador2">Otros:</h5>
+                  <div *ngFor="let other of otros"  class="itemX centrar">
+                    <div style="width: 70%;">
+                        <label>Titulo: {{other.titulo}}</label>
+                        <p>Descripción: {{other.descripcion}}</p>
+                    </div>
+                     
+
+
+                      <div class="centrar" style="width: 30%; height: auto;">
+                          <button class="editordelete centrar"
+                          (click)="editar(other,5)"
+                          >
+                              <img src="../../../assets/Registro/pencil-edit-button.png" style="width: 15px;">
+                          </button>
+                          <button class="editordelete centrar">
+                              <img src="../../../assets/Registro/rubbish-bin-delete-button.png" style="width: 15px;">
+                        </button>
+                      </div>
+                      
+                  </div>
+                </div>
+
+
+
+      
+      </div>
+
+<!------------------------------------------------ver servicios fin---------------------------------------------------------------------->
+    
+    <button class="AddService centrar" (click)="this.efectos.mostrasAddService()">
+      <img src="../../../assets/Registro/plus-sign-to-add.png" style="width: 100%;">
+    </button>
+
+
+
+
+
+
+<!------------------------------------------------ingresar servicios---------------------------------------------------------------------->
+     
+
+
+      <div class="introService" id="addservicio">
+            <!------------------------------------------------menu servicios---------------------------------------------------------------------->
+            <div class="menuServices centrar">
+                <p class="centrar" style="width: 100%; height: 10px; font-size: 12px; margin-left: 10px;">Tipo de servicio:
+                
+                    <a class="indentificador"  *ngIf="this.efectos.actual==1">Lavandería</a>
+                    <a  class="indentificador" *ngIf="this.efectos.actual==2">Tintoreria</a>
+                    <a  class="indentificador" *ngIf="this.efectos.actual==3">Planchado</a>
+                    <a  class="indentificador" *ngIf="this.efectos.actual==4">Ofertar o propociones</a>
+                    <a  class="indentificador" *ngIf="this.efectos.actual==5">Otros</a>
+                </p>
+               
+              <div *ngIf="this.efectos.edit==false" class="centrar" style="width: 100%; overflow: hidden;">
+                  <button *ngFor="let option of this.efectos.tiposDeServicios"
+                  [ngClass]="{'actual':this.efectos.actual==option.id}"
+                  class="opcionMenu centrar"
+                  (click)="this.efectos.actualNew(option.id)"
+                  >
+                      <img src="{{option.icon}}" style="width: 17px;">
+                  </button>
+              </div>
+               
+               
+        
+              </div>
+  
+            <!------------------------------------------------menu servicios fin---------------------------------------------------------------------->
+            
+             
+              <ion-item  *ngIf="this.efectos.actual<3">
+              <ion-label>Servicio: </ion-label>
+              <ion-input name="this.efectos.servicio"
+              (click)="this.efectos.vewServicios(null)"
+              [(ngModel)]="this.efectos.servicio"></ion-input>
+              
+              </ion-item>
+                
+              <div class="contServicios" *ngIf="this.efectos.actual==1 && this.efectos.verServicios==true">
+                <div style="width: 100%;" *ngFor="let option of this.efectos.tiposLavanderia | filtros:this.efectos.servicio">
+                  <button *ngIf="option.mal==false" class="option" 
+                  (click)="this.efectos.vewServicios(option.title,option.id)" 
+                  >
+                    {{option.title}}
+                  </button>
+                </div>                      
+              </div>
+
+
+
+              <div class="contServicios" *ngIf="this.efectos.actual==2 && this.efectos.verServicios==true">
+                  <div style="width: 100%;" *ngFor="let option of this.efectos.serviciosTintoreria | filtros:this.efectos.servicio">
+                    <button *ngIf="option.mal==false" class="option" 
+                    (click)="this.efectos.vewServicios(option.title,option.id)" 
+                    >
+                      {{option.title}}
+                    </button>
+                  </div>                      
+                </div>
+
+
+
+              <ion-item  *ngIf="this.efectos.actual<4">
+                  <ion-label>Unidades:</ion-label>
+                  <ion-input style="z-index: 80;" [(ngModel)]="this.efectos.unidad"></ion-input>
+              
+                <button class="fantasma" (click)="this.efectos.vewUnidades(null)"></button>
+              </ion-item>
+
+              <div class="contServicios" *ngIf="this.efectos.actual<4 && this.efectos.verUnidades==true">
+                  <div style="width: 100%;" *ngFor="let option of this.efectos.unidades">
+                    <button  class="option" 
+                    (click)="this.efectos.vewUnidades(option.title)" 
+                    >
+                      {{option.title}}
+                    </button>
+                  </div>                      
+              </div>
+
+
+
+              <ion-item *ngIf="this.efectos.actual<4">
+                <ion-label>Precio:</ion-label>
+                <ion-input type="number" [(ngModel)]="this.efectos.precio"></ion-input>
+              </ion-item>
+
+              <ion-item *ngIf="this.efectos.actual>3">
+                  <ion-label>Titulo:</ion-label>
+                  <ion-input [(ngModel)]="this.efectos.titulo" value="this.efectos.titulo"></ion-input>
+              </ion-item>
+
+              <ion-item>
+           
+                  <ion-label>Descripción:</ion-label>
+              
+                 
+                  <ion-textarea 
+                  [(ngModel)]="this.efectos.descripcion"
+                  rows="7" 
+
+                  placeholder="Enter any notes here...">
+                </ion-textarea>
+              </ion-item>
+
+
+
+
+            <div class="bordeBotones centrar">
+              <ion-button style=" height: 30px; margin:auto;"
+              (click)="this.efectos.ocultarAddService()"
+              >
+                Cancelar
+              </ion-button>
+
+
+              <ion-button  style=" height: 30px; margin:auto;"
+                *ngIf="this.efectos.actual<3"
+                [disabled]="this.efectos.servicio==null || 
+                this.efectos.unidad==null || 
+                this.efectos.precio==null|| 
+                this.efectos.descripcion==null ||this.efectos.descripcion.length<1"
+                (click)="guardar()"
+              >
+                Agregar
+              </ion-button>
+
+              <ion-button  style=" height: 30px; margin:auto;"
+                *ngIf="this.efectos.actual==3"
+                [disabled]="
+                this.efectos.unidad==null || 
+                this.efectos.precio==null|| 
+                this.efectos.descripcion==null ||this.efectos.descripcion.length<1"
+                (click)="guardar()"
+              >
+                Agregar
+              </ion-button>
+
+
+              
+              <ion-button  style=" height: 30px; margin:auto;"
+                *ngIf="this.efectos.actual>3"
+                [disabled]="
+                this.efectos.titulo==null || this.efectos.titulo.length<1 ||
+                this.efectos.descripcion==null ||this.efectos.descripcion.length<1"
+                (click)="guardar()"
+              >
+                Agregar
+              </ion-button>
+
+
+            </div>
+
+           
+
+
+
+
+
+      </div>
+
+     
+
+
+<!------------------------------------------------ingresar servicios fin---------------------------------------------------------------------->
+    
+
+      <div class="centrar" style="padding: 10px; z-index: 70;">
+          <ion-button style="margin:auto; height: 30px;"
+          (click)="this.efectos.next('Datos')"
+          [disabled]="lavanderia.length==0"
+          >
+              Aceptar
+            </ion-button>
+      </div>
+
+     
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="parte" style="background: chocolate; height: 0px;" id="Datos">
+    
+    
+        <div class="centrar" style="padding: 10px; z-index: 70;">
+
+            <ion-button style="margin:auto; height: 30px;"
+            (click)="this.efectos.next('Servicios')"
+            >
+                Regresar
+              </ion-button>
+            <ion-button style="margin:auto; height: 30px;"
+            (click)="this.efectos.next('Imagenes')"
+            >
+                Aceptar
+              </ion-button>
+        </div>
+    </div>
+
+
+
+
+
+
+    <div class="parte" style="background: cornflowerblue; height: 0px; " id="Imagenes">
+        <div class="centrar" style="padding: 10px; z-index: 70;">
+
+            <ion-button style="margin:auto; height: 30px;"
+              (click)="this.efectos.next('Datos')"
+            >
+                Regresar
+              </ion-button>
+            <ion-button style="margin:auto; height: 30px;">
+                Aceptar
+              </ion-button>
+        </div>
+    
+    </div>
+
+
+   
+    </div>
+</ion-content>

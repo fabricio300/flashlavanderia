@@ -9,6 +9,7 @@ const routes: Routes = [
   { path: 'pedido', loadChildren: './paginas/pedido/pedido.module#PedidoPageModule' },
   { path: 'repartidor', loadChildren: './paginas/repartidor/repartidor.module#RepartidorPageModule' },
   { path: 'informacion', loadChildren: './paginas/informacion/informacion.module#InformacionPageModule' },
+  { path: 'registro', loadChildren: './paginas/registro/registro.module#RegistroPageModule' },
 ];
 
 @NgModule({

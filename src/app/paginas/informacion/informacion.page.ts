@@ -7,7 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InformacionPage implements OnInit {
 
-  opcionActual=1
+  anterios='services'
+  imagen='../../../assets/iconos/close.png'
+  actual='services'
 
   imagenes=[
     {
@@ -31,21 +33,51 @@ export class InformacionPage implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.ocultatImagen()
   }
 
 
 
   mostrar(id){
-    this.opcionActual=id
+    this.actual=id
+
+    document.getElementById(this.anterios).style.transition='0.5s'
+    document.getElementById(this.anterios).style.height="0"
+    
+
+    document.getElementById(id).style.transition='0.5s'
+    document.getElementById(id).style.height="90%"
+    this.anterios=id
+    
   }
 
- 
+ ocultatImagen(){
+  document.getElementById('granImagen').style.transition='0.5s'
+  document.getElementById('granImagen').style.marginLeft="-100%"
+ }
+
+ mostrarImagen(imagen){
+   this.imagen=imagen
+   document.getElementById('granImagen').style.transition='0.5s'
+   document.getElementById('granImagen').style.marginLeft="0"
+ }
+
+
+
+
+
+
+
+
+
 
 
   selecionarImagen(event){
       console.log(event.target.files[0]);
-
+     // this.mostrar('store')
       
       
   }
+
+
 }

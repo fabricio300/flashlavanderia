@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class PedidoPage implements OnInit {
 
   tiempo=120
-  presio=50
+  precio=50
   editarTiempo=false
   editarPrecion=false
   tiempoE
@@ -37,7 +37,7 @@ export class PedidoPage implements OnInit {
   editar(opcion){
       if(opcion==1){
         this.editarPrecion=true
-        this.precioE=this.presio
+        this.precioE=this.precio
       }else{
         this.editarTiempo=true
         this.tiempoE=this.tiempo
@@ -49,7 +49,7 @@ export class PedidoPage implements OnInit {
 
     if(opcion==1){
       this.editarPrecion=false
-      this.presio=this.precioE
+      this.precio=this.precioE
     }else{
       this.editarTiempo=false
       this.tiempo=this.tiempoE
@@ -63,7 +63,7 @@ export class PedidoPage implements OnInit {
 
     if(opcion==1){
       this.editarPrecion=false
-      console.log(this.presio);
+      console.log(this.precio);
     }else{
       this.editarTiempo=false
       console.log(this.tiempo);

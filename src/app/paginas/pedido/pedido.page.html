@@ -95,7 +95,7 @@
       <div class="parte centrarIZ">
         <label  class="centrarIZ">
             <img src="../../../assets/iconos/coin.png" width="20px;" style="margin: 3px;">
-          presio:
+          precio:
         </label>
 
       
@@ -107,7 +107,7 @@
     
 
         <ion-label  style="margin-left: 5px; color: gray;" *ngIf="!editarPrecion" >
-            {{presio}} $
+            {{precio}} $
         </ion-label>
 
         <ion-input   type='number' placeholder="{{presio}}" [(ngModel)]="presio" *ngIf="editarPrecion" class="edit">

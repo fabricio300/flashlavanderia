@@ -1,165 +1,44 @@
 <ion-header>
-  <ion-toolbar color=primary>
-      <ion-buttons slot="start">
-          <ion-back-button></ion-back-button>
-        </ion-buttons>
-    <ion-title>Informacion</ion-title>
+  <ion-toolbar color="primary" >
+    <ion-buttons>
+      <ion-back-button>
+
+      </ion-back-button>
+
+      <ion-title>
+        Editar información
+      </ion-title>
+    </ion-buttons>
+  
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <div class="contp centrar" style="height: 10%;" id="menu">
 
-  <div class="fondo">
+    <div class="opciones centrar "  [ngClass]="{'normal':actual!='services', 'actual':actual=='services'}">
+      <img src="../../../assets/iconos/washing-machine2.png" style="width: 20px; margin: 5px;">
+     
+      <button (click)="mostrar('services')"></button>
+    </div>
 
-    <div class="conteBotones centrar">
-
-      <div 
-      
-      class="opcion centrar" 
-      (click)="mostrar(1)"
-      [ngClass]="{'normal':opcionActual!=1, 'actual':opcionActual==1}">
-
-          <label class="centrar">
-            <img src="../../../assets/iconos/washing-machine2.png" style="width: 20px; margin: 3px;">
-            Servicios
-          </label>
-
-      </div>
-
-      <div 
-      (click)="mostrar(2)"
-      class="opcion centrar "
-      [ngClass]="{'normal':opcionActual!=2, 'actual':opcionActual==2}"
-      >
-          <label class="centrar">
-              <img src="../../../assets/iconos/store.png" style="width: 20px; margin: 3px;">
-              Ofertas
-            </label>
-
-      </div>
-
-      <div 
-      (click)="mostrar(3)"
-      class="opcion centrar "
-      [ngClass]="{'normal':opcionActual!=3, 'actual':opcionActual==3}"
-      >
-
-          <label class="centrar">
-              <img src="../../../assets/iconos/store.png" style="width: 20px; margin: 3px;">
-              Información
-            </label>
-      </div>
-      
-
-
-
+    <div class="opciones centrar"  [ngClass]="{'normal':actual!='ofert', 'actual':actual=='ofert'}">
+      <img src="../../../assets/iconos/tag.png" style="width: 20px; margin: 5px;">
     
+      <button (click)="mostrar('ofert')"></button>
+    </div>
 
+    <div class="opciones centrar"  [ngClass]="{'normal':actual!='store', 'actual':actual=='store'}">
+        <img src="../../../assets/iconos/store.png" style="width: 20px; margin: 5px;">
+     
+      <button (click)="mostrar('store')"></button>
+    </div>
 
-      </div>
-
-
-
-    <div class="contScroll">
-
-
-      <div 
-      [ngClass]="{'quitar':opcionActual!=1, 'parte':opcionActual==1}"
-      style="background: chartreuse;"></div>
-
-      <div 
-      [ngClass]="{'quitar':opcionActual!=2, 'parte':opcionActual==2}"
-      style="background: chocolate;"></div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      <div 
-      [ngClass]="{'quitar':opcionActual!=3, 'parte':opcionActual==3}">
-
-        <p style="margin: 5px; color: white;">Imagenes de precentación:</p>
-        <div class="contFotos centrarIZ">
-
-            <div class="contImagen centrar" style="position: relative" *ngFor="let ima of imagenes">
-              <img src="{{ima.url}}" alt="">
-
-              <div class="iconCont centrar">
-                  <img       
-                  src="../../../assets/iconos/rubbish-bin-delete-button.png" class="iconx">
-                 
-              </div>
-              
-            </div>
-
-        </div>
-        
-        
-        <button class="botonMore centrar">
-            <img src="../../../assets/iconos/upload.png" width="40px;" style="cursor: pointer;">
-            <ion-input type="file"
-            accept="image/*"
-            (change)="selecionarImagen($event)"
-            ></ion-input>
-        </button>
-
-
-
-
-
-        <div id="lista_imagenes"></div>
-
-        <div class="conDatosEmpresa">
-
-          <label >Nombre de la compañia:</label>
-          <ion-input placeholder="Nombre"></ion-input>
-
-          
-          <label >Dirección del local:</label>
-          <ion-input placeholder="Dirección"></ion-input>
-
-
-          <label >Correo:</label>
-          <ion-input placeholder="Correo"></ion-input>
-
-
-          <label>Tel:</label>
-          <ion-input placeholder="000-000-0000"></ion-input>
-
-
-          
-        </div>
-    
-        
-      </div>
-
-
-
-
-
-
+    <div class="opciones centrar"  [ngClass]="{'normal':actual!='images', 'actual':actual=='images'}">
+        <img src="../../../assets/iconos/picture.png" style="width: 20px; margin: 5px;">
+      
+      <button (click)="mostrar('images')"></button>
     </div>
 
 
@@ -181,13 +60,115 @@
 
 
 
-  <ion-item >
-    <ion-button>
-      Cancelar
-    </ion-button>
-    <ion-button>
-        Guardar
-      </ion-button>
+  <div class="contp" style="background: #1089ff; height: 90%;" id="services">
+     <h5>Servicios</h5>
+  </div>
 
-  </ion-item>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="contp" style="background: #e5e5e5; height: 0px;" id="ofert">
+    <h5>Ofertas</h5>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="contp datosEmpresa centrar" style="background: white; height: 0px; " id="store">
+      <h5 style="width: 100%; position: absolute;top: 0;">Datos del local</h5>
+    
+      <form style="width: 90%; margin: auto; margin-top: 13px;">
+          <label >Nombre del local:</label><br>
+          <input type="text"><br>
+          
+          <label >Telefono:</label><br>
+          <input type="number"><br>
+          <label >Direccion:</label><br>
+          <input type="text"><br>
+
+
+          <div class="contBotonoesop centrar">
+              <ion-button color=secondary>
+                Guardar
+              </ion-button>
+              <ion-button>
+                  Cancelar
+                </ion-button>
+            </div>
+      </form>
+    
+  
+  
+  </div>
+
+
+
+  
+  <div class="contp " style="background: white;  height: 0px;" id="images">
+    <h5>Imagenes de presentación</h5>
+
+   <div class="contImages" style="width: 100%; height:auto;">
+      
+    
+    <div class="contimagen centrar" *ngFor="let imagen of imagenes">
+        <img src="{{imagen.url}}" alt="">
+        
+        <button (click)="mostrarImagen(imagen.url)"></button>
+    </div>
+         
+
+
+    <div class="botonMoreImage">
+      <img src="../../../assets/iconos/add-button-inside-black-circle.png" style="width: 100%;">
+
+      <input type="file" class="files"  accept="image/*" (change)="selecionarImagen($event)">
+    </div>
+
+  </div>
+   
+
+
+
+  </div>
+
+
+  <div class="gran centrar" id="granImagen">
+    <img src="{{imagen}}" class="imagenX">
+
+
+<div class="centrar" style="width: 100%;">
+    <button class="botonBorrar">
+        <img src="../../../assets/iconos/rubbish-bin-delete-button.png" width="40px">
+      </button>
+</div>
+  
+     
+    <button class="centrar bcerrar" (click)="ocultatImagen()">
+      <img src="../../../assets/iconos/close.png" style="width: 25px;">
+    </button>
+  </div>
+
 </ion-content>
+
