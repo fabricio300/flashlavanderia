@@ -209,8 +209,8 @@ export class efectos{
         
     }
 
-    vewServicios(servicio, id){
-        this.servicio=servicio
+    vewServicios(servicio ,id){
+            this.servicio=servicio
         if(this.servicio==null){
             this.verServicios=true
             this.servicioValido=false
@@ -228,13 +228,21 @@ export class efectos{
             if(this.tipoDeServicoElegido==1){
                 this.tiposLavanderia.forEach(element => {
                         if(element.id==id){
-                            element.mal=true
+                            if(element.mal==true){
+                                element.mal=false
+                            }else{
+                                element.mal=true
+                            }
                         }
                 });
             }else{
                 this.serviciosTintoreria.forEach(element => {
                     if(element.id==id){
-                        element.mal=true
+                        if(element.mal==true){
+                            element.mal=false
+                        }else{
+                            element.mal=true
+                        }
                     }
                 });
 

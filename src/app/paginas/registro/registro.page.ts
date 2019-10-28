@@ -35,6 +35,12 @@ export class RegistroPage implements OnInit {
   }
 
 
+
+
+/*************************servicios******************************************************************************* */
+
+
+
   guardar(){
       if(this.efectos.edit==true){
         this.gardarEditado()
@@ -157,6 +163,27 @@ export class RegistroPage implements OnInit {
     
 
 
+    deleteElement(id,tipo){
+      switch (tipo) {
+        case 1:   this.efectos.ocultarServices(id)
+                  this.lavanderia=this.borrar(this.lavanderia,id)            
+          break;
+          case 2: this.efectos.ocultarServices(id)
+                  this.tintoreria=this.borrar(this.tintoreria,id)
+          break;
+          case 3: this.planchado=this.borrar(this.planchado,id)
+          break;
+          case 4:this.ofertas=this.borrar(this.ofertas,id)
+          break;
+          case 5: this.otros=this.borrar(this.otros,id)
+          break;
+      
+        default:
+          break;
+      }
+      
+    }
+
 
     borrar(arreglo, id){
 
@@ -166,10 +193,10 @@ export class RegistroPage implements OnInit {
                   }
             
           }
-    
-          console.log("arreglo",arreglo);
-          
+          //console.log("arreglo",arreglo);
           return arreglo
     }
+
+/*************************fin servicios******************************************************************************* */
 
 }

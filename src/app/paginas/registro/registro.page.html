@@ -55,7 +55,9 @@
                   >
                       <img src="../../../assets/Registro/pencil-edit-button.png" style="width: 15px;">
                   </button>
-                  <button class="editordelete centrar">
+                  <button class="editordelete centrar"
+                  (click)="deleteElement(lavado.id,1)"
+                  >
                       <img src="../../../assets/Registro/rubbish-bin-delete-button.png" style="width: 15px;">
                   </button>
               </div>
@@ -79,7 +81,9 @@
                     >
                         <img src="../../../assets/Registro/pencil-edit-button.png" style="width: 15px;">
                     </button>
-                    <button class="editordelete centrar">
+                    <button class="editordelete centrar"
+                    (click)="deleteElement(tinto.id,2)"
+                    >
                         <img src="../../../assets/Registro/rubbish-bin-delete-button.png" style="width: 15px;">
                     </button>
                 </div>
@@ -109,7 +113,9 @@
                       >
                           <img src="../../../assets/Registro/pencil-edit-button.png" style="width: 15px;">
                       </button>
-                      <button class="editordelete centrar">
+                      <button class="editordelete centrar"
+                      (click)="deleteElement(plan.id,3)"
+                      >
                           <img src="../../../assets/Registro/rubbish-bin-delete-button.png" style="width: 15px;">
                       </button>
                   </div>
@@ -134,7 +140,9 @@
                       >
                           <img src="../../../assets/Registro/pencil-edit-button.png" style="width: 15px;">
                       </button>
-                      <button class="editordelete centrar">
+                      <button class="editordelete centrar"
+                      (click)="deleteElement(ofer.id,4)"
+                      >
                           <img src="../../../assets/Registro/rubbish-bin-delete-button.png" style="width: 15px;">
                     </button>
                   </div>
@@ -157,7 +165,9 @@
                           >
                               <img src="../../../assets/Registro/pencil-edit-button.png" style="width: 15px;">
                           </button>
-                          <button class="editordelete centrar">
+                          <button class="editordelete centrar"
+                          (click)="deleteElement(other.id,5)"
+                          >
                               <img src="../../../assets/Registro/rubbish-bin-delete-button.png" style="width: 15px;">
                         </button>
                       </div>
@@ -307,7 +317,7 @@
                 this.efectos.descripcion==null ||this.efectos.descripcion.length<1"
                 (click)="guardar()"
               >
-                Agregar
+              Guardar
               </ion-button>
 
               <ion-button  style=" height: 30px; margin:auto;"
@@ -318,7 +328,7 @@
                 this.efectos.descripcion==null ||this.efectos.descripcion.length<1"
                 (click)="guardar()"
               >
-                Agregar
+              Guardar
               </ion-button>
 
 
@@ -330,7 +340,7 @@
                 this.efectos.descripcion==null ||this.efectos.descripcion.length<1"
                 (click)="guardar()"
               >
-                Agregar
+                Guardar
               </ion-button>
 
 
