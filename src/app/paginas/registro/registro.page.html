@@ -369,7 +369,14 @@
             </ion-button>
       </div>
 
-     
+
+          <ion-button style="margin:auto; height: 30px;"
+          (click)="this.efectos.next('Datos')"
+         
+          >
+              Aceptar
+            </ion-button>
+    
 
 </div>
 
@@ -428,13 +435,182 @@
 
 
 
+<!----------formulario----------------------------------------------------------------------------------------------------->
+
+
+
+
+    <div class="parte" style="height: 0px;" id="Datos">
+
+        <form [formGroup]="formRegistro" class="formulario">
+          
+          <label >Nombre(s):</label> <br>
+          <input formControlName="nombre" type="text"><br>
+          <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(1)">
+              <img 
+              *ngIf="!formRegistro.get('nombre').hasError('required') && !formRegistro.get('nombre').hasError('pattern')"
+              src="../../../assets/imagenes/information.png" style="width: 100%;">
+              <img 
+              *ngIf="formRegistro.get('nombre').hasError('required') || formRegistro.get('nombre').hasError('pattern')"
+              src="../../../assets/imagenes/informationX.png" style="width: 100%;">
+          </div>
+          <p *ngIf="this.efectos.forInfo==1">
+              Este campo es obligatorio, no debe tener números o caracteres especiales como: ¡#$%, debe tener una longitud de 3 a 50 caracteres. Puede incluir mayúsculas y minúsculas. 
+        
+          </p>
 
 
 
 
 
-    <div class="parte" style="background: chocolate; height: 0px;" id="Datos">
-    
+
+          <label >Apelldo(s):</label><br>
+          <input formControlName="apellidos" type="text"><br>
+          <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(2)">
+              <img 
+              *ngIf="!formRegistro.get('apellidos').hasError('required') && !formRegistro.get('apellidos').hasError('pattern')"
+              src="../../../assets/imagenes/information.png" style="width: 100%;">
+              <img 
+              *ngIf="formRegistro.get('apellidos').hasError('required') || formRegistro.get('apellidos').hasError('pattern')"
+              src="../../../assets/imagenes/informationX.png" style="width: 100%;">
+          </div>
+
+          <p *ngIf="this.efectos.forInfo==2">
+              Este campo es obligatorio, no debe tener números o caracteres especiales como: ¡#$%, debe tener una longitud de 3 a 50 caracteres. Puede incluir mayúsculas y minúsculas.  
+          </p>
+
+
+
+
+
+
+          <label >Contraseña:</label><br>
+          <input formControlName="contrasenia" type="password"><br>
+          <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(3)">
+              <img 
+              *ngIf="!formRegistro.get('contrasenia').hasError('required') && !formRegistro.get('contrasenia').hasError('pattern')"
+              src="../../../assets/imagenes/information.png" style="width: 100%;">
+              <img 
+              *ngIf="formRegistro.get('contrasenia').hasError('required') || formRegistro.get('contrasenia').hasError('pattern')"
+              src="../../../assets/imagenes/informationX.png" style="width: 100%;">
+          </div>
+          <p *ngIf="this.efectos.forInfo==3">
+              Campo obligatorio, este debe tener: letras mayúsculas y minúsculas, al menos un número, al menos un carácter especial (#?!@$%^&*-) y una longitud de 8 a 15 caracteres sin espacios.
+          </p>
+
+
+
+
+
+
+
+          <label >Comfirmar contraseña:</label><br>
+          <input formControlName="contrasenia2" type="password"><br>
+          <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(4)">
+              <img 
+              *ngIf="!formRegistro.get('contrasenia2').hasError('required') && !formRegistro.get('contrasenia2').hasError('pattern')"
+              src="../../../assets/imagenes/information.png" style="width: 100%;">
+              <img 
+              *ngIf="formRegistro.get('contrasenia2').hasError('required') || formRegistro.get('contrasenia2').hasError('pattern')"
+              src="../../../assets/imagenes/informationX.png" style="width: 100%;">
+          </div>
+          <p *ngIf="this.efectos.forInfo==4">
+              Campo obligatorio, este campo debe coincidir con el campo contraseña. 
+            </p>
+
+
+
+
+
+          <label >Nombre del negocio:</label><br>
+          <input formControlName="nombreLavanderia" type="text"><br>
+          <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(5)">
+              <img 
+              *ngIf="!formRegistro.get('nombreLavanderia').hasError('required')"
+              src="../../../assets/imagenes/information.png" style="width: 100%;">
+              <img 
+              *ngIf="formRegistro.get('nombreLavanderia').hasError('required')"
+              src="../../../assets/imagenes/informationX.png" style="width: 100%;">
+          </div>
+            <p *ngIf="this.efectos.forInfo==5">
+              Campo obligatorio.
+            </p>
+
+
+
+          <label >Correo:</label><br>
+          <input formControlName="correo" type="text"><br>
+          <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(6)">
+              <img 
+              *ngIf="!formRegistro.get('correo').hasError('required') && !formRegistro.get('correo').hasError('pattern')"
+              src="../../../assets/imagenes/information.png" style="width: 100%;">
+              <img 
+              *ngIf="formRegistro.get('correo').hasError('required') || formRegistro.get('correo').hasError('pattern')"
+              src="../../../assets/imagenes/informationX.png" style="width: 100%;">
+          </div>
+          <p *ngIf="this.efectos.forInfo==6">
+              Campo obligatorio.
+          </p>
+
+
+
+
+          <label >Número telefonico del negocio:</label><br>
+          <input formControlName="telefono" type="text"><br>
+          <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(7)">
+              <img 
+              *ngIf="!formRegistro.get('telefono').hasError('required') && !formRegistro.get('telefono').hasError('pattern')"
+              src="../../../assets/imagenes/information.png" style="width: 100%;">
+              <img 
+              *ngIf="formRegistro.get('telefono').hasError('required') || formRegistro.get('telefono').hasError('pattern')"
+              src="../../../assets/imagenes/informationX.png" style="width: 100%;">
+          </div>
+          <p *ngIf="this.efectos.forInfo==7">
+              Este campo es obligatorio, solo debe componerse de 10 caracteres numéricos 
+          </p>
+
+
+
+
+
+
+
+          <label >Horario de lunes a viernes:</label><br>
+          <label >De </label> 
+          <input formControlName="haraIntiLV" type="time" style="width: 42%;"> <label > a </label> 
+          <input  formControlName="haraEndtiLV" type="time" style="width: 42%;"><br>
+          <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(7)">
+              <img 
+              *ngIf="!formRegistro.get('haraIntiLV').hasError('required') && !formRegistro.get('haraEndtiLV').hasError('required')"
+              src="../../../assets/imagenes/information.png" style="width: 100%;">
+              <img 
+              *ngIf="formRegistro.get('haraIntiLV').hasError('required') || formRegistro.get('haraEndtiLV').hasError('required')"
+              src="../../../assets/imagenes/informationX.png" style="width: 100%;">
+          </div>
+          <p *ngIf="this.efectos.forInfo==8">
+              Campos obligatorios.
+          </p>
+
+          
+          
+          <label >Horario sabados:</label><br>
+          <label >De </label> 
+          <input formControlName="haraIntiS" type="time" style="width: 42%;"> <label > a </label> 
+          <input  formControlName="haraEndtiS" type="time" style="width: 42%;"><br>
+          <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(7)">
+              <img 
+              *ngIf="!formRegistro.get('haraIntiS').hasError('required') && !formRegistro.get('haraEndtiS').hasError('required')"
+              src="../../../assets/imagenes/information.png" style="width: 100%;">
+              <img 
+              *ngIf="formRegistro.get('haraIntiS').hasError('required') || formRegistro.get('haraEndtiS').hasError('required')"
+              src="../../../assets/imagenes/informationX.png" style="width: 100%;">
+          </div>
+          <p *ngIf="this.efectos.forInfo==9">
+              Campos obligatorios.
+          </p>
+
+        </form>
+
     
         <div class="centrar" style="padding: 10px; z-index: 70;">
 
@@ -444,13 +620,33 @@
                 Regresar
               </ion-button>
             <ion-button style="margin:auto; height: 30px;"
-            (click)="this.efectos.next('Imagenes')"
+            [disabled]="!formRegistro.valid"
+            (click)="this.efectos.next('Mapa')"
             >
                 Aceptar
               </ion-button>
         </div>
     </div>
 
+
+
+<!----------formulario fin----------------------------------------------------------------------------------------------------->
+<div class="parte" style="background: cyan; height: 0px; " id="Mapa">
+    <div class="centrar" style="padding: 10px; z-index: 70;">
+
+        <ion-button style="margin:auto; height: 30px;"
+          (click)="this.efectos.next('Datos')"
+        >
+            Regresar
+          </ion-button>
+        <ion-button style="margin:auto; height: 30px;"
+        (click)="this.efectos.next('Imagenes')"
+        >
+            Aceptar
+          </ion-button>
+    </div>
+
+</div>
 
 
 
@@ -460,7 +656,7 @@
         <div class="centrar" style="padding: 10px; z-index: 70;">
 
             <ion-button style="margin:auto; height: 30px;"
-              (click)="this.efectos.next('Datos')"
+              (click)="this.efectos.next('Mapa')"
             >
                 Regresar
               </ion-button>

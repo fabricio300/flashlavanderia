@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { efectos } from './Efectos';
-
+import {Validators, FormBuilder, FormGroup,AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-registro',
@@ -9,6 +9,8 @@ import { efectos } from './Efectos';
 })
 export class RegistroPage implements OnInit {
   efectos=new efectos()
+
+  private formRegistro : FormGroup
 
   lavanderia=[]
   tintoreria=[]
@@ -23,7 +25,49 @@ export class RegistroPage implements OnInit {
   elemento:any
   
 
-  constructor() { }
+  emailValido='^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$'
+  nombreValido='[a-zA-ZÀ-ÿ ]{3,50}'
+  apellidosValidos='[a-zA-ZÀ-ÿ ]{3,48}'
+  contraseniaValida='^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,15}$'
+  numeroValido='[0-9]{10}'
+
+  constructor(
+    private formBuilder: FormBuilder
+  ) { 
+      this.formRegistro=this.formBuilder.group({
+        nombre:['',Validators.compose([
+          Validators.required,
+          Validators.pattern(this.nombreValido)
+        ])],
+        apellidos:['',Validators.compose([
+          Validators.required,
+          Validators.pattern(this.apellidosValidos)
+        ])],
+        contrasenia:['',Validators.compose([
+          Validators.required,
+          Validators.pattern(this.contraseniaValida)
+        ])],
+        contrasenia2:['',Validators.compose([
+          Validators.required,
+          Validators.pattern(this.contraseniaValida)
+        ])],
+        nombreLavanderia:['',Validators.required],
+        correo:['',Validators.compose([
+          Validators.required,
+          Validators.pattern(this.emailValido)
+        ])],
+        telefono:['',Validators.compose([
+          Validators.required,
+          Validators.pattern(this.numeroValido)
+        ])],
+        haraIntiLV:['',Validators.required],
+        haraEndtiLV:['',Validators.required],
+        haraIntiS:['',Validators.required],
+        haraEndtiS:['',Validators.required],
+        
+      })
+
+  }
 
 
 

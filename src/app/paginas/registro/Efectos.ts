@@ -1,3 +1,4 @@
+import { flatten } from '@angular/compiler'
 
 export class efectos{
 
@@ -346,7 +347,19 @@ export class efectos{
     }
 
 
+//-------------formulario-------------------------------------------------------------------------------------------
+    vanterior
 
+    forInfo=0
+
+    mostrarRequierd(status){
+            if(this.forInfo==status){
+                this.forInfo=0
+            }else{
+                this.forInfo=status
+            }
+    }
     
+
 }
 
