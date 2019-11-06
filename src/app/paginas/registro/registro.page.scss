@@ -29,6 +29,9 @@
     outline: none;
     border-radius: 50%;
     background: #23374d;
+    -webkit-box-shadow: 1px 0px 19px -2px rgba(0,0,0,0.75);
+-moz-box-shadow: 1px 0px 19px -2px rgba(0,0,0,0.75);
+box-shadow: 1px 0px 19px -2px rgba(0,0,0,0.75);
 }
 
 .introService{
@@ -172,7 +175,7 @@ ion-item{
 
 .formulario{
     width: 100%;
-    height: 85%;
+    height: 80%;
    // background: #23374d;
     position: relative;
     padding: 10px;
@@ -182,7 +185,7 @@ ion-item{
 
 .formulario::content input{
     width: 92%;
-    margin-bottom: 10px;
+    margin-bottom: 25px;
     background: transparent;
     outline: none;
     border: none;
@@ -200,7 +203,8 @@ ion-item{
     color: white;
     padding: 10px;
     width: 92%;
-    margin-top: -10px;    
+    margin-top: -25px;
+    
 }
 
 
@@ -210,5 +214,41 @@ ion-item{
     position: absolute;
     left: 92%;
     background: transparent;
-    margin-top: -20px;
+    margin-top: -35px;
+}
+
+
+.contFotos{
+    width: 100%;
+    height: 80%;
+    
+    position: relative;
+    overflow-y: scroll;
+    border-bottom: 1px solid gray;
+}
+
+.contFoto{
+    width: 50%;
+    height: auto;
+    //background: #252525;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: auto;
+  
+}
+
+.contFoto::content img{
+    max-width:100%;
+    height: auto;
+}
+
+.botonBorrar{
+    width: 35px;
+    height: 35px;
+    background: red;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    border-radius: 50%;
+    outline: none;
 }

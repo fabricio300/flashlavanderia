@@ -22,7 +22,7 @@
 
 <!------------------------------------------------menu servicios---------------------------------------------------------------------->
       <div class="menuServices centrar">
-        <p style="width: 100%; height: 10px; font-size: 12px; margin-left: 10px;">Servicios:</p>
+        <p style="width: 100%; height: 10px; font-size: 12px; margin-left: 10px;">Ingresar servicios:</p>
         <button *ngFor="let option of this.efectos.tiposDeServicios" class="opcionMenu centrar"
         [ngClass]="{'actual':this.efectos.actual==option.id}"
         (click)="this.efectos.actualNew(option.id)"
@@ -357,26 +357,21 @@
      
 
 
-<!------------------------------------------------ingresar servicios fin---------------------------------------------------------------------->
+<!------------------------------------------------ingresar servicios fin   [disabled]="lavanderia.length==0"---------------------------------------------------------------------->
     
 
       <div class="centrar" style="padding: 10px; z-index: 70;">
-          <ion-button style="margin:auto; height: 30px;"
-          (click)="this.efectos.next('Datos')"
-          [disabled]="lavanderia.length==0"
-          >
-              Aceptar
-            </ion-button>
-      </div>
-
-
           <ion-button style="margin:auto; height: 30px;"
           (click)="this.efectos.next('Datos')"
          
           >
               Aceptar
             </ion-button>
-    
+      </div>
+
+
+        
+  
 
 </div>
 
@@ -441,7 +436,7 @@
 
 
     <div class="parte" style="height: 0px;" id="Datos">
-
+        <h5 style="margin-left: 10px;">Datos de la empresa:</h5>
         <form [formGroup]="formRegistro" class="formulario">
           
           <label >Nombre(s):</label> <br>
@@ -556,7 +551,7 @@
 
 
           <label >Número telefonico del negocio:</label><br>
-          <input formControlName="telefono" type="text"><br>
+          <input formControlName="telefono" type="number"><br>
           <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(7)">
               <img 
               *ngIf="!formRegistro.get('telefono').hasError('required') && !formRegistro.get('telefono').hasError('pattern')"
@@ -579,7 +574,7 @@
           <label >De </label> 
           <input formControlName="haraIntiLV" type="time" style="width: 42%;"> <label > a </label> 
           <input  formControlName="haraEndtiLV" type="time" style="width: 42%;"><br>
-          <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(7)">
+          <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(8)">
               <img 
               *ngIf="!formRegistro.get('haraIntiLV').hasError('required') && !formRegistro.get('haraEndtiLV').hasError('required')"
               src="../../../assets/imagenes/information.png" style="width: 100%;">
@@ -597,7 +592,7 @@
           <label >De </label> 
           <input formControlName="haraIntiS" type="time" style="width: 42%;"> <label > a </label> 
           <input  formControlName="haraEndtiS" type="time" style="width: 42%;"><br>
-          <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(7)">
+          <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(9)">
               <img 
               *ngIf="!formRegistro.get('haraIntiS').hasError('required') && !formRegistro.get('haraEndtiS').hasError('required')"
               src="../../../assets/imagenes/information.png" style="width: 100%;">
@@ -620,20 +615,44 @@
                 Regresar
               </ion-button>
             <ion-button style="margin:auto; height: 30px;"
-            [disabled]="!formRegistro.valid"
-            (click)="this.efectos.next('Mapa')"
+          
+            (click)="validadContrasenias()"
             >
                 Aceptar
               </ion-button>
         </div>
+
+
+
+      
     </div>
 
 
 
-<!----------formulario fin----------------------------------------------------------------------------------------------------->
+<!----------formulario fin       [disabled]="!formRegistro.valid"----------------------------------------------------------------------------------------------------->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="parte" style="background: cyan; height: 0px; " id="Mapa">
     <div class="centrar" style="padding: 10px; z-index: 70;">
-
+        <h5 style="margin-left: 10px;">Ubicación:</h5>
         <ion-button style="margin:auto; height: 30px;"
           (click)="this.efectos.next('Datos')"
         >
@@ -652,10 +671,58 @@
 
 
 
-    <div class="parte" style="background: cornflowerblue; height: 0px; " id="Imagenes">
-        <div class="centrar" style="padding: 10px; z-index: 70;">
 
-            <ion-button style="margin:auto; height: 30px;"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!----------imagenes  *ngIf="!imagen.ultimo"----------------------------------------------------------------------------------------------------->
+
+
+
+
+
+    <div class="parte" style=" height: 0px; " id="Imagenes">
+        <h5 style="margin-left: 10px;">Imagenes de precentación:</h5>
+        <div  style="padding: 10px; z-index: 70; height: 100%;">
+
+          <div class="contFotos ">
+            <div style="display: flex; flex-wrap: wrap; width: 100%; height: auto;">
+                <div class="contFoto" *ngFor="let imagen of imagenes64">
+                    <img src="" id="data:;base64,{{imagen.base64}}" >
+                   <button class="botonBorrar centrar"
+                   (click)="borrarImagen(imagen.id)"
+                   >
+                     <img src="../../../assets/iconos/rubbish-bin-delete-button.png" width="100%">
+                   </button>
+                </div>
+          </div>
+            
+
+
+          </div>
+
+          
+          <button class="AddService centrar" style="margin-right: 5px;">
+              <img src="../../../assets/iconos/upload.png" width="80%">
+              <input
+              style="position: absolute; width: 100%; height: 100%; outline: none; opacity: 0;"
+              type="file" (change)="handleFileSelect($event)"><br>
+          </button>
+
+          <div class="centrar" style="margin-top: 15px;">
+
+              <ion-button style="margin:auto; height: 30px;"
               (click)="this.efectos.next('Mapa')"
             >
                 Regresar
@@ -663,9 +730,14 @@
             <ion-button style="margin:auto; height: 30px;">
                 Aceptar
               </ion-button>
+          </div>
+          
+            
         </div>
     
     </div>
+
+<!----------imagenes fin----------------------------------------------------------------------------------------------------->
 
 
    

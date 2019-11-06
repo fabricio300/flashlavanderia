@@ -243,4 +243,111 @@ export class RegistroPage implements OnInit {
 
 /*************************fin servicios******************************************************************************* */
 
+
+/*************************datos******************************************************************************* */
+
+validadContrasenias(){
+ 
+  
+  if(this.formRegistro.get('contrasenia').value==this.formRegistro.get('contrasenia2').value){
+    this.efectos.next('Mapa')
+  }else{
+    this.efectos.forInfo=4
+  }
+
+}
+
+
+/*************************fin datos******************************************************************************* */
+
+
+/*************************imagenes******************************************************************************* */
+idImagen1=0
+imagenes1=[
+  {
+    id:'imagen'+this.idImagen1,
+    idImagen:this.idImagen1,
+    ultimo:true
+  }
+]
+
+imagenes64=[]
+
+imagenSubir(evento){
+  this.imagenes1[this.imagenes1.length-1].ultimo=false
+  console.log(this.imagenes1[this.imagenes1.length-1].id);
+  
+  let preview:any = document.getElementById(this.imagenes1[this.imagenes1.length-1].id);
+  this.idImagen1=this.idImagen1+1
+  this.imagenes1.push({id:'imagen'+this.idImagen1,idImagen:this.idImagen1,ultimo:true})
+
+  let file1:any    = document.querySelector('input[type=file]');
+  let reader  = new FileReader();
+
+  let file=file1.files[0];
+
+  
+  reader.onloadend = function () {
+    preview.src = reader.result;
+    
+  }
+
+  if (file) {
+    reader.readAsDataURL(file);
+    console.log("ima");
+   
+  } else {
+    preview.src = "";
+  }
+
+  this.handleFileSelect(evento)
+
+}
+
+
+
+
+base64textString:any
+
+
+handleFileSelect(evt){
+  var files = evt.target.files;
+  var file = files[0];
+
+if (files && file) {
+    var reader = new FileReader();
+
+    reader.onload =this._handleReaderLoaded.bind(this);
+
+    reader.readAsBinaryString(file);
+}
+}
+
+
+
+_handleReaderLoaded(readerEvt) {
+        var binaryString = readerEvt.target.result;
+        this.base64textString= btoa(binaryString);
+        //console.log(btoa(binaryString));
+        this.imagenes64.push({id:this.idImagen1-1,base64:this.base64textString})
+        console.log(this.imagenes64);
+        
+}
+
+
+borrarImagen(id){
+  for (let index = 0; index < this.imagenes1.length; index++) {
+        if(id==this.imagenes1[index].idImagen){
+          this.imagenes1.splice(index,1)
+          this.imagenes64.splice(index,1)
+        }
+
+  }
+  console.log(this.imagenes1);
+  console.log(this.imagenes64);
+}
+
+/*************************imagenes fin******************************************************************************* */
+
+
 }
