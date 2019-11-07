@@ -50,10 +50,15 @@
 
           
             
-            <ion-item color="secondary" >
+            <ion-item color="secondary" *ngIf="this.apiService.status_de_secion" (click)="cerrarSesion()">
                 <img src="../../../assets/iconos/close.png" style="width: 20px; margin: 3px;">
                 Cerrar sesion
             </ion-item>
+
+            <ion-item color="secondary" *ngIf="!this.apiService.status_de_secion" (click)="closeFirst()"  [routerLink]="['/login']">
+              <img src="../../../assets/iconos/user.png" style="width: 20px; margin: 3px;">
+              iniciar sesion
+          </ion-item>
            
      
         </ion-content>

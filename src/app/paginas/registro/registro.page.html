@@ -357,13 +357,13 @@
      
 
 
-<!------------------------------------------------ingresar servicios fin   [disabled]="lavanderia.length==0"---------------------------------------------------------------------->
+<!------------------------------------------------ingresar servicios fin   ---------------------------------------------------------------------->
     
 
       <div class="centrar" style="padding: 10px; z-index: 70;">
           <ion-button style="margin:auto; height: 30px;"
           (click)="this.efectos.next('Datos')"
-         
+          [disabled]="lavanderia.length==0"
           >
               Aceptar
             </ion-button>
@@ -439,7 +439,7 @@
         <h5 style="margin-left: 10px;">Datos de la empresa:</h5>
         <form [formGroup]="formRegistro" class="formulario">
           
-          <label >Nombre(s):</label> <br>
+          <!--Nombre(s):</label> <br>
           <input formControlName="nombre" type="text"><br>
           <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(1)">
               <img 
@@ -459,7 +459,7 @@
 
 
 
-          <label >Apelldo(s):</label><br>
+          <label >Apellido(s):</label><br>
           <input formControlName="apellidos" type="text"><br>
           <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(2)">
               <img 
@@ -472,10 +472,23 @@
 
           <p *ngIf="this.efectos.forInfo==2">
               Este campo es obligatorio, no debe tener números o caracteres especiales como: ¡#$%, debe tener una longitud de 3 a 50 caracteres. Puede incluir mayúsculas y minúsculas.  
-          </p>
+          </p--->
 
 
 
+          <label >Nombre del negocio:</label><br>
+          <input formControlName="nombreLavanderia" type="text"><br>
+          <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(5)">
+              <img 
+              *ngIf="!formRegistro.get('nombreLavanderia').hasError('required')"
+              src="../../../assets/imagenes/information.png" style="width: 100%;">
+              <img 
+              *ngIf="formRegistro.get('nombreLavanderia').hasError('required')"
+              src="../../../assets/imagenes/informationX.png" style="width: 100%;">
+          </div>
+            <p *ngIf="this.efectos.forInfo==5">
+              Campo obligatorio.
+            </p>
 
 
 
@@ -517,20 +530,7 @@
 
 
 
-          <label >Nombre del negocio:</label><br>
-          <input formControlName="nombreLavanderia" type="text"><br>
-          <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(5)">
-              <img 
-              *ngIf="!formRegistro.get('nombreLavanderia').hasError('required')"
-              src="../../../assets/imagenes/information.png" style="width: 100%;">
-              <img 
-              *ngIf="formRegistro.get('nombreLavanderia').hasError('required')"
-              src="../../../assets/imagenes/informationX.png" style="width: 100%;">
-          </div>
-            <p *ngIf="this.efectos.forInfo==5">
-              Campo obligatorio.
-            </p>
-
+         
 
 
           <label >Correo:</label><br>
@@ -615,7 +615,7 @@
                 Regresar
               </ion-button>
             <ion-button style="margin:auto; height: 30px;"
-          
+            [disabled]="!formRegistro.valid"
             (click)="validadContrasenias()"
             >
                 Aceptar
@@ -629,7 +629,7 @@
 
 
 
-<!----------formulario fin       [disabled]="!formRegistro.valid"----------------------------------------------------------------------------------------------------->
+<!----------formulario fin      "----------------------------------------------------------------------------------------------------->
 
 
 
@@ -686,7 +686,7 @@
 
 
 
-<!----------imagenes  *ngIf="!imagen.ultimo"----------------------------------------------------------------------------------------------------->
+<!----------imagenes----------------------------------------------------------------------------------------------------->
 
 
 
@@ -698,9 +698,9 @@
 
           <div class="contFotos ">
             <div style="display: flex; flex-wrap: wrap; width: 100%; height: auto;">
-                <div class="contFoto" *ngFor="let imagen of imagenes64">
-                    <img src="" id="data:;base64,{{imagen.base64}}" >
-                   <button class="botonBorrar centrar"
+                <div class="contFoto" *ngFor="let imagen of imagenes">
+                    <img src="{{imagen.imagen}}" id="{{imagen.id}}" >
+                   <button *ngIf="!imagen.ultimo" class="botonBorrar centrar"
                    (click)="borrarImagen(imagen.id)"
                    >
                      <img src="../../../assets/iconos/rubbish-bin-delete-button.png" width="100%">
@@ -727,7 +727,11 @@
             >
                 Regresar
               </ion-button>
-            <ion-button style="margin:auto; height: 30px;">
+            <ion-button style="margin:auto; height: 30px;"
+            [disabled]="imagenes.length==0"
+            (click)="registrarLavanderia()"
+            >
+              
                 Aceptar
               </ion-button>
           </div>

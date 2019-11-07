@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { efectos } from './Efectos';
 import {Validators, FormBuilder, FormGroup,AbstractControl } from '@angular/forms';
+import { ApiServiceService } from '../../api-service.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-registro',
@@ -32,17 +35,19 @@ export class RegistroPage implements OnInit {
   numeroValido='[0-9]{10}'
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private apiservice:ApiServiceService,
+    private router:Router
   ) { 
       this.formRegistro=this.formBuilder.group({
-        nombre:['',Validators.compose([
+       /* nombre:['',Validators.compose([
           Validators.required,
           Validators.pattern(this.nombreValido)
         ])],
         apellidos:['',Validators.compose([
           Validators.required,
           Validators.pattern(this.apellidosValidos)
-        ])],
+        ])],*/
         contrasenia:['',Validators.compose([
           Validators.required,
           Validators.pattern(this.contraseniaValida)
@@ -262,55 +267,14 @@ validadContrasenias(){
 
 
 /*************************imagenes******************************************************************************* */
-idImagen1=0
-imagenes1=[
-  {
-    id:'imagen'+this.idImagen1,
-    idImagen:this.idImagen1,
-    ultimo:true
-  }
-]
 
-imagenes64=[]
-
-imagenSubir(evento){
-  this.imagenes1[this.imagenes1.length-1].ultimo=false
-  console.log(this.imagenes1[this.imagenes1.length-1].id);
-  
-  let preview:any = document.getElementById(this.imagenes1[this.imagenes1.length-1].id);
-  this.idImagen1=this.idImagen1+1
-  this.imagenes1.push({id:'imagen'+this.idImagen1,idImagen:this.idImagen1,ultimo:true})
-
-  let file1:any    = document.querySelector('input[type=file]');
-  let reader  = new FileReader();
-
-  let file=file1.files[0];
-
-  
-  reader.onloadend = function () {
-    preview.src = reader.result;
-    
-  }
-
-  if (file) {
-    reader.readAsDataURL(file);
-    console.log("ima");
-   
-  } else {
-    preview.src = "";
-  }
-
-  this.handleFileSelect(evento)
-
-}
-
-
-
-
+imagenes=[]
 base64textString:any
-
+idImagen=0
 
 handleFileSelect(evt){
+  console.log(evt);
+  
   var files = evt.target.files;
   var file = files[0];
 
@@ -321,6 +285,7 @@ if (files && file) {
 
     reader.readAsBinaryString(file);
 }
+
 }
 
 
@@ -328,26 +293,109 @@ if (files && file) {
 _handleReaderLoaded(readerEvt) {
         var binaryString = readerEvt.target.result;
         this.base64textString= btoa(binaryString);
-        //console.log(btoa(binaryString));
-        this.imagenes64.push({id:this.idImagen1-1,base64:this.base64textString})
-        console.log(this.imagenes64);
-        
+       // console.log(btoa(binaryString));
+
+        console.log("otro: \n",this.base64textString);
+
+      this.imagenes.push({id:this.idImagen, imagen:'data:image/jpeg;base64,'+this.base64textString})
+      this.idImagen=this.idImagen+1
+       //this.imagen64='data:image/jpeg;base64,'+this.base64textString
 }
 
-
-borrarImagen(id){
-  for (let index = 0; index < this.imagenes1.length; index++) {
-        if(id==this.imagenes1[index].idImagen){
-          this.imagenes1.splice(index,1)
-          this.imagenes64.splice(index,1)
-        }
-
-  }
-  console.log(this.imagenes1);
-  console.log(this.imagenes64);
+borrarImagen(id:any){
+    for (let index = 0; index < this.imagenes.length; index++) {
+          if(this.imagenes[index].id==id){
+            this.imagenes.splice(index,1)
+          }
+      
+    }
 }
+
 
 /*************************imagenes fin******************************************************************************* */
+
+
+
+/*************************Registrar ******************************************************************************* */
+
+
+registrarLavanderia(){
+
+  let itemInfoLavanderia={
+    nombre_lavanderia:this.formRegistro.get('nombreLavanderia').value,
+    ///apellidos:this.formRegistro.get('apellidos').value,
+    correo_electronico:this.formRegistro.get('correo').value, 
+    contraseña:this.formRegistro.get('contrasenia').value, 
+    telefono:this.formRegistro.get('telefono').value, 
+    direccion:'up chiapas', 
+    fotografias: JSON.stringify(this.imagenes), 
+    horario_semana:JSON.stringify({inicio:this.formRegistro.get('haraIntiLV').value, fin:this.formRegistro.get('haraEndtiLV').value}), 
+    horario_sabado:JSON.stringify({inicio:this.formRegistro.get('haraIntiS').value, fin:this.formRegistro.get('haraEndtiS').value}),  
+    coordenadas:JSON.stringify({lat:16.615249, lon:-93.090523})
+    
+  }
+
+  this.apiservice.registrar(itemInfoLavanderia).subscribe(response=>{
+
+   //console.log("lava1",parseInt( response.id));
+    let itemLavanderia={
+      lavanderia_id:parseInt( response.id),
+      servicio:JSON.stringify(this.lavanderia)
+    }
+    this.apiservice.setServiciosLavanderia(itemLavanderia).subscribe(response1=>{
+       // console.log("lava",response1);
+        
+    })
+
+
+    if(this.ofertas.length>0){
+      let item={
+        lavanderia_id:response.id,
+        servicio:JSON.stringify(this.ofertas)
+      }
+      this.apiservice.setOfertar(item).subscribe(response2=>{
+
+      })
+    }
+
+
+    if(this.otros.length>0){
+      let item={
+        lavanderia_id:response.id,
+        servicio:JSON.stringify(this.otros)
+      }
+      this.apiservice.setServiciosotros(item).subscribe(response3=>{})
+    }
+
+    if(this.planchado.length>0){
+      let item={
+        lavanderia_id:response.id,
+        servicio:JSON.stringify(this.planchado)
+      }
+
+      this.apiservice.setServiciosPlanchado(item).subscribe(response4=>{})
+    }
+
+    if(this.tintoreria.length>0){
+      let item={
+        lavanderia_id:response.id,
+        servicio:JSON.stringify(this.tintoreria)
+      }
+      this.apiservice.setServiciosTintoreria(item).subscribe(response5=>{})
+    }
+    console.log("echo");
+    
+    this.apiservice.status_de_secion=true
+    localStorage.setItem('sesion','true')
+    this.router.navigate(['inicio/'])
+  })
+
+}
+
+
+
+/*************************Registrar fin******************************************************************************* */
+
 
 
 }

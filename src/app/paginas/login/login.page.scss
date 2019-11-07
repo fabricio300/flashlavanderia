@@ -29,10 +29,41 @@
 .formulario::content ion-input{
     border-bottom: 1px solid gray;
     margin-bottom: 20px;
+    width: 98%;
 }
 
 .formulario::content label{
     color:  #7A7A7A;
+}
+
+
+
+.botonInfo{
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    left: 98%;
+    background: transparent;
+    margin-top: -35px;
+}
+
+.botonInfo2{
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    right:10px;
+    background: transparent;
+    margin-top: -30px;
+}
+
+.formulario::content p{
+    font-size: 12px;
+    background: #252525;
+    color: white;
+    padding: 10px;
+    width: 92%;
+    margin-top: -17px;
+    
 }
 
 @media(max-width:600px){

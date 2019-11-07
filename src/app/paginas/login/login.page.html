@@ -30,9 +30,9 @@
 
 <div class="parte centrar" id="part2">
   
-  <form class="formulario">
+  <form class="formulario"  [formGroup]="formInicio">
 
-    <label>
+    <!--label>
       <img src="../../../assets/imagenes/user.png" style="width:20px;">
       Nombre de usuario:</label>
     <ion-input placeholder="Nombre"></ion-input>
@@ -40,21 +40,58 @@
     <label>
         <img src="../../../assets/imagenes/store.png" style="width:20px;">
       Nombre de la Empresa:</label>
-    <ion-input placeholder="Empresa"></ion-input>
+    <ion-input placeholder="Empresa"></ion-input--->
+      <label>
+        <img src="../../../assets/imagenes/at.png" style="width:20px;">
+        Correo:</label>
+      <ion-input formControlName="correo" type="Correo" placeholder="Correo@.gmail.com"></ion-input>
+
+      <div class="botonInfo2 centrar"  (click)="verInfo(1)">
+        <img 
+        *ngIf="!formInicio.get('correo').hasError('required') && !formInicio.get('correo').hasError('pattern')"
+        src="../../../assets/imagenes/information.png" style="width: 100%;">
+        <img 
+        *ngIf="formInicio.get('correo').hasError('required') || formInicio.get('correo').hasError('pattern')"
+        src="../../../assets/imagenes/informationX.png" style="width: 100%;">
+    </div>
+    <p *ngIf="verAviso==1">
+        Campos obligatorios.
+    </p>
+
+
 
     <label>
       <img src="../../../assets/imagenes/key.png" style="width:20px;">
       Contraseña:</label>
-    <ion-input type="password" placeholder="****"></ion-input>
+    <ion-input formControlName="contrasenia" type="password" placeholder="****"></ion-input>
+
+    <div class="botonInfo2 centrar"  (click)="verInfo(2)">
+      <img 
+      *ngIf="!formInicio.get('contrasenia').hasError('required') && !formInicio.get('contrasenia').hasError('pattern')"
+      src="../../../assets/imagenes/information.png" style="width: 100%;">
+      <img 
+      *ngIf="formInicio.get('contrasenia').hasError('required') || formInicio.get('contrasenia').hasError('pattern')"
+      src="../../../assets/imagenes/informationX.png" style="width: 100%;">
+  </div>
+  <p *ngIf="verAviso==2">
+      Campos obligatorios.
+  </p>
+
+
 
       <label class="centrar" style="font-size: 13px; color:#394a6d; cursor: pointer;">
-        <img src="../../../assets/imagenes/information.png" style="width:18px;  margin-right: 3px;">
+        
+       
         ¿olvidaste tu contraseña?</label>
   </form>
+
+
+  
   
   <ion-button color="tertiary" 
-  (click)="cultar()"
-  [routerLink]="['/inicio']">
+  (click)="iniciarSesion()"
+  [disabled]="!formInicio.valid"
+  >
     Aceptar
   </ion-button>
 

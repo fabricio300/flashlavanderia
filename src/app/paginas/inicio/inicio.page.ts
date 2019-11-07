@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
 
-import { Socket } from 'ngx-socket-io';
+//import { Socket } from 'ngx-socket-io';
+import { ApiServiceService } from '../../api-service.service';
 
 
 @Component({
@@ -91,13 +92,18 @@ export class InicioPage implements OnInit {
   constructor(
     private menu: MenuController,
     private router:Router,
-    private socket: Socket
+   // private socket: Socket,
+    private apiService:ApiServiceService
   ) { 
 
-    socket.on('mensajeServidor',function(data){
+    if(localStorage.getItem('sesion')=='true'){
+      this.apiService.status_de_secion=true
+    }
+
+    /*socket.on('mensajeServidor',function(data){
       console.log('data=',data);
       
-    })
+    })*/
 
   }
 
@@ -147,5 +153,13 @@ export class InicioPage implements OnInit {
     //console.log(pedido);
     this.router.navigate(['/pedido'], navigationExtras);
     //this.router.navigate(['/pedido'])
+  }
+
+
+  cerrarSesion(){
+    this.closeFirst()
+    this.apiService.status_de_secion=false
+    localStorage.clear()
+    this.router.navigate(['/login'])
   }
 }
