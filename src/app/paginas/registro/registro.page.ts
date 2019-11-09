@@ -3,6 +3,8 @@ import { efectos } from './Efectos';
 import {Validators, FormBuilder, FormGroup,AbstractControl } from '@angular/forms';
 import { ApiServiceService } from '../../api-service.service';
 import { Router } from '@angular/router';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
 
 
 @Component({
@@ -37,7 +39,9 @@ export class RegistroPage implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private apiservice:ApiServiceService,
-    private router:Router
+    private router:Router,
+    private geolocation: Geolocation,
+    private nativeGeocoder: NativeGeocoder
   ) { 
       this.formRegistro=this.formBuilder.group({
        /* nombre:['',Validators.compose([
@@ -81,6 +85,7 @@ export class RegistroPage implements OnInit {
     this.efectos.idPlanchados=this.idPlnchados
     this.efectos.idOfertas=this.idOfertas
     this.efectos.idOtros=this.idOtros
+    this.getPosicionActual()
   }
 
 
@@ -329,11 +334,14 @@ registrarLavanderia(){
     correo_electronico:this.formRegistro.get('correo').value, 
     contraseña:this.formRegistro.get('contrasenia').value, 
     telefono:this.formRegistro.get('telefono').value, 
-    direccion:'up chiapas', 
+    direccion:JSON.stringify({
+      address:this.address,
+      referencias:this.referencias
+    }), 
     fotografias: JSON.stringify(this.imagenes), 
     horario_semana:JSON.stringify({inicio:this.formRegistro.get('haraIntiLV').value, fin:this.formRegistro.get('haraEndtiLV').value}), 
     horario_sabado:JSON.stringify({inicio:this.formRegistro.get('haraIntiS').value, fin:this.formRegistro.get('haraEndtiS').value}),  
-    coordenadas:JSON.stringify({lat:16.615249, lon:-93.090523})
+    coordenadas:JSON.stringify({lat:this.lat, lon:this.lng})
     
   }
 
@@ -397,6 +405,69 @@ registrarLavanderia(){
 
 
 /*************************Registrar fin******************************************************************************* */
+
+
+
+
+/*************************mapa******************************************************************************* */
+
+lat: number;
+lng: number;
+zoom:number=16
+address:string=''
+referencias=''
+
+
+getPosicionActual(){
+  this.geolocation.getCurrentPosition().then((resp) => {
+    this.lat=parseFloat(''+resp.coords.latitude)
+    this.lng=parseFloat(''+resp.coords.longitude)
+    this.getAddress(this.lat, this.lng);
+   }).catch((error) => {
+     console.log('Error getting location', error);
+   });
+}
+
+
+markerDragEnd($event:any) {
+  console.log($event);
+  this.lat =parseFloat(''+$event.coords.lat);
+  this.lng =parseFloat(''+$event.coords.lng);
+  
+  this.getAddress(this.lat, this.lng);
+}
+
+
+getAddress(latitude, longitude){
+  this.address=''
+  let options: NativeGeocoderOptions = {
+    useLocale: true,
+    maxResults: 5
+  };
+
+  this.nativeGeocoder.reverseGeocode(latitude,longitude, options)
+  .then((result: NativeGeocoderResult[]) =>{
+    console.log("es este ",result[0])
+      //console.log("es este ",result[0].thoroughfare,", ",result[0].subLocality,", ",result[0].postalCode,",",result[0].locality,", ",result[0].administrativeArea,", ",result[0].countryName);
+      if(result[0].thoroughfare.length>0){
+        this.address=this.address+result[0].thoroughfare+", "
+      }
+      if(result[0].subLocality.length>0){
+        this.address=this.address+result[0].subLocality+", "
+      }
+      if(result[0].postalCode.length>0){
+        this.address=this.address+result[0].postalCode+", "
+      }
+      this.address=this.address+result[0].locality+", "+result[0].administrativeArea+", "+result[0].countryCode
+
+     
+  })
+  .catch((error: any) => console.log(error));
+}
+
+
+
+/*************************mapa fin******************************************************************************* */
 
 
 

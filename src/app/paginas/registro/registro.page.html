@@ -357,7 +357,7 @@
      
 
 
-<!------------------------------------------------ingresar servicios fin   ---------------------------------------------------------------------->
+<!------------------------------------------------ingresar servicios fin  [disabled]="lavanderia.length==0" ---------------------------------------------------------------------->
     
 
       <div class="centrar" style="padding: 10px; z-index: 70;">
@@ -629,7 +629,7 @@
 
 
 
-<!----------formulario fin      "----------------------------------------------------------------------------------------------------->
+<!----------formulario fin     [disabled]="!formRegistro.valid" "----------------------------------------------------------------------------------------------------->
 
 
 
@@ -650,20 +650,61 @@
 
 
 
-<div class="parte" style="background: cyan; height: 0px; " id="Mapa">
+<div class="parte" style="height: 0px; " id="Mapa">
+    <h5 style="width: 100%; text-align: center;">Ubicación:</h5>
+    
+    <div class="centrar" style="padding: 10px; z-index: 70; height: 83%; overflow-y: scroll;">
+      
+
+
+          
+          
+          <div class="conteMapa">
+  
+            <agm-map [zoom]='zoom' [latitude]="lat" [longitude]="lng">
+  
+                <agm-marker [latitude]="lat" [longitude]="lng"
+                            [markerDraggable]="true"
+                            (dragEnd)="markerDragEnd($event)"
+                ></agm-marker>
+  
+            </agm-map>
+  
+          </div>
+
+          <div style="width: 100%;">
+              <br>
+              <label style="color: gray; font-size: 12px;">Dirección:</label>
+              <p style="font-size: 14px; border-bottom: 1px solid gray;">{{address}}</p>
+          </div>
+  
+          <div style="width: 100%;">
+              <label style="color: gray; font-size: 12px;">Referencias:</label>
+              <ion-textarea 
+              style="font-size: 14px; border: 1px solid gray;"
+              rows="3" cols="20" placeholder="Enfrente de..."
+              [(ngModel)]="referencias"
+              ></ion-textarea>
+          </div>
+
+        
+     
+    </div>
+
     <div class="centrar" style="padding: 10px; z-index: 70;">
-        <h5 style="margin-left: 10px;">Ubicación:</h5>
         <ion-button style="margin:auto; height: 30px;"
           (click)="this.efectos.next('Datos')"
         >
             Regresar
           </ion-button>
         <ion-button style="margin:auto; height: 30px;"
+        [disabled]="referencias==''"
         (click)="this.efectos.next('Imagenes')"
         >
             Aceptar
           </ion-button>
-    </div>
+        
+      </div>
 
 </div>
 
