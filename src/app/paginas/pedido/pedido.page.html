@@ -22,12 +22,12 @@
       <label >
           <img src="../../../assets/iconos/pin.png" width="20px">
         Dirección:</label>
-      <p>Dirección</p>
+      <p>{{pedido.direccionCliente}}</p>
 
       <label >
           <img src="../../../assets/iconos/call-answer (1).png" width="20px">
         Tel:</label>
-      <p>000-000-0000</p>
+      <p>{{pedido.telefono}}</p>
 
     </div>
 
@@ -72,108 +72,29 @@
         Servicios pedidos:
       </h3>
 
-      <p>servicio 1</p>
-      <p>servicio 2</p>
-      <p>servicio 3</p>
-      <p>servicio 4</p>
-
-    </div>
-
-
-
-
-    <div class="detalles">
-      <h3 style="color: goldenrod;">Indicaciones:</h3>
-      <p>Las indicaciones para los fármacos están reguladas estrictamente por los organismos internacionales, nacionales, regionales o locales. También por colegios profesionales o por instituciones específicas</p>
-    </div>
-
-    <div class="datosServicio centrar">
-      <h3 style="width: 100%; color: #23374d;">
-           
-        Datos del pedido:</h3>
-
-      <div class="parte centrarIZ">
-        <label  class="centrarIZ">
-            <img src="../../../assets/iconos/coin.png" width="20px;" style="margin: 3px;">
-          precio:
-        </label>
-
+      <h5 *ngIf="pedido.servicios.lavanderia.length>0" style="color: #3c9d9b;">Lavandería:</h5>
+      <p *ngFor="let lavado of pedido.servicios.lavanderia">{{lavado.servicio}} ${{lavado.precio}} por {{lavado.unidad}}</p>
       
-            <img 
-            *ngIf="!editarPrecion && pedido.status=='Nuevo pedido' || pedido.status=='Recogiendo'" 
-            
-            (click)="editar(1)"
-            src="../../../assets/iconos/pencil-edit-button.png" width="25px;" style=" margin: 5px; cursor: pointer;">
-    
-
-        <ion-label  style="margin-left: 5px; color: gray;" *ngIf="!editarPrecion" >
-            {{precio}} $
-        </ion-label>
-
-        <ion-input   type='number' placeholder="{{presio}}" [(ngModel)]="presio" *ngIf="editarPrecion" class="edit">
-        </ion-input>
-
-       
-        
-        <div class="conteBotones" *ngIf="editarPrecion">
-          
-                <img 
-                (click)="guardar(1)"
-                src="../../../assets/iconos/save.png" width="25px;" style="margin: 7px; cursor: pointer;">
-            
-  
-              <img 
-              (click)="cancelar(1)"
-              src="../../../assets/iconos/errorr.png" width="25px;" style="margin: 7px; cursor: pointer;">
-        
-        
-        </div>
-
-      </div>
-
-
-
-
-
-
-      <div class="parte centrarIZ">
-          <label class="centrarIZ" >
-            <img src="../../../assets/iconos/clock-circular-outline.png" width="20px;" style="margin: 3px;">
-            Entrega estimada en:
-          </label>
-  
-          
-              <img 
-             *ngIf="!editarTiempo && pedido.status=='Nuevo pedido' || pedido.status=='Recogiendo' "
-              (click)="editar(2)"
-              src="../../../assets/iconos/pencil-edit-button.png" width="25px;" style=" margin: 5px; cursor: pointer;">
-            
-
-
-            <ion-label  style="margin-left: 5px; color: gray;" *ngIf="!editarTiempo" >
-                {{tiempo}} horas
-            </ion-label>
-
-            <ion-input type='time'  [(ngModel)]="tiempo" class="edit2" *ngIf="editarTiempo">
-            </ion-input>
-
-
-              <div class="conteBotones" *ngIf="editarTiempo">
-                  
-                      <img 
-                      (click)="guardar(2)"
-                      src="../../../assets/iconos/save.png" width="25px;" style="margin: 7px; cursor: pointer;">
-                 
-                
-                      <img 
-                      (click)=" cancelar(2)"
-                      src="../../../assets/iconos/errorr.png" width="25px;" style="margin: 7px; cursor: pointer;">
-                   
-                    
-                </div>
-        </div>
+      <h5 *ngIf="pedido.servicios.tintoreria.length>0" style="color: #3c9d9b;">Tintoreria:</h5>
+      <p *ngFor="let tinto of pedido.servicios.tintoreria">{{tinto.servicio}} ${{tinto.precio}} por {{tinto.unidad}}</p>
+      
+      <h5 *ngIf="pedido.servicios.planchado.length>0"  style="color: #3c9d9b;">Planchado:</h5>
+      <p *ngFor="let plan of pedido.servicios.planchado">{{plan.unidad}} ${{plan.precio}}</p>
+      
 
     </div>
+
+
+
+
+    <div class="detalles" *ngIf="pedido.horaSindicacionesolicitud!=null">
+      <h3 style="color: goldenrod;">Indicaciones:</h3>
+      <p> 
+        {{pedido.horaSindicacionesolicitud}}
+      </p>
+    </div>
+
+    
 
   </div>
 

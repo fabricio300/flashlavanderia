@@ -94,4 +94,29 @@ export class ApiServiceService {
     return  this.http.post(`${this.api}lavanderiasLogin`,item, httpOptions)
   }
 
+
+  getPedidos(id:any):Observable<any>{
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }
+
+    return  this.http.get(`${this.api}pedidos_lavanderia/${id}`, httpOptions)
+  }
+
+
+
+  getCliente(id:any):Observable<any>{
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }
+
+    return  this.http.get(`${this.api}usuarios/${id}`, httpOptions)
+  }
+
+
+
 }

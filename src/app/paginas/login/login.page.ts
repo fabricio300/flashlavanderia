@@ -92,10 +92,12 @@ export class LoginPage implements OnInit {
     this.apiService.login(item).subscribe(Response=>{
       this.apiService.status_de_secion=true
       localStorage.setItem('sesion','true')
+      localStorage.setItem('idLavanderia',''+Response[0].id)
       this.router.navigate(['inicio/'])
       this.router.navigate(['inicio/'])
       this.cultar()
       this.formInicio.get('contrasenia').setValue('')
+      console.log("user id",Response[0].id);
       
     },error=>{
       this.verAlerta()

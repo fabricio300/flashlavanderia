@@ -23,7 +23,7 @@ export class PedidoPage implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.pedido = JSON.parse(params.special);
       
-     // console.log(this.pedido);
+      console.log(this.pedido);
   });
     
     

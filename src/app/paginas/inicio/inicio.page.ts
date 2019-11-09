@@ -105,6 +105,8 @@ export class InicioPage implements OnInit {
       
     })*/
 
+    this.getPedidosL()
+
   }
 
   ngOnInit() {
@@ -162,4 +164,84 @@ export class InicioPage implements OnInit {
     localStorage.clear()
     this.router.navigate(['/login'])
   }
+
+  getPedidosL(){
+    this.apiService.getPedidos(localStorage.getItem('idLavanderia')).subscribe(Response=>{
+      this.pedidos=[]
+      //console.log(Response);
+      let item={
+        nombreCliente:'nombre cliente 1',
+        status:'En proceso',
+        horaSolicitud: '10:30 am',
+        icon: this.lava,
+        id:'',
+        direccionCliente:'',
+        telefono:'',
+        indicaciones:'',
+        servicios:null
+      }
+
+      Response.forEach(element => {
+        console.log(element);
+        this.apiService.getCliente(element.usuario_id).subscribe(Response1=>{
+          console.log(Response1 );
+
+          let fecha=JSON.parse(element.fecha_pedido)
+
+          item={
+            nombreCliente:Response1.nombres+" "+Response1.apellidos,
+            status:element.status,
+            horaSolicitud:fecha.hora+':'+fecha.minutos+'/'+fecha.dia+'/'+fecha.mes,
+            icon: this.getStatusIcon(element.status),
+            id:element.id,
+            direccionCliente:Response1.direccion,
+            telefono:Response1.telefono,
+            indicaciones:element.indicaciones,
+            servicios:JSON.parse(element.servicios)
+          }
+
+          console.log("S",item);
+          
+          this.pedidos.push(item)
+        })
+
+
+      });
+
+    })
+  }
+
+
+  getStatusIcon(status){
+
+    switch (status) {
+      case 'En proceso': return this.nuevo
+        
+      break;
+
+      case 'A lavanderia': return this.moto2
+        
+        break;
+
+        case 'Cancelado': return this.cancel
+        
+          break;
+
+          case 'Entregando': return this.moto1
+        
+            break;
+            case 'Recogiendo': return this.moto0
+        
+              break;
+              case 'Nuevo pedido': return this.nuevo
+        
+                break;
+    
+      default:
+        break;
+    }
+
+  }
+
+
 }

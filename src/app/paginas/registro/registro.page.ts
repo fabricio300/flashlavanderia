@@ -321,6 +321,8 @@ borrarImagen(id:any){
 
 registrarLavanderia(){
 
+  this.efectos.next('Espera')
+
   let itemInfoLavanderia={
     nombre_lavanderia:this.formRegistro.get('nombreLavanderia').value,
     ///apellidos:this.formRegistro.get('apellidos').value,
