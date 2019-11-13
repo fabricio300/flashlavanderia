@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
 
-//import { Socket } from 'ngx-socket-io';
+import { Socket } from 'ngx-socket-io';
 import { ApiServiceService } from '../../api-service.service';
 
 
@@ -13,7 +13,8 @@ import { ApiServiceService } from '../../api-service.service';
 })
 export class InicioPage implements OnInit {
   viewFilters=false
-
+  busquedadTerminada=false
+  refrescar=false
   //iconos
   cancel='../../../assets/iconos/cross.png'
   lava='../../../assets/iconos/washing-machine2.png'
@@ -45,7 +46,9 @@ export class InicioPage implements OnInit {
   ]
 
 
-  pedidos=[
+  pedidos=[]
+
+  /*pedidos=[
     {
       nombreCliente:'nombre cliente 1',
       status:'En proceso',
@@ -86,13 +89,13 @@ export class InicioPage implements OnInit {
       horaSolicitud: '03:30 pm',
       icon: this.moto0,
     }
-  ]
+  ]*/
 
 
   constructor(
     private menu: MenuController,
     private router:Router,
-   // private socket: Socket,
+    private socket: Socket,
     private apiService:ApiServiceService
   ) { 
 
@@ -100,13 +103,17 @@ export class InicioPage implements OnInit {
       this.apiService.status_de_secion=true
     }
 
-    /*socket.on('mensajeServidor',function(data){
-      console.log('data=',data);
-      
-    })*/
+    console.log("este id es ",localStorage.getItem('idLavanderia'));
+    
+    socket.on('lavanderia'+localStorage.getItem('idLavanderia'),(data) => {
+      console.log('soket =',data);
+      this.pedidos=[]
+      this.getPedidosL()
+    })
 
     this.getPedidosL()
-
+    console.log("id lavanderia ",localStorage.getItem('idLavanderia'));
+    
   }
 
   ngOnInit() {
@@ -168,11 +175,12 @@ export class InicioPage implements OnInit {
   getPedidosL(){
     this.apiService.getPedidos(localStorage.getItem('idLavanderia')).subscribe(Response=>{
       this.pedidos=[]
+      this.busquedadTerminada=false
       //console.log(Response);
       let item={
         nombreCliente:'nombre cliente 1',
         status:'En proceso',
-        horaSolicitud: '10:30 am',
+        horaSolicitud: null,
         icon: this.lava,
         id:'',
         direccionCliente:'',
@@ -191,7 +199,7 @@ export class InicioPage implements OnInit {
           item={
             nombreCliente:Response1.nombres+" "+Response1.apellidos,
             status:element.status,
-            horaSolicitud:fecha.hora+':'+fecha.minutos+'/'+fecha.dia+'/'+fecha.mes,
+            horaSolicitud:{hora:this.tConvert(''+fecha.hora+':'+fecha.minutos), minutos:fecha.minutos, dia:fecha.dia, mes:fecha.mes},
             icon: this.getStatusIcon(element.status),
             id:element.id,
             direccionCliente:Response1.direccion,
@@ -207,7 +215,7 @@ export class InicioPage implements OnInit {
 
 
       });
-
+      this.busquedadTerminada=true
     })
   }
 
@@ -241,6 +249,19 @@ export class InicioPage implements OnInit {
         break;
     }
 
+  }
+
+
+  tConvert (time) {
+    // Check correct time format and split into components
+    time = time.toString ().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+  
+    if (time.length > 1) { // If time format correct
+      time = time.slice (1);  // Remove full string match value
+      time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
+      time[0] = +time[0] % 12 || 12; // Adjust hours
+    }
+    return time.join (''); // return adjusted time or original string
   }
 
 

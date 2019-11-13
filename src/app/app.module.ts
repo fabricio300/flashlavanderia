@@ -17,13 +17,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 
-const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
+const config: SocketIoConfig = { url: 'http://138.197.70.172', options: {} };
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
-    //SocketIoModule.forRoot(config),
+    SocketIoModule.forRoot(config),
     FormsModule,
     HttpClientModule,
     BrowserModule, IonicModule.forRoot(), AppRoutingModule],

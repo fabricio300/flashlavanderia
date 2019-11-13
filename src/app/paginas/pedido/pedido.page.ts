@@ -15,6 +15,9 @@ export class PedidoPage implements OnInit {
   tiempoE
   precioE
   pedido:any
+  direccionCliente:any
+  horaSolicitud:any
+ 
 
   constructor(
     private route: ActivatedRoute,
@@ -22,8 +25,10 @@ export class PedidoPage implements OnInit {
   ) { 
     this.route.queryParams.subscribe(params => {
       this.pedido = JSON.parse(params.special);
-      
+      this.direccionCliente=JSON.parse( this.pedido.direccionCliente);
       console.log(this.pedido);
+      this.horaSolicitud=this.pedido.horaSolicitud
+      
   });
     
     
@@ -33,6 +38,8 @@ export class PedidoPage implements OnInit {
   }
 
 
+ 
+  
 
   editar(opcion){
       if(opcion==1){

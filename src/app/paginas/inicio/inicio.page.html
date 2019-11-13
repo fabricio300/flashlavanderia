@@ -153,6 +153,19 @@
 
 <div class="centraIZ">
 
+  <div class="centrar" style="width: 100%;" *ngIf="pedidos.length==0 && busquedadTerminada==false">
+    <label class="centrar">
+        <img src="../../../assets/Registro/A37.gif" style="width: 80px; margin: auto;">
+        <p>Buscando Pedidos...</p>
+    </label>       
+  </div>
+
+  <div class="centrar" style="width: 100%;" *ngIf="pedidos.length==0 && busquedadTerminada==true">
+      <label class="centrar">
+         
+          <p>Sin pedidos :(</p>
+      </label>       
+    </div>
   
       <div class="contPedido centrar" style="cursor: pointer;" *ngFor="let pedido  of pedidos" 
       
@@ -177,7 +190,7 @@
         <div  class="centraIZ mitad" >
           <label style="padding: 5px;">
               <p>{{pedido.nombreCliente}} </p>
-              <p style="max-width: 50%">{{pedido.horaSolicitud}}</p>
+              <p style="max-width: 50%">{{pedido.horaSolicitud.hora}} /{{pedido.horaSolicitud.dia}}/{{pedido.horaSolicitud.mes}} </p>
           </label>
         </div  >
 

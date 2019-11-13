@@ -12,7 +12,7 @@
   <div class="info">
 
     <div class="datosClinete">
-      <h3 style="color: #e5e5e5">datos del cliente:</h3>
+      <h3 style="color: #23374d">Datos del cliente:</h3>
 
       <label >
         <img src="../../../assets/iconos/user.png" width="20px">
@@ -22,7 +22,9 @@
       <label >
           <img src="../../../assets/iconos/pin.png" width="20px">
         Dirección:</label>
-      <p>{{pedido.direccionCliente}}</p>
+      <p>{{direccionCliente.address}}</p>
+
+      
 
       <label >
           <img src="../../../assets/iconos/call-answer (1).png" width="20px">
@@ -54,7 +56,7 @@
             <label style="margin-top:10px; font-size: 13px; ">
                
               Solicitado:<br>
-              {{pedido.horaSolicitud}}
+              {{horaSolicitud.hora}} /{{horaSolicitud.dia}}/{{horaSolicitud.mes}}
               
             </label>
 
@@ -87,10 +89,10 @@
 
 
 
-    <div class="detalles" *ngIf="pedido.horaSindicacionesolicitud!=null">
+    <div class="detalles" *ngIf="pedido.indicaciones!=null">
       <h3 style="color: goldenrod;">Indicaciones:</h3>
       <p> 
-        {{pedido.horaSindicacionesolicitud}}
+        {{pedido.indicaciones}}
       </p>
     </div>
 

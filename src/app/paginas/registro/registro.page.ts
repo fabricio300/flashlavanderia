@@ -347,6 +347,10 @@ registrarLavanderia(){
 
   this.apiservice.registrar(itemInfoLavanderia).subscribe(response=>{
 
+    localStorage.setItem('idLavanderia',''+response.id)
+   
+   
+
    //console.log("lava1",parseInt( response.id));
     let itemLavanderia={
       lavanderia_id:parseInt( response.id),
@@ -401,6 +405,9 @@ registrarLavanderia(){
   })
 
 }
+
+
+
 
 
 
