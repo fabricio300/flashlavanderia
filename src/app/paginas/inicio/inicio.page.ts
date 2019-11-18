@@ -15,6 +15,8 @@ export class InicioPage implements OnInit {
   viewFilters=false
   busquedadTerminada=false
   refrescar=false
+  sin_resultados=false
+  nombresDecliente:string
   //iconos
   cancel='../../../assets/iconos/cross.png'
   lava='../../../assets/iconos/washing-machine2.png'
@@ -25,17 +27,39 @@ export class InicioPage implements OnInit {
 
 
   filtros=[
-    'filtro 1', 
-    'filtro 2', 
-    'filtro 3', 
-    'filtro 4'
+   {
+     filtro:'Recogiendo',
+     stado:true
+   },
+   {
+    filtro:'Entregando',
+    stado:true
+  },
+  {
+    filtro:'Cancelado',
+    stado:true
+  },
+
+  {
+    filtro:'Nuevo pedido',
+    stado:true
+  },
+  {
+    filtro:'A lavanderia',
+    stado:true
+  },
+  {
+    filtro:'En proceso',
+    stado:true
+  }
+   
     
   ]
 
   menuflash=[
     {
       titulo:'Editar información',
-      url:'/informacion',
+      url:'/registro',
       icon:'../../../assets/iconos/edit.png'
     },
     {
@@ -48,46 +72,52 @@ export class InicioPage implements OnInit {
 
   pedidos=[]
 
-  /*pedidos=[
+ /* pedidos=[
     {
-      nombreCliente:'nombre cliente 1',
+      nombreCliente:'romero cliente 1',
       status:'En proceso',
       horaSolicitud: '10:30 am',
       icon: this.lava,
+      ser_visto:true
     },
 
     {
-      nombreCliente:'nombre cliente 2',
+      nombreCliente:'andres cliente 2',
       status:'A lavanderia',
       horaSolicitud: '11:30 am',
       icon: this.moto2,
+      ser_visto:true
     },
 
     {
-      nombreCliente:'nombre cliente 2',
+      nombreCliente:'livia cliente 2',
       status:'Nuevo pedido',
       horaSolicitud: '01:30 pm',
       icon: this.nuevo,
+      ser_visto:true
     },
 
     {
-      nombreCliente:'nombre cliente 3',
+      nombreCliente:'maria cliente 3',
       status:'Cancelado',
       horaSolicitud: '01:30 pm',
       icon: this.cancel,
+      ser_visto:true
     },
 
     {
-      nombreCliente:'nombre cliente 4',
+      nombreCliente:'fabricio cliente 4',
       status:'Entregando',
       horaSolicitud: '01:30 pm',
       icon: this.moto1,
+      ser_visto:true
     },
     {
-      nombreCliente:'nombre cliente 5',
+      nombreCliente:'lala cliente 5',
       status:'Recogiendo',
       horaSolicitud: '03:30 pm',
       icon: this.moto0,
+      ser_visto:true
     }
   ]*/
 
@@ -141,9 +171,14 @@ export class InicioPage implements OnInit {
   }
 
 
+  ir(url){
+    this.router.navigate([url])
+    this.closeFirst()
+  }
+
   ocultarFiltro(){
     document.getElementById('filtro').style.transition='0.5s'
-    document.getElementById('filtro').style.marginTop='-100%'
+    document.getElementById('filtro').style.marginTop='-200%'
   }
 
   mostrarFiltro(){
@@ -186,7 +221,8 @@ export class InicioPage implements OnInit {
         direccionCliente:'',
         telefono:'',
         indicaciones:'',
-        servicios:null
+        servicios:null,
+        ser_visto:true
       }
 
       Response.forEach(element => {
@@ -205,11 +241,12 @@ export class InicioPage implements OnInit {
             direccionCliente:Response1.direccion,
             telefono:Response1.telefono,
             indicaciones:element.indicaciones,
-            servicios:JSON.parse(element.servicios)
+            servicios:JSON.parse(element.servicios),
+            ser_visto:true
           }
 
           console.log("S",item);
-          
+         
           this.pedidos.push(item)
         })
 
@@ -263,6 +300,39 @@ export class InicioPage implements OnInit {
     }
     return time.join (''); // return adjusted time or original string
   }
+
+
+
+  verStadosDefiltros(){
+    let sinVisualizar=0
+    this.pedidos.forEach(element => {
+          this.filtros.forEach(element1 => {
+                  if(element1.filtro==element.status){
+                      if(element1.stado==true){
+                        element.ser_visto=true
+                      }else{
+                        element.ser_visto=false
+                        sinVisualizar=sinVisualizar+1
+                      }
+                  }
+          });
+    });
+    if(sinVisualizar==this.pedidos.length){
+      console.log("sin ver");
+      this.sin_resultados=true
+    }else{
+      this.sin_resultados=false
+    }
+    this.vewFiltros()
+  }
+
+
+
+
+
+
+
+
 
 
 }

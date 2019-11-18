@@ -5,6 +5,9 @@ import { ApiServiceService } from '../../api-service.service';
 import { Router } from '@angular/router';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@ionic-native/native-geocoder/ngx';
+import { AlertController } from '@ionic/angular';
+import { error } from 'util';
+import { timeout } from 'q';
 
 
 @Component({
@@ -15,14 +18,19 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
 export class RegistroPage implements OnInit {
   efectos=new efectos()
 
-  private formRegistro : FormGroup
+  edit=false
+  validado=false
 
+  private formRegistro : FormGroup
+  private formValidar : FormGroup
+
+  tituloT='Registro'
   lavanderia=[]
   tintoreria=[]
   planchado=[]
   otros=[]
   ofertas=[]
-
+  en_proceso=false
   idOfertas=0
   idPlnchados=0
   idOtros=0
@@ -41,7 +49,8 @@ export class RegistroPage implements OnInit {
     private apiservice:ApiServiceService,
     private router:Router,
     private geolocation: Geolocation,
-    private nativeGeocoder: NativeGeocoder
+    private nativeGeocoder: NativeGeocoder,
+    private alertacontroller: AlertController,
   ) { 
       this.formRegistro=this.formBuilder.group({
        /* nombre:['',Validators.compose([
@@ -76,6 +85,16 @@ export class RegistroPage implements OnInit {
         
       })
 
+
+
+      this.formValidar=formBuilder.group({
+        contrasenia:['',Validators.compose([
+          Validators.required,
+          Validators.pattern(this.contraseniaValida)
+        ])]
+      })
+     
+
   }
 
 
@@ -86,13 +105,26 @@ export class RegistroPage implements OnInit {
     this.efectos.idOfertas=this.idOfertas
     this.efectos.idOtros=this.idOtros
     this.getPosicionActual()
+
+
+    console.log("wwwwwwwwwww",localStorage.getItem('idLavanderia'));
+    if(localStorage.getItem('idLavanderia')!=null){
+      this.editAll()
+      this.tituloT='Editar información'
+    }
   }
 
 
 
 
 /*************************servicios******************************************************************************* */
-
+regresarX(){
+  if(localStorage.getItem('idLavanderia')!=null){
+    this.router.navigate(['/inicio'])
+  }else{
+    this.router.navigate(['/login'])
+  }
+}
 
 
   guardar(){
@@ -132,28 +164,37 @@ export class RegistroPage implements OnInit {
         this.efectos.edit=true
         this.elemento=item
         switch (tipo) {
-          case 1: this.efectos.servicio=item.servicio
+          case 1: 
+                  this.efectos.tipoDeServicoElegido=1
+                  this.efectos.servicio=item.servicio
                   this.efectos.unidad=item.unidad
                   this.efectos.precio=item.precio
                   this.efectos.descripcion=item.descripcion
             break; 
-            case 2: this.efectos.servicio=item.servicio
+            case 2: 
+                    this.efectos.tipoDeServicoElegido=2
+                    this.efectos.servicio=item.servicio
                     this.efectos.unidad=item.unidad
                     this.efectos.precio=item.precio
                     this.efectos.descripcion=item.descripcion
             
             break; 
             case 3: 
+                    this.efectos.tipoDeServicoElegido=3
                     this.efectos.unidad=item.unidad
                     this.efectos.precio=item.precio
                     this.efectos.descripcion=item.descripcion
             
             break; 
-            case 4: this.efectos.titulo=item.titulo
+            case 4: 
+                    this.efectos.tipoDeServicoElegido=4
+                    this.efectos.titulo=item.titulo
                     this.efectos.descripcion=item.descripcion
             
             break; 
-            case 5: this.efectos.titulo=item.titulo
+            case 5: 
+                    this.efectos.tipoDeServicoElegido=5
+                    this.efectos.titulo=item.titulo
                     this.efectos.descripcion=item.descripcion
             
             break;
@@ -174,7 +215,7 @@ export class RegistroPage implements OnInit {
         case 1:  
             this.efectos.id=this.elemento.id   
             this.lavanderia=this.eval(this.lavanderia,this.elemento.id)
-            //console.log("v", this.lavanderia)
+            console.log("v", this.lavanderia)
         break; 
           case 2:this.efectos.id=this.elemento.id
                  this.tintoreria=this.eval(this.tintoreria,this.elemento.id)
@@ -225,7 +266,21 @@ export class RegistroPage implements OnInit {
           case 2: this.efectos.ocultarServices(id)
                   this.tintoreria=this.borrar(this.tintoreria,id)
           break;
-          case 3: this.planchado=this.borrar(this.planchado,id)
+          case 3: 
+                    console.log(this.planchado);
+                    this.planchado.forEach(element => {
+                          if(id==element.id){
+                            console.log("",element.unidad);
+                            this.efectos.unidades.forEach(element1 => {
+                                console.log(element1);
+                                  if(element1.title==element.unidad){
+
+                                    element1.mal=false
+                                  }
+                            });
+                          }
+                      });
+                  this.planchado=this.borrar(this.planchado,id)
           break;
           case 4:this.ofertas=this.borrar(this.ofertas,id)
           break;
@@ -323,6 +378,7 @@ borrarImagen(id:any){
 
 /*************************Registrar ******************************************************************************* */
 
+recargar=0
 
 registrarLavanderia(){
 
@@ -345,12 +401,12 @@ registrarLavanderia(){
     
   }
 
-  this.apiservice.registrar(itemInfoLavanderia).subscribe(response=>{
+  this.apiservice.registrar(itemInfoLavanderia).subscribe(response=>{ 
 
     localStorage.setItem('idLavanderia',''+response.id)
+    this.recargar=this.recargar+1
    
-   
-
+    
    //console.log("lava1",parseInt( response.id));
     let itemLavanderia={
       lavanderia_id:parseInt( response.id),
@@ -358,7 +414,8 @@ registrarLavanderia(){
     }
     this.apiservice.setServiciosLavanderia(itemLavanderia).subscribe(response1=>{
        // console.log("lava",response1);
-        
+       this.recargar=this.recargar+1
+       this.recargarpagina()
     })
 
 
@@ -368,7 +425,8 @@ registrarLavanderia(){
         servicio:JSON.stringify(this.ofertas)
       }
       this.apiservice.setOfertar(item).subscribe(response2=>{
-
+        this.recargar=this.recargar+1
+        this.recargarpagina()
       })
     }
 
@@ -378,7 +436,9 @@ registrarLavanderia(){
         lavanderia_id:response.id,
         servicio:JSON.stringify(this.otros)
       }
-      this.apiservice.setServiciosotros(item).subscribe(response3=>{})
+      this.apiservice.setServiciosotros(item).subscribe(response3=>{this.recargar=this.recargar+1
+        this.recargarpagina()
+      })
     }
 
     if(this.planchado.length>0){
@@ -387,7 +447,9 @@ registrarLavanderia(){
         servicio:JSON.stringify(this.planchado)
       }
 
-      this.apiservice.setServiciosPlanchado(item).subscribe(response4=>{})
+      this.apiservice.setServiciosPlanchado(item).subscribe(response4=>{this.recargar=this.recargar+1
+        this.recargarpagina()
+      })
     }
 
     if(this.tintoreria.length>0){
@@ -395,19 +457,58 @@ registrarLavanderia(){
         lavanderia_id:response.id,
         servicio:JSON.stringify(this.tintoreria)
       }
-      this.apiservice.setServiciosTintoreria(item).subscribe(response5=>{})
+      this.apiservice.setServiciosTintoreria(item).subscribe(response5=>{this.recargar=this.recargar+1
+        this.recargarpagina()
+      })
     }
     console.log("echo");
     
-    this.apiservice.status_de_secion=true
-    localStorage.setItem('sesion','true')
-    this.router.navigate(['inicio/'])
+   
+    this.recargarpagina()
+    
   })
 
 }
 
 
+recargarpagina(){
+  let cantidad=1
+  
+  if(this.lavanderia.length>0){
+    cantidad=cantidad+1
+  }
 
+  if(this.tintoreria.length>0){
+    cantidad=cantidad+1
+  }
+
+  if(this.planchado.length>0){
+    cantidad=cantidad+1
+  }
+
+  if(this.ofertas.length>0){
+    cantidad=cantidad+1
+  }
+  if(this.otros.length>0){
+    cantidad=cantidad+1
+  }
+
+    if(this.recargar==cantidad){
+      this.apiservice.status_de_secion=true
+      localStorage.setItem('sesion','true')
+      this.router.navigate(['inicio/'])
+
+      setTimeout(()=>{
+        this.lavanderia=[]
+        this.tintoreria=[]
+        this.planchado=[]
+        this.otros=[]
+        this.ofertas=[]
+        this.ngOnInit()
+      },2000)
+      
+    }
+}
 
 
 
@@ -475,6 +576,324 @@ getAddress(latitude, longitude){
 
 
 /*************************mapa fin******************************************************************************* */
+
+
+
+/*************************edit ******************************************************************************* */
+
+
+editAll(){
+  this.edit=true
+ 
+  this.efectos.next('MenuEdit')
+    this.apiservice.getDatosLavanderia(localStorage.getItem('idLavanderia')).subscribe(Response=>{
+      //console.log("thisssssss",Response);
+
+      let direction:any=JSON.parse(Response.direccion)
+      this.address=direction.address
+      this.referencias=direction.referencias
+      let coodernadas:any =JSON.parse(Response.coordenadas)
+      this.lat=parseFloat(coodernadas.lat)
+      this.lng=parseFloat(coodernadas.lon)
+
+
+      let images:any=JSON.parse(Response.fotografias)
+      images.forEach(element => {
+        this.imagenes.push({id:element.id, imagen:element.imagen})
+      });
+
+
+      this.formRegistro.get('nombreLavanderia').setValue(Response.nombre_lavanderia)
+      this.formRegistro.get('telefono').setValue(Response.telefono)
+      this.formRegistro.get('correo').setValue(Response.correo_electronico)
+      let horioLunesViernes:any=JSON.parse(Response.horario_semana)
+      this.formRegistro.get('haraIntiLV').setValue(horioLunesViernes.inicio)
+      this.formRegistro.get('haraEndtiLV').setValue(horioLunesViernes.fin)
+      let horioSabados:any=JSON.parse(Response.horario_sabado)
+      this.formRegistro.get('haraIntiS').setValue(horioSabados.inicio)
+      this.formRegistro.get('haraEndtiS').setValue(horioSabados.fin)
+     
+   
+
+    })
+
+
+    this.apiservice.getServiciosLavanderia(localStorage.getItem('idLavanderia')).subscribe(Response=>{
+
+       // console.log("servicio lavanderia ",Response);
+        //this.efectos.tipoDeServicoElegido=1
+       
+        let services:any=JSON.parse(Response[0].servicio)
+
+        //console.log("Servicions=",services);
+        if(services.length>0){
+        services.forEach(element => {
+          this.efectos.actualNew(1)
+          this.efectos.vewServicios(element.servicio ,element.id)
+          this.efectos.unidad=element.unidad
+          this.efectos.precio=element.precio
+          this.efectos.descripcion=element.descripcion
+         
+          this.guardar()
+        });
+      }
+
+    })
+
+
+    this.apiservice.getServiciosTintoreria(localStorage.getItem('idLavanderia')).subscribe(Response=>{
+      //console.log("getServiciosTintoreria lavanderia ",Response);
+      //this.efectos.tipoDeServicoElegido=2
+    
+      let services:any=JSON.parse(Response[0].servicio)
+      //console.log("getServiciosTintoreria=",services);
+
+      if(services.length>0){
+        this.efectos.actualNew(2)
+              services.forEach(element => {
+
+                this.efectos.vewServicios(element.servicio ,element.id)
+                this.efectos.unidad=element.unidad
+                this.efectos.precio=element.precio
+                this.efectos.descripcion=element.descripcion
+              
+                this.guardar()
+              });
+
+              this.efectos.actualNew(1)
+      }
+
+    })
+
+
+  this.apiservice.getServiciosPlanchado(localStorage.getItem('idLavanderia')).subscribe(Response=>{
+    //this.efectos.tipoDeServicoElegido=3
+
+    //console.log("getServiciosPlanchado lavanderia ",Response);
+      let services:any=JSON.parse(Response[0].servicio)
+      //console.log("getServiciosPlanchado=",services);
+
+
+      if(services.length>0){
+        this.efectos.actualNew(3)
+         
+          //console.log("ssssss", this.efectos.idPlanchados);
+         // console.log("ccccccccccccccc");
+          services.forEach(element => {
+               this.efectos.unidades.forEach(element1 => {
+
+                if(element.unidad==element1.title){
+                    //console.log(element1);
+                    this.idPlnchados=element.id
+                    this.efectos.vewUnidades(element1,element.unidad)
+                    this.efectos.unidad=element.unidad
+                    this.efectos.precio=element.precio
+                    this.efectos.descripcion=element.descripcion
+                 
+
+                    this.guardar()
+                  }
+                });
+          });
+
+          this.efectos.idPlanchados=(services[services.length-1].id)+1
+          ///console.log("fin",this.planchado);
+          this.efectos.actualNew(1)
+      }
+
+  })    
+
+
+  this.apiservice.getOfertas(localStorage.getItem('idLavanderia')).subscribe(Response=>{
+    //this.efectos.tipoDeServicoElegido=4
+    
+   // console.log("getOfertas lavanderia ",Response);
+    let services:any=JSON.parse(Response[0].servicio)
+    //console.log("getServiciosPlanchado=",services);
+  
+    //console.log("ssssss", this.efectos.idOfertas);
+    if(services.length>0){
+      this.efectos.actualNew(4)
+        services.forEach(element => {
+          this.efectos.idOfertas=element.id
+          this.efectos.descripcion=element.descripcion
+          this.efectos.titulo=element.titulo
+          this.guardar()
+        });
+
+        //console.log("fin",this.ofertas);
+        this.efectos.idOfertas=(services[services.length-1].id)+1
+        this.efectos.actualNew(1)
+    }
+   
+  })
+
+
+this.apiservice.getServiciosOtros(localStorage.getItem('idLavanderia')).subscribe(Response=>{
+
+    //console.log("este",Response);
+    //this.efectos.tipoDeServicoElegido=5
+   
+    let services:any=JSON.parse(Response[0].servicio)
+    //console.log("getServiciosOtros=",services);
+
+    if(services.length>0){
+      this.efectos.actualNew(5)
+      services.forEach(element => {
+        this.efectos.idOtros=element.id
+        this.efectos.descripcion=element.descripcion
+        this.efectos.titulo=element.titulo
+        this.guardar()
+      });
+
+      console.log("fin",this.ofertas);
+      this.efectos.idOfertas=(services[services.length-1].id)+1
+      this.efectos.actualNew(1)
+  }
+
+})
+
+
+
+}
+
+cancaelarAcualizado(){
+  this.efectos.next('MenuEdit')
+  this.lavanderia=[]
+  this. tintoreria=[]
+  this.planchado=[]
+  this.otros=[]
+  this.ofertas=[]
+  this.imagenes=[]
+
+  this.lavanderia=[]
+  this.editAll()
+ 
+}
+
+
+
+guadarEditLavanderia(){
+  this.en_proceso=true
+  let item={
+    nombre_lavanderia:this.formRegistro.get('nombreLavanderia').value,
+    ///apellidos:this.formRegistro.get('apellidos').value,
+    correo_electronico:this.formRegistro.get('correo').value, 
+    telefono:this.formRegistro.get('telefono').value, 
+    direccion:JSON.stringify({
+      address:this.address,
+      referencias:this.referencias
+    }), 
+    fotografias: JSON.stringify(this.imagenes), 
+    horario_semana:JSON.stringify({inicio:this.formRegistro.get('haraIntiLV').value, fin:this.formRegistro.get('haraEndtiLV').value}), 
+    horario_sabado:JSON.stringify({inicio:this.formRegistro.get('haraIntiS').value, fin:this.formRegistro.get('haraEndtiS').value}),  
+    coordenadas:JSON.stringify({lat:this.lat, lon:this.lng})
+  }
+
+  this.apiservice.actualizarDatosLavanderia(item,localStorage.getItem('idLavanderia')).subscribe(Response=>{
+
+    console.log("actulizado",Response);
+    this.efectos.next('MenuEdit')
+    this.en_proceso=false
+    this.verAlerta('Los cambios realizados han sido exitosos','Cambios realizados','Proceso finalizado')
+  })
+
+
+
+
+  let itemLavanderiaX={
+    lavanderia_id:localStorage.getItem('idLavanderia'),
+    servicio:JSON.stringify(this.lavanderia)
+  }
+  this.apiservice.actualisarServiciosLavanderia(itemLavanderiaX,localStorage.getItem('idLavanderia')).subscribe(Response=>{
+    console.log("servicios lavanderia actualizados");
+    
+  })
+
+
+
+
+
+  let itemLavanderiaT={
+    lavanderia_id:localStorage.getItem('idLavanderia'),
+    servicio:JSON.stringify(this.tintoreria)
+  }
+  this.apiservice.actualisarServiciosTintoreria(itemLavanderiaT,localStorage.getItem('idLavanderia')).subscribe(Response=>{
+    console.log("servicios tintoreria actualizados");
+    
+  })
+
+
+
+
+  let itemLavanderiaP={
+    lavanderia_id:localStorage.getItem('idLavanderia'),
+    servicio:JSON.stringify(this.planchado)
+  }
+  this.apiservice.actualisarServiciosPlanchado(itemLavanderiaP,localStorage.getItem('idLavanderia')).subscribe(Response=>{
+    console.log("servicios planchado actualizados");
+    
+  })
+
+
+
+
+  let itemLavanderiaO={
+    lavanderia_id:localStorage.getItem('idLavanderia'),
+    servicio:JSON.stringify(this.ofertas)
+  }
+  this.apiservice.actualisarServiciosOfertas(itemLavanderiaO,localStorage.getItem('idLavanderia')).subscribe(Response=>{
+    console.log("servicios ofertas actualizados");
+    
+  })
+
+
+
+  let itemLavanderiaOt={
+    lavanderia_id:localStorage.getItem('idLavanderia'),
+    servicio:JSON.stringify(this.otros)
+  }
+  this.apiservice.actualisarServiciosOtros(itemLavanderiaOt,localStorage.getItem('idLavanderia')).subscribe(Response=>{
+    console.log("servicios otros actualizados");
+    
+  })
+
+
+}
+
+
+
+combroparValidar(){
+  let item={
+    correo_electronico:this.formRegistro.get('correo').value,
+    contraseña:this.formValidar.get('contrasenia').value
+  }
+  this.apiservice.login(item).subscribe(Response=>{
+    this.validado=true
+  },error=>{
+    this.verAlerta('vuelva a intentar ','contraseña incorrecta','Error')
+  })
+}
+
+
+
+
+async verAlerta(mesaje,submensaje,titulo){
+  const alerta=await this.alertacontroller.create({
+    header:titulo,
+    subHeader:submensaje,
+    message:mesaje,
+    buttons:['Aceptar']
+
+})
+
+await alerta.present()
+}
+
+
+/*************************edit fin******************************************************************************* */
+
+
 
 
 

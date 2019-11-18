@@ -12,12 +12,39 @@
   
     <div class="mapa">
         <agm-map
-   [style.height.px]="height"
+   
    [latitude]="lat"
-   [longitude]="lng">
-     <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-  </agm-map>
+   [longitude]="lng"
+   [zoom]="12"
+   >
 
+
+
+   <agm-marker  [latitude]="lat" [longitude]="lng" 
+   [iconUrl]="  {
+    url: './assets/iconos/home-address.png',
+    scaledSize: {width: 40,height: 40}
+  }"
+   ></agm-marker>
+
+     <agm-marker  
+     *ngFor="let repartidor of repartidores"
+     [latitude]="repartidor.lat" [longitude]="repartidor.lon"
+     [iconUrl]="  {
+      url: repartidor.icon,
+      scaledSize: {width: 40,height: 40}
+    }"
+    [label]="{
+      color: '#414141',
+      fontSize: '17px',
+      text:repartidor.nombre+' '+repartidor.apellidos,
+      top:0
+    }"
+    (markerClick)="verRepartidor(repartidor)"
+     >
+  </agm-marker>
+  </agm-map>
+<img src="../../../assets/iconos/placeholder.png" alt="">
     </div>
 
 
@@ -74,7 +101,7 @@
               </div>
 
               <label >Nombre:</label>
-              <p>{{repartidorActual.nombre}}</p>
+              <p>{{repartidorActual.nombre}} {{repartidorActual.apellidos}}</p>
 
               <label >tel:</label>
               <p>{{repartidorActual.tel}}</p>
@@ -84,7 +111,9 @@
 
               <label >Empresa:</label>
               <p>{{repartidorActual.empresa}}</p>
-              <ion-button>
+              <ion-button
+              [disabled]="height==0"
+              (click)="asignar()">
                   Asignar
                 </ion-button>
             </div>

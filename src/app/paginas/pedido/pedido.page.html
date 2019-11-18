@@ -8,6 +8,7 @@
 </ion-header>
 
 <ion-content>
+<div style="width: 100%; height: 100%; overflow-y: scroll;">
 
   <div class="info">
 
@@ -100,15 +101,105 @@
 
   </div>
 
-  <ion-item color="secondary" *ngIf="pedido.status!='Cancelado'">
+  <div class="serviciosS" *ngIf="repartidor!=null" >
+    <h3 style="color: royalblue;">Repartidor asignado:</h3>
+
+    <div class="centrar" style="width: 180px; height: auto; background: rebeccapurple; margin: 10px;
+    overflow: hidden; border-radius: 10px;
+    ">
+  <img src="{{repartidor.foto}}" style="width: 100%; height: auto; ">
+    </div>
+    
+
+    <label style="color: gray;">Nombre:</label>
+    <p>{{repartidor.nombres+' '+repartidor.apellidos}}</p>
+    <label style="color: gray;">Telefono:</label>
+    <p>{{repartidor.telefono}}</p>
+
+  </div>
+
+  <div  *ngIf="pedido.status!='Cancelado'" class="centrar" style="margin: auto; height: auto; width: 95%;">
     <ion-button 
-    [routerLink]="['/repartidor']"
-    color=tertiary style="width: 49%; height: 80%; margin: auto; font-size: 12px;">
+    (click)="asignarRepartidor()"
+    color=tertiary style="width: 49%;  margin: auto; font-size: 12px;">
       Asingnar repartidor
     </ion-button>
-      <ion-button  color=tertiary style="width: 49%; height: 80%; margin: auto; font-size: 12px;" >
+      <ion-button  color=tertiary style="width: 49%;  margin: auto; font-size: 12px;" >
           finalizar
         </ion-button>
-  </ion-item>
+        <ion-button (click)="viewNserDatas()">
+            ingresar datos
+          </ion-button>
+        </div>
+<!-------------ingresar datos inicio--------------------------------------------------------------------------------------------->
+
+ <div class="ingresarDatos" id="IngresarDatos">
+
+  <h5 style="color: #23374d;">servicios solicitados</h5>
+
+  <h5 *ngIf="pedido.servicios.lavanderia.length>0" style="color: #3c9d9b;">Lavandería:</h5>
+  <div class="centrar conteData" *ngFor="let lava of pedido.servicios.lavanderia" >
+      <p style="width: 90%; margin: auto;">{{lava.servicio}} ${{lava.precio}} por {{lava.unidad}}</p>
+
+      <p class="datainsert">
+          {{lava.unidad}}:<br>
+          <input  type="number">
+      </p>
+
+      <p class="centrar" style="width:40px; color: gray;"> <br> = $ </p>
+
+      <p class="datainsert">
+          costes: <br>
+          <input  type="number">
+      </p>
+
+  </div>
+
+
+
+  <h5 *ngIf="pedido.servicios.tintoreria.length>0" style="color: #3c9d9b;">Tintoreria:</h5>
+  <div class="centrar conteData" *ngFor="let tintor of pedido.servicios.tintoreria" >
+      <p style="width: 90%; margin: auto;">{{tintor.servicio}} ${{tintor.precio}} por {{tintor.unidad}}</p>
+
+      <p class="datainsert">
+          {{tintor.unidad}}:<br>
+          <input  type="number">
+      </p>
+
+      <p class="centrar" style="width:40px; color: gray;"> <br> = $ </p>
+
+      <p class="datainsert">
+          costes: <br>
+          <input  type="number">
+      </p>
+
+  </div>
+   
+
+  <h5 *ngIf="pedido.servicios.planchado.length>0"  style="color: #3c9d9b;">Planchado:</h5>
+  <div class="centrar conteData" *ngFor="let planc of pedido.servicios.planchado" >
+      <p style="width: 90%; margin: auto;">${{planc.precio}} por {{planc.unidad}}</p>
+
+      <p class="datainsert">
+          {{planc.unidad}}:<br>
+          <input  type="number">
+      </p>
+
+      <p class="centrar" style="width:40px; color: gray;"> <br> = $ </p>
+
+      <p class="datainsert">
+          costes: <br>
+          <input  type="number">
+      </p>
+
+  </div>
+
+  <ion-button (click)="viewNserDatas()">
+    aceptar
+  </ion-button>
+ </div> 
+
+
+</div>
 
 </ion-content>

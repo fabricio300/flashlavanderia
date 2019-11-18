@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { ApiServiceService } from '../../api-service.service';
+import { Router,ActivatedRoute } from '@angular/router';
+import {Location} from '@angular/common'; 
 
 @Component({
   selector: 'app-repartidor',
@@ -8,7 +10,9 @@ import { Platform } from '@ionic/angular';
 })
 export class RepartidorPage implements OnInit {
 
-  repartidorActual={
+  reparitidorAnterior=null
+  pedido:any
+  repartidorActual:any={
     id: null,
     nombre:'Nombre Repartidor',
     tel:'000-000-0000',
@@ -17,12 +21,13 @@ export class RepartidorPage implements OnInit {
     foto:'../../../assets/iconos/flaswash.png'
   }
 
-  title: string = 'My first AGM project';
-  lat: number = 51.678418;
-  lng: number = 7.809007;
+  actualR: string = './assets/iconos/bikeB.png';
+  lat: number = 16.751239;
+  lng: number =-93.144676;
   height = 0;
-
-  repartidores=[
+  
+  repartidores=[]
+  /*repartidores=[
     {
       id: 1,
       nombre:'Antonio gonzales',
@@ -68,20 +73,105 @@ export class RepartidorPage implements OnInit {
     }
     
   
-  ]
+  ]*/
   
-  constructor(public platform: Platform) {
-    console.log(platform.height());
-    this.height = platform.height() - 56;
+  constructor(
+    private apiservice:ApiServiceService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private _location: Location
+    ) {
+      this.route.queryParams.subscribe(params => {
+      
+
+         this.pedido=JSON.parse(params.special)
+        console.log("parea", this.pedido);
+        this.lat= this.pedido.coordenadas.lat
+        this.lng= this.pedido.coordenadas.lon
+        
+    });
+      
   }
 
   ngOnInit() {
+    this.getRepartidores()
   }
 
 
-  verRepartidor(id){
+  async verRepartidor(id){
+
+    if(this.reparitidorAnterior!=null && this.reparitidorAnterior!=id.id){
+        this.repartidores.forEach(element => {
+            if(element.id==this.reparitidorAnterior){
+              element.icon='./assets/iconos/bikeR.png'
+            }
+      });
+    }
+
+    
     this.repartidorActual=id
+    id.icon=this.actualR
     document.getElementById('ima').scrollIntoView(true)
+
+    this.reparitidorAnterior=id.id
+    this.height=1
+  
+  
+
+
   }
 
+
+
+  getRepartidores(){
+    this.apiservice.getRepartidores().subscribe(Response=>{
+      //console.log(Response);
+
+      Response.forEach(element => {
+        console.log(element);
+
+        let foto:any=JSON.parse(element.foto_perfil)
+        //console.log("dodo: ",foto[0].imagen);
+        
+
+        let coordenas=JSON.parse(element.coordenadas)
+
+        let re={
+          id: element.id,
+          nombre:element.nombres,
+          apellidos:element.apellidos,
+          tel:element.telefono,
+          empresa:'Kanguros',
+          matricula:'345thg',        
+          foto:foto[0].imagen,
+          lat:parseFloat(coordenas.lat),
+          lon:parseFloat(coordenas.lon),
+          icon:'./assets/iconos/bikeR.png'
+        }
+
+        this.repartidores.push(re)
+          
+          
+      });
+      console.log(this.repartidores);
+    })
+  }
+  
+
+  asignar(){
+
+    let item={
+      repartidor_id:this.repartidorActual.id,
+      status:this.pedido.statusPedido
+    }
+    console.log("item ",item);
+    
+   this.apiservice.asignarRepartidor(item,this.pedido.id,).subscribe(Response=>{
+
+    console.log("rcho");
+
+    this._location.back(); 
+    
+   })
+  }
 }

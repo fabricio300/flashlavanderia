@@ -152,7 +152,7 @@ export class efectos{
     ]
 
     unidades=[
-        {
+        {   
             title:'Kilo',
             mal:false
         },
@@ -252,15 +252,27 @@ export class efectos{
 
     }
 
-    vewUnidades(unidad){
-        this.unidad=unidad
-        if(this.unidad==null){
+    vewUnidades(optinin, unidad){
+        console.log("optindd",unidad);
+        
+       
+        if(unidad==null){
             this.verUnidades=true
             this.unidadValida=false
+            console.log("entrar");
+            this.unidades.forEach(element => {
+                if(this.unidad==element.title){
+                    element.mal=false
+                }
+            });
         }else{
+            this.unidad=unidad
             this.verUnidades=false
             this.unidadValida=true
         }
+
+        if(optinin!=null && this.tipoDeServicoElegido==3)
+                optinin.mal=true
     }
 
 

@@ -5,7 +5,7 @@
         <ion-icon name="menu" ></ion-icon>
       </ion-button>
     </ion-buttons>
-       <ion-input placeholder="Busca un pedido"></ion-input>
+       <ion-input  [(ngModel)]="nombresDecliente" placeholder="Ingresa el nombre de un cliente"></ion-input>
 
        <ion-buttons slot="end">
         <ion-button style="font-size: 15px;">
@@ -40,8 +40,7 @@
          
 
             <ion-item color="secondary" *ngFor="let op of menuflash"
-            routerLink="{{op.url}}"
-            (click)="closeFirst()"
+            (click)="ir(op.url)"
             >
                 <img src="{{op.icon}}" style="width: 20px; margin: 3px;">
               {{op.titulo}}
@@ -95,26 +94,29 @@
 
 
 
-      <div class="filtros" id="filtro"> 
+      <div class="filtros" id="filtro" > 
 
-        <ion-item color="medium" *ngFor="let filtro of filtros">
-          <ion-checkbox style="margin:6px;"></ion-checkbox>
-           {{filtro}}
-        </ion-item>
+        <div style="z-index: 70;">
+          <ion-item color="medium" *ngFor="let filtro of filtros">
+            <ion-checkbox 
+            [(ngModel)]="filtro.stado"
+            style="margin:6px;"></ion-checkbox>
+             {{filtro.filtro}}
+          </ion-item>
+  
+          <ion-item  color="medium" >
+            <ion-button slot="end" (click)="vewFiltros()">
+              Cancelar
+            </ion-button>
+            <ion-button slot="end" (click)="verStadosDefiltros()">
+              buscar
+            </ion-button>
+          </ion-item>
+        </div>
+        
 
 
-      
-     
 
-
-        <ion-item  color="medium" >
-          <ion-button slot="end" (click)="vewFiltros()">
-            Cancelar
-          </ion-button>
-          <ion-button slot="end">
-            buscar
-          </ion-button>
-        </ion-item>
       </div>
 
 
@@ -160,6 +162,13 @@
     </label>       
   </div>
 
+
+  <div class="centrar" style="width: 100%;" *ngIf="sin_resultados==true">
+    <label class="centrar">
+        <p>Sin resultados :(</p>
+    </label>       
+  </div>
+
   <div class="centrar" style="width: 100%;" *ngIf="pedidos.length==0 && busquedadTerminada==true">
       <label class="centrar">
          
@@ -167,11 +176,13 @@
       </label>       
     </div>
   
-      <div class="contPedido centrar" style="cursor: pointer;" *ngFor="let pedido  of pedidos" 
-      
-      >
 
-      <ion-button 
+      <div class="centrar" style="cursor: pointer; width: 90%; margin: auto;
+      margin-bottom: 10px;" 
+      [ngClass]="{'quitar':pedido.ser_visto==false}"
+      *ngFor="let pedido  of pedidos | filtrosInicio: nombresDecliente">
+
+      <ion-button  
       (click)="irApedido(pedido)"
 
       class="contPedido" style="width: 100%; height: 120px;" color='none'

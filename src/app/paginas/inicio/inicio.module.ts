@@ -6,6 +6,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { InicioPage } from './inicio.page';
+import { FiltrosPipe } from '../../filtrosInicio/filtrosInicio.pipe';
+
 
 const routes: Routes = [
   {
@@ -21,6 +23,6 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [InicioPage]
+  declarations: [InicioPage,FiltrosPipe]
 })
 export class InicioPageModule {}

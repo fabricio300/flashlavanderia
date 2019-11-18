@@ -1,10 +1,10 @@
 <ion-header>
   <ion-toolbar color=primary>
     <ion-buttons>
-      <ion-back-button>
+      <ion-back-button (clicc)="regresarX()">
 
       </ion-back-button>
-      <ion-title>registro</ion-title>
+      <ion-title>{{tituloT}} </ion-title>
     </ion-buttons>
     
   </ion-toolbar>
@@ -260,16 +260,23 @@
                   <ion-label>Unidades:</ion-label>
                   <ion-input style="z-index: 80;" [(ngModel)]="this.efectos.unidad"></ion-input>
               
-                <button class="fantasma" (click)="this.efectos.vewUnidades(null)"></button>
+                <button class="fantasma" (click)="this.efectos.vewUnidades(null,null)"></button>
               </ion-item>
 
               <div class="contServicios" *ngIf="this.efectos.actual<4 && this.efectos.verUnidades==true">
                   <div style="width: 100%;" *ngFor="let option of this.efectos.unidades">
-                    <button  class="option" 
-                    (click)="this.efectos.vewUnidades(option.title)" 
+                    <button  class="option"  *ngIf="option.mal==false && this.efectos.actual==3"
+                    (click)="this.efectos.vewUnidades(option,option.title)" 
                     >
                       {{option.title}}
                     </button>
+<!------------------------------------------------------------------------------------------------------------------>
+                    <button  class="option"  *ngIf="this.efectos.actual!=3"
+                    (click)="this.efectos.vewUnidades(option,option.title)" 
+                    >
+                      {{option.title}}
+                    </button>
+                    
                   </div>                      
               </div>
 
@@ -360,7 +367,7 @@
 <!------------------------------------------------ingresar servicios fin  [disabled]="lavanderia.length==0" ---------------------------------------------------------------------->
     
 
-      <div class="centrar" style="padding: 10px; z-index: 70;">
+      <div class="centrar" style="padding: 10px; z-index: 70;" *ngIf="edit==false">
           <ion-button style="margin:auto; height: 30px;"
           (click)="this.efectos.next('Datos')"
           [disabled]="lavanderia.length==0"
@@ -369,6 +376,22 @@
             </ion-button>
       </div>
 
+<!------------------------------------------------Cambiar datos---------------------------------------------------------------------->
+    
+      <div class="centrar" style="padding: 10px; z-index: 70;" *ngIf="edit==true">
+
+          <ion-button style="margin:auto; height: 30px;"
+          (click)="cancaelarAcualizado()"
+          >
+              Cancelar
+            </ion-button>
+          <ion-button style="margin:auto; height: 30px;"
+          [disabled]="lavanderia.length==0"
+            (click)="guadarEditLavanderia()"
+          >
+              Guardar 
+            </ion-button>
+      </div>
 
         
   
@@ -491,7 +514,7 @@
             </p>
 
 
-
+<div *ngIf="edit==false">
           <label >Contraseña:</label><br>
           <input formControlName="contrasenia" type="password"><br>
           <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(3)">
@@ -527,7 +550,7 @@
             </p>
 
 
-
+</div>
 
 
          
@@ -607,7 +630,7 @@
         </form>
 
     
-        <div class="centrar" style="padding: 10px; z-index: 70;">
+        <div class="centrar" style="padding: 10px; z-index: 70;" *ngIf="edit==false">
 
             <ion-button style="margin:auto; height: 30px;"
             (click)="this.efectos.next('Servicios')"
@@ -624,8 +647,31 @@
 
 
 
+<!----------Botones editar----------------------------------------------------------------------------------------------------->
+
+
+      <div class="centrar" style="padding: 10px; z-index: 70;" *ngIf="edit==true">
+
+          <ion-button style="margin:auto; height: 30px;"
+          (click)="cancaelarAcualizado()"
+          >
+              Cancelar
+            </ion-button>
+          <ion-button style="margin:auto; height: 30px;"
+            
+            (click)="guadarEditLavanderia()"
+          >
+              Guardar 
+            </ion-button>
+      </div>
+
+
+
+
+
+
       
-    </div>
+</div>
 
 
 
@@ -691,7 +737,7 @@
      
     </div>
 
-    <div class="centrar" style="padding: 10px; z-index: 70;">
+    <div class="centrar" style="padding: 10px; z-index: 70;" *ngIf="edit==false">
         <ion-button style="margin:auto; height: 30px;"
           (click)="this.efectos.next('Datos')"
         >
@@ -704,6 +750,25 @@
             Aceptar
           </ion-button>
         
+      </div>
+
+
+
+      <!------------------------------------------------Cambiar datos---------------------------------------------------------------------->
+    
+      <div class="centrar" style="padding: 10px; z-index: 70;" *ngIf="edit==true">
+
+          <ion-button style="margin:auto; height: 30px;"
+          (click)="cancaelarAcualizado()"
+          >
+              Cancelar
+            </ion-button>
+          <ion-button style="margin:auto; height: 30px;"
+          [disabled]="referencias==''"
+            (click)="guadarEditLavanderia()"
+          >
+              Guardar 
+            </ion-button>
       </div>
 
 </div>
@@ -761,7 +826,7 @@
               type="file" (change)="handleFileSelect($event)"><br>
           </button>
 
-          <div class="centrar" style="margin-top: 15px;">
+          <div class="centrar" style="margin-top: 15px;"  *ngIf="edit==false">
 
               <ion-button style="margin:auto; height: 30px;"
               (click)="this.efectos.next('Mapa')"
@@ -777,12 +842,125 @@
               </ion-button>
           </div>
           
+
+
+          <!------------------------------------------------Cambiar datos---------------------------------------------------------------------->
+    
+      <div class="centrar" style="padding: 10px; z-index: 70;" *ngIf="edit==true">
+
+          <ion-button style="margin:auto; height: 30px;"
+          (click)="cancaelarAcualizado()"
+          >
+              Cancelar
+            </ion-button>
+          <ion-button style="margin:auto; height: 30px;"
+          [disabled]="imagenes.length==0"
+          (click)="guadarEditLavanderia()"
+          >
+              Guardar 
+            </ion-button>
+      </div>
             
         </div>
+
+
+
+
     
     </div>
 
 <!----------imagenes fin----------------------------------------------------------------------------------------------------->
+
+
+
+
+<div class="parte centrar" style=" height: 0px; " id="MenuEdit">
+   
+  <form [formGroup]="formValidar"  class="formulario" style="height: auto;" *ngIf="validado==false">
+    <label style="color: #23374d;">{{this.formRegistro.get('nombreLavanderia').value}}</label> <br>
+    <label >IngresE su contraseña:</label>
+    <input formControlName="contrasenia" type="password" placeholder="******">
+
+    <div class="botonInfo centrar" (click)="this.efectos.mostrarRequierd(11)">
+      <img 
+      *ngIf="!formValidar.get('contrasenia').hasError('required') && !formValidar.get('contrasenia').hasError('pattern')"
+      src="../../../assets/imagenes/information.png" style="width: 100%;">
+      <img 
+      *ngIf="formValidar.get('contrasenia').hasError('required') || formValidar.get('contrasenia').hasError('pattern')"
+      src="../../../assets/imagenes/informationX.png" style="width: 100%;">
+  </div>
+    <p *ngIf="this.efectos.forInfo==11">
+      Campo obligatorio, este debe tener: letras mayúsculas y minúsculas, al menos un número, al menos un carácter especial (#?!@$%^&*-) y una longitud de 8 a 15 caracteres sin espacios.
+    </p>
+
+
+  
+
+    <div style="width: 100%;" class="centrar">
+      <ion-button   [disabled]="!formValidar.valid" style="margin: auto;"
+      (click)="combroparValidar()"
+      >
+        Aceptar
+      </ion-button>
+    </div>
+  </form>
+
+
+<div style="height: 100%; width: 100%;" class="centrar" *ngIf="validado==true">
+
+  <button class="botonEditMenu " (click)="this.efectos.next('Servicios')">
+
+    <label class="centrar"  >
+        <img src="../../../assets/Registro/washing-machine.png" style="width: 20px;">
+      <p style="width: 100%; text-align: center;">
+          servicios
+      </p>
+    </label>
+     
+  </button>
+
+
+  <button class="botonEditMenu"   (click)="this.efectos.next('Datos')">
+
+      <img src="../../../assets/iconos/store.png" style="width: 20px;">
+      <p style="width: 100%; text-align: center;">
+          Datos de la empresa
+      </p>
+
+</button>
+
+<button class="botonEditMenu"   (click)="this.efectos.next('Mapa')">
+    <img src="../../../assets/Registro/pin.png" style="width: 20px;">
+    <p style="width: 100%; text-align: center;">
+        Ubicación
+    </p>
+ 
+</button>
+
+<button class="botonEditMenu" (click)="this.efectos.next('Imagenes')">
+  <img src="../../../assets/iconos/picture.png" style="width: 20px;">
+      <p style="width: 100%; text-align: center;">
+          Imagenes de precentación
+      </p>
+
+</button>
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <div class="parte centrar" style="background: white; height: 0px; " id="Espera">
@@ -797,5 +975,16 @@
 
 
 
+    </div>
+
+    <div  style="position: absolute; height: 100%; width: 100%;
+      background: rgba(0, 0, 0, 0.8); top: 0px;"
+      class="centrar"
+      *ngIf="en_proceso"
+      >
+      <label class="centrar">
+        <img src="../../../assets/Registro/A37.gif" style="width: 20%; margin: auto;">
+        <p style="width: 100%; text-align: center; color: white;">Realizando cambios...</p>
+       </label>
     </div>
 </ion-content>
