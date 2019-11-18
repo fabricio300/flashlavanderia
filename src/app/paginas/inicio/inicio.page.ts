@@ -260,7 +260,7 @@ export class InicioPage implements OnInit {
   getStatusIcon(status){
 
     switch (status) {
-      case 'En proceso': return this.nuevo
+      case 'En proceso': return this.lava
         
       break;
 
