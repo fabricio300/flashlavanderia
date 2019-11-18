@@ -75,15 +75,74 @@
         Servicios pedidos:
       </h3>
 
-      <h5 *ngIf="pedido.servicios.lavanderia.length>0" style="color: #3c9d9b;">Lavandería:</h5>
-      <p *ngFor="let lavado of pedido.servicios.lavanderia">{{lavado.servicio}} ${{lavado.precio}} por {{lavado.unidad}}</p>
+      <h5 *ngIf="datosLavanderia.length>0" style="color: #3c9d9b;border-bottom: 1px solid #3c9d9b;">Lavandería:</h5>
+      <div *ngFor="let lavado of datosLavanderia">
+        <p >{{lavado.servicio}} ${{lavado.precio}} por {{lavado.unidad}}</p>
+        <div *ngIf="lavado.cantidad!=0" class="centrar">
+          <p style="margin: auto; color: red;" class="centrar">
+            {{lavado.unidad}}/s: 
+            <label style="color: black;">
+              {{lavado.cantidad}}
+            </label>
+           
+          </p>
+
+          <p style="margin: auto;color: red;" class="centrar">
+            Costo:      
+            <label style="color: black;">
+              ${{lavado.costo}}
+            </label>
+          </p>
+        </div>
       
-      <h5 *ngIf="pedido.servicios.tintoreria.length>0" style="color: #3c9d9b;">Tintoreria:</h5>
-      <p *ngFor="let tinto of pedido.servicios.tintoreria">{{tinto.servicio}} ${{tinto.precio}} por {{tinto.unidad}}</p>
+     </div>
+    
       
-      <h5 *ngIf="pedido.servicios.planchado.length>0"  style="color: #3c9d9b;">Planchado:</h5>
-      <p *ngFor="let plan of pedido.servicios.planchado">{{plan.unidad}} ${{plan.precio}}</p>
+      <h5 *ngIf="datosTintoreria.length>0" style="color: #3c9d9b; border-bottom: 1px solid #3c9d9b;">Tintoreria:</h5>
+      <div *ngFor="let tinto of datosTintoreria">
+        <p >{{tinto.servicio}} ${{tinto.precio}} por {{tinto.unidad}}</p>
+        <div *ngIf="tinto.cantidad!=0" class="centrar">
+          <p style="margin: auto; color: red;" class="centrar">
+            {{tinto.unidad}}/s: 
+            <label style="color: black;">
+              {{tinto.cantidad}}
+            </label>
+           
+          </p>
+          <p style="margin: auto;color: red;" class="centrar">
+            Costo:      
+            <label style="color: black;">
+              ${{tinto.costo}}
+            </label>
+          </p>
+        </div>
       
+     </div>
+
+
+      <h5 *ngIf="datosPlanchado.length>0"  style="color: #3c9d9b; border-bottom: 1px solid #3c9d9b;">Planchado:</h5>
+      <p *ngFor="let plan of datosPlanchado">{{plan.unidad}} ${{plan.precio}}</p>
+
+
+      <div *ngFor="let plan of datosPlanchado">
+        <p >{{plan.unidad}} ${{plan.precio}}</p>
+        <div *ngIf="plan.cantidad!=0" class="centrar">
+          <p style="margin: auto; color: red;" class="centrar">
+            {{plan.unidad}}/s: 
+            <label style="color: black;">
+              ${{plan.cantidad}}
+            </label>
+           
+          </p>
+          <p style="margin: auto;color: red;" class="centrar">
+            Costo:      
+            <label style="color: black;">
+              {{plan.costo}}
+            </label>
+          </p>
+        </div>
+      
+     </div>
 
     </div>
 
@@ -137,66 +196,85 @@
 
   <h5 style="color: #23374d;">servicios solicitados</h5>
 
-  <h5 *ngIf="pedido.servicios.lavanderia.length>0" style="color: #3c9d9b;">Lavandería:</h5>
-  <div class="centrar conteData" *ngFor="let lava of pedido.servicios.lavanderia" >
+  <h5 *ngIf="datosLavanderia.length>0" style="color: #3c9d9b;">Lavandería:</h5>
+  <div class="centrar conteData" *ngFor="let lava of datosLavanderia" >
       <p style="width: 90%; margin: auto;">{{lava.servicio}} ${{lava.precio}} por {{lava.unidad}}</p>
 
       <p class="datainsert">
-          {{lava.unidad}}:<br>
-          <input  type="number">
+          {{lava.unidad}}/s:<br>
+          <input [(ngModel)]="lava.cantidad"  type="number">
       </p>
 
       <p class="centrar" style="width:40px; color: gray;"> <br> = $ </p>
 
       <p class="datainsert">
           costes: <br>
-          <input  type="number">
+          <input  value="{{lava.cantidad*lava.precio}}"   type="number" id="{{lava.servicio}}">
       </p>
 
   </div>
 
 
 
-  <h5 *ngIf="pedido.servicios.tintoreria.length>0" style="color: #3c9d9b;">Tintoreria:</h5>
-  <div class="centrar conteData" *ngFor="let tintor of pedido.servicios.tintoreria" >
+  <h5 *ngIf="datosTintoreria.length>0" style="color: #3c9d9b;">Tintoreria:</h5>
+  <div class="centrar conteData" *ngFor="let tintor of datosTintoreria" >
       <p style="width: 90%; margin: auto;">{{tintor.servicio}} ${{tintor.precio}} por {{tintor.unidad}}</p>
 
       <p class="datainsert">
-          {{tintor.unidad}}:<br>
-          <input  type="number">
+          {{tintor.unidad}}/s:<br>
+          <input [(ngModel)]="tintor.cantidad"   type="number">
       </p>
 
       <p class="centrar" style="width:40px; color: gray;"> <br> = $ </p>
 
       <p class="datainsert">
           costes: <br>
-          <input  type="number">
+          <input value="{{tintor.cantidad*tintor.precio}}"   type="number" id="{{tintor.servicio}}">
       </p>
 
   </div>
    
 
-  <h5 *ngIf="pedido.servicios.planchado.length>0"  style="color: #3c9d9b;">Planchado:</h5>
-  <div class="centrar conteData" *ngFor="let planc of pedido.servicios.planchado" >
+  <h5 *ngIf="datosPlanchado.length>0"  style="color: #3c9d9b;">Planchado:</h5>
+  <div class="centrar conteData" *ngFor="let planc of datosPlanchado" >
       <p style="width: 90%; margin: auto;">${{planc.precio}} por {{planc.unidad}}</p>
 
       <p class="datainsert">
-          {{planc.unidad}}:<br>
-          <input  type="number">
+          {{planc.unidad}}/s:<br>
+          <input [(ngModel)]="planc.cantidad"  type="number">
       </p>
 
       <p class="centrar" style="width:40px; color: gray;"> <br> = $ </p>
 
       <p class="datainsert">
           costes: <br>
-          <input  type="number">
+          <input value="{{planc.cantidad*planc.precio}}" type="number" id="{{planc.unidad}}">
       </p>
 
   </div>
 
-  <ion-button (click)="viewNserDatas()">
-    aceptar
-  </ion-button>
+  <h4 style=" width: 90%; text-align: center; margin: auto; color: #23374d; font-size: 18px; font: bold;" >
+    Tatal= $ {{total}}
+  </h4>
+
+  <div style="width: 100%; padding: 15px;" class="centrar">
+    <ion-button color=tertiary style="width: 90%; margin:3px;"  (click)="getTotal()">
+      Optener total
+    </ion-button>
+  
+    <ion-button color=tertiary style="width: 90%; margin: auto; margin:3px;" (click)="cancelarDatos()">
+      Cancelar
+    </ion-button>
+
+    <ion-button  
+    [disabled]="total==0"
+    style="width: 90%; margin:3px;" (click)="guardarDatosDelPedido()">
+      Guardar datos
+    </ion-button>
+  </div>
+
+
+
  </div> 
 
 

@@ -304,4 +304,16 @@ export class ApiServiceService {
     return  this.http.get(`${this.api}repartidores/${id}`,httpOptions)
   }
 
+
+  setDatosRapaPedido(id:any,item:any):Observable<any>{
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    }
+
+    return  this.http.put(`${this.api}pedidos_lavanderia_datos/${id}`,item,httpOptions)
+  }
+
+
 }

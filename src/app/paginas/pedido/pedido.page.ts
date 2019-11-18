@@ -11,12 +11,16 @@ import { ApiServiceService } from '../../api-service.service';
 export class PedidoPage implements OnInit {
 
  
-  
+  total=0
 
   pedido:any
   direccionCliente:any
   horaSolicitud:any
   coordenadas:any
+
+  datosLavanderia:any=[]
+  datosTintoreria:any=[]
+  datosPlanchado:any=[]
 
   ver_insert_data=false
   repartidor=null
@@ -29,12 +33,13 @@ export class PedidoPage implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.pedido = JSON.parse(params.special);
       this.direccionCliente=JSON.parse( this.pedido.direccionCliente);
-      console.log(this.pedido);
+      console.log("eeeeeee",this.pedido);
       this.horaSolicitud=this.pedido.horaSolicitud
       this.coordenadas=this.direccionCliente.coordenadas
       //console.log("coordenadas=",this.coordenadas);
       this.verificarRespartidor(this.pedido.id)
-      
+      this.setDatosServicios()
+
   });
     
     
@@ -105,5 +110,141 @@ viewNserDatas(){
   }
 }
 
+
+
+setDatosServicios(){
+  this.pedido.servicios.lavanderia.forEach(element => {
+      console.log(element);
+      let item1={
+        precio: element.precio,
+        servicio: element.servicio,
+        unidad: element.unidad,
+        cantidad:0,
+        costo:0
+      }
+      this.datosLavanderia.push(item1)
+      
+  });
+  console.log("Datos lavan", this.datosLavanderia);
+  
+
+  this.pedido.servicios.tintoreria.forEach(element => {
+    console.log(element);
+    let item1={
+      precio: element.precio,
+      servicio: element.servicio,
+      unidad: element.unidad,
+      cantidad:0,
+      costo:0
+    }
+    this.datosTintoreria.push(item1)
+    
+});
+console.log("Datos datosTintoreria", this.datosTintoreria);
+
+
+this.pedido.servicios.planchado.forEach(element => {
+  console.log(element);
+  let item1={
+    precio: element.precio,
+    unidad: element.unidad,
+    cantidad:0,
+    costo:0
+  }
+  this.datosPlanchado.push(item1)
+  
+});
+console.log("Datos datosPlanchado", this.datosPlanchado);
+}
+
+
+
+getTotal(){
+  this.total=0
+  if(this.datosLavanderia.length>0){
+    this.datosLavanderia.forEach(element => {
+      var elemento:any 
+      elemento=document.getElementById(element.servicio)
+      console.log(elemento);
+      
+      this.total=this.total+parseInt(elemento.value)
+      element.costo=parseInt(elemento.value)
+
+    });
+
+  }
+
+
+  if(this.datosTintoreria.length>0){
+    this.datosTintoreria.forEach(element => {
+      var elemento:any 
+      elemento=document.getElementById(element.servicio)
+      console.log(elemento);
+      
+      this.total=this.total+parseInt(elemento.value)
+      element.costo=parseInt(elemento.value)
+
+    });
+    if(this.datosPlanchado.length>0){
+      this.datosPlanchado.forEach(element => {
+        var elemento:any 
+        elemento=document.getElementById(element.unidad)
+        console.log(elemento);
+        
+        this.total=this.total+parseInt(elemento.value)
+        element.costo=parseInt(elemento.value)
+  
+      });
+  
+  
+    }
+
+  }
+  
+  
+}
+
+cancelarDatos(){
+  if(this.datosLavanderia.length>0){
+    this.datosLavanderia.forEach(element => {
+        element.cantidad=0
+        element.costo=0
+
+    });}
+
+
+  if(this.datosTintoreria.length>0){
+    this.datosTintoreria.forEach(element => {
+      element.cantidad=0
+      element.costo=0
+
+  });}
+    
+  if(this.datosPlanchado.length>0){
+      this.datosPlanchado.forEach(element => {
+        element.cantidad=0
+        element.costo=0
+  
+  });}
+    this.viewNserDatas()
+
+
+}
+
+guardarDatosDelPedido(){
+  
+  let datos_ropa:any=JSON.stringify({
+      lavanderia:this.datosLavanderia,
+      tintoreria:this.datosTintoreria,
+      planchado:this.datosPlanchado,
+      datoRepartidor:''
+    })
+    
+  this.apiservice.setDatosRapaPedido(this.pedido.id,{datos_ropa:datos_ropa}).subscribe(Response=>{
+    console.log("echoooooooooo");
+    this.viewNserDatas()
+    
+  })
+}
 
 }

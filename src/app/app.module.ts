@@ -16,6 +16,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
+import { FCM } from '@ionic-native/fcm/ngx';
+
+
 
 const config: SocketIoConfig = { url: 'http://138.197.70.172', options: {} };
 
@@ -32,6 +35,7 @@ const config: SocketIoConfig = { url: 'http://138.197.70.172', options: {} };
     SplashScreen,
     Geolocation,
     NativeGeocoder,
+    FCM,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
