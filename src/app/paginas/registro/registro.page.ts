@@ -583,7 +583,10 @@ getAddress(latitude, longitude){
 
 
 /*************************edit ******************************************************************************* */
-
+tenia_planchado=false
+tenia_Tintoreria=false
+tenia_otros=false
+tenia_ofertas=false
 
 editAll(){
   this.edit=true
@@ -664,6 +667,7 @@ editAll(){
               });
 
               this.efectos.actualNew(1)
+              this.tenia_Tintoreria=true
       }
 
     })
@@ -678,6 +682,7 @@ editAll(){
 
 
       if(services.length>0){
+        this.tenia_planchado=true
         this.efectos.actualNew(3)
          
           //console.log("ssssss", this.efectos.idPlanchados);
@@ -716,6 +721,7 @@ editAll(){
   
     //console.log("ssssss", this.efectos.idOfertas);
     if(services.length>0){
+      this.tenia_ofertas=true
       this.efectos.actualNew(4)
         services.forEach(element => {
           this.efectos.idOfertas=element.id
@@ -741,6 +747,7 @@ this.apiservice.getServiciosOtros(localStorage.getItem('idLavanderia')).subscrib
     //console.log("getServiciosOtros=",services);
 
     if(services.length>0){
+      this.tenia_otros=true
       this.efectos.actualNew(5)
       services.forEach(element => {
         this.efectos.idOtros=element.id
@@ -777,6 +784,12 @@ cancaelarAcualizado(){
 
 
 guadarEditLavanderia(){
+  console.log("tenia_otros",this.tenia_otros);
+  console.log("tenia_ofertas",this.tenia_ofertas);
+  console.log("tenia_Tintoreria",this.tenia_Tintoreria);
+  console.log("tenia_planchado",this.tenia_planchado);
+  
+
   this.en_proceso=true
   let item={
     nombre_lavanderia:this.formRegistro.get('nombreLavanderia').value,
@@ -822,10 +835,19 @@ guadarEditLavanderia(){
     lavanderia_id:localStorage.getItem('idLavanderia'),
     servicio:JSON.stringify(this.tintoreria)
   }
-  this.apiservice.actualisarServiciosTintoreria(itemLavanderiaT,localStorage.getItem('idLavanderia')).subscribe(Response=>{
-    console.log("servicios tintoreria actualizados");
-    
-  })
+
+  if(this.tenia_Tintoreria==true){
+    this.apiservice.actualisarServiciosTintoreria(itemLavanderiaT,localStorage.getItem('idLavanderia')).subscribe(Response=>{
+      console.log("servicios tintoreria actualizados");
+    })
+  }else{
+    if(this.tintoreria.length>0){
+      this.apiservice.setServiciosTintoreria(itemLavanderiaT).subscribe(response5=>{
+        console.log("servicios tintoreria agregaado");
+      })
+    }
+  }
+ 
 
 
 
@@ -834,10 +856,19 @@ guadarEditLavanderia(){
     lavanderia_id:localStorage.getItem('idLavanderia'),
     servicio:JSON.stringify(this.planchado)
   }
-  this.apiservice.actualisarServiciosPlanchado(itemLavanderiaP,localStorage.getItem('idLavanderia')).subscribe(Response=>{
-    console.log("servicios planchado actualizados");
-    
-  })
+
+  if(this.tenia_planchado==true){
+    this.apiservice.actualisarServiciosPlanchado(itemLavanderiaP,localStorage.getItem('idLavanderia')).subscribe(Response=>{
+      console.log("servicios planchado actualizados");
+    })
+  }else{
+    if(this.planchado.length>0){
+      this.apiservice.setServiciosPlanchado(itemLavanderiaP).subscribe(response4=>{
+        console.log("servicios planchado agregaado");
+      })
+    }
+  }
+  
 
 
 
@@ -846,10 +877,17 @@ guadarEditLavanderia(){
     lavanderia_id:localStorage.getItem('idLavanderia'),
     servicio:JSON.stringify(this.ofertas)
   }
-  this.apiservice.actualisarServiciosOfertas(itemLavanderiaO,localStorage.getItem('idLavanderia')).subscribe(Response=>{
-    console.log("servicios ofertas actualizados");
-    
-  })
+
+  if(this.tenia_ofertas==true){
+      this.apiservice.actualisarServiciosOfertas(itemLavanderiaO,localStorage.getItem('idLavanderia')).subscribe(Response=>{
+        console.log("servicios ofertas actualizados");
+      })
+  }else{
+    this.apiservice.setOfertar(itemLavanderiaO).subscribe(response2=>{
+      console.log("servicios ofertas agregaado");
+    })
+  }
+  
 
 
 
@@ -857,10 +895,20 @@ guadarEditLavanderia(){
     lavanderia_id:localStorage.getItem('idLavanderia'),
     servicio:JSON.stringify(this.otros)
   }
-  this.apiservice.actualisarServiciosOtros(itemLavanderiaOt,localStorage.getItem('idLavanderia')).subscribe(Response=>{
-    console.log("servicios otros actualizados");
-    
-  })
+
+  if(this.tenia_otros==true){
+    this.apiservice.actualisarServiciosOtros(itemLavanderiaOt,localStorage.getItem('idLavanderia')).subscribe(Response=>{
+      console.log("servicios otros actualizados");
+      
+    })
+  }else{
+    if(this.otros.length>0){
+      this.apiservice.setServiciosotros(itemLavanderiaOt).subscribe(response3=>{
+        console.log("servicios otros agregaado");
+      })
+    }
+  }
+ 
 
 
 }
