@@ -1,17 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
 import { Router, NavigationExtras } from '@angular/router';
-
 import { Socket } from 'ngx-socket-io';
-import { ApiServiceService } from '../../api-service.service';
-
+import { ApiServiceService } from 'src/app/api-service.service';
 
 @Component({
-  selector: 'app-inicio',
-  templateUrl: './inicio.page.html',
-  styleUrls: ['./inicio.page.scss'],
+  selector: 'app-historial',
+  templateUrl: './historial.page.html',
+  styleUrls: ['./historial.page.scss'],
 })
-export class InicioPage implements OnInit {
+export class HistorialPage implements OnInit {
   viewFilters=false
   busquedadTerminada=false
   refrescar=false
@@ -19,69 +17,28 @@ export class InicioPage implements OnInit {
   nombresDecliente:string
   //iconos
   cancel='../../../assets/iconos/cross.png'
-  lava='../../../assets/iconos/washing-machine2.png'
-  moto0='../../../assets/iconos/vespa4.png'
-  moto1='../../../assets/iconos/vespa3.png'
-  moto2='../../../assets/iconos/vespa2.png'
-  nuevo='../../../assets/iconos/new-product.png'
-  esperando='../../../assets/iconos/help.png'
   finalsizadp='../../../assets/iconos/check-mark.png'
 
   filtros=[
-    {
-      filtro:'Recogiendo',
-      stado:true
-    },
-    {
-     filtro:'Entregando',
-     stado:true
-   },
-   {
-     filtro:'Cancelado',
-     stado:true
-   },
- 
-   {
-     filtro:'Nuevo pedido',
-     stado:true
-   },
-   {
-     filtro:'A lavandería',
-     stado:true
-   },
-   {
-     filtro:'En proceso',
-     stado:true
-   }
-   ,
    {
      filtro:'Finalizado',
      stado:true
    },
-   {
-     filtro:'Lista y limpia',
-     stado:true
-   }
-     
-   ]
+  {
+    filtro:'Cancelado',
+    stado:true
+  },
 
-  menuflash=[
-    {
-      titulo:'Editar información',
-      url:'/registro',
-      icon:'../../../assets/iconos/edit.png'
-    },
-    {
-      titulo:'Historial',
-      url:'/historial',
-      icon:'../../../assets/iconos/clock.png'
-    }
+   
+    
   ]
+
+  
 
 
   pedidos=[]
 
- /*pedidos=[
+ /* pedidos=[
     {
       nombreCliente:'romero cliente 1',
       status:'En proceso',
@@ -92,7 +49,7 @@ export class InicioPage implements OnInit {
 
     {
       nombreCliente:'andres cliente 2',
-      status:'A lavandería',
+      status:'A lavanderia',
       horaSolicitud: '11:30 am',
       icon: this.moto2,
       ser_visto:true
@@ -127,20 +84,6 @@ export class InicioPage implements OnInit {
       horaSolicitud: '03:30 pm',
       icon: this.moto0,
       ser_visto:true
-    },
-    {
-      nombreCliente:'la nte 6',
-      status:'Lista y limpia',
-      horaSolicitud: '03:30 pm',
-      icon: this.esperando,
-      ser_visto:true
-    },
-    {
-      nombreCliente:'veto',
-      status:'Finalizado',
-      horaSolicitud: '03:30 pm',
-      icon: this.finalsizadp,
-      ser_visto:true
     }
   ]*/
 
@@ -173,14 +116,7 @@ export class InicioPage implements OnInit {
     this.ocultarFiltro()
   }
 
-  openFirst() {
-    this.menu.enable(true, 'first');
-    this.menu.open('first');
-  }
-
-  closeFirst(){
-    this.menu.close('first');
-  }
+  
 
 
   vewFiltros(){
@@ -194,19 +130,15 @@ export class InicioPage implements OnInit {
   }
 
 
-  ir(url){
-    this.router.navigate([url])
-    this.closeFirst()
-  }
 
   ocultarFiltro(){
-    document.getElementById('filtro').style.transition='0.5s'
-    document.getElementById('filtro').style.marginTop='-200%'
+    document.getElementById('filtro11').style.transition='0.5s'
+    document.getElementById('filtro11').style.marginTop='-200%'
   }
 
   mostrarFiltro(){
-    document.getElementById('filtro').style.transition='0.5s'
-    document.getElementById('filtro').style.marginTop='0'
+    document.getElementById('filtro11').style.transition='0.5s'
+    document.getElementById('filtro11').style.marginTop='0'
   }
 
 
@@ -223,14 +155,6 @@ export class InicioPage implements OnInit {
   }
 
 
-  cerrarSesion(){
-    this.closeFirst()
-    this.apiService.status_de_secion=false
-    localStorage.clear()
-    localStorage.clear()
-    this.router.navigate(['/login'])
-  }
-
   getPedidosL(){
     if(localStorage.getItem('idLavanderia')!=null){
 
@@ -242,7 +166,7 @@ export class InicioPage implements OnInit {
         nombreCliente:'nombre cliente 1',
         status:'En proceso',
         horaSolicitud: null,
-        icon: this.lava,
+        icon: '',
         id:'',
         direccionCliente:'',
         telefono:'',
@@ -272,8 +196,10 @@ export class InicioPage implements OnInit {
           }
 
           console.log("S",item);
-         
+         if(item.status=='Finalizado',item.status=='Cancelado'){
           this.pedidos.push(item)
+         }
+          
         })
 
 
@@ -288,11 +214,8 @@ export class InicioPage implements OnInit {
   getStatusIcon(status){
 
     switch (status) {
-      case 'En proceso': return this.lava
-        
-      break;
-
-      case 'A lavanderia': return this.moto2
+      
+      case 'Finalizado': return this.finalsizadp
         
         break;
 
@@ -300,21 +223,6 @@ export class InicioPage implements OnInit {
         
           break;
 
-          case 'Entregando': return this.moto1
-        
-            break;
-            case 'Recogiendo': return this.moto0
-        
-              break;
-              case 'Nuevo pedido': return this.nuevo
-        
-                break;
-                case 'Lista y limpia': return this.esperando
-        
-                break;
-                case 'Finalizado': return this.finalsizadp
-          
-                  break;
     
       default:
         break;
@@ -359,12 +267,6 @@ export class InicioPage implements OnInit {
     }
     this.vewFiltros()
   }
-
-
-
-
-
-
 
 
 

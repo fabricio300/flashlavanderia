@@ -20,7 +20,7 @@ import { FCM } from '@ionic-native/fcm/ngx';
 
 
 
-const config: SocketIoConfig = { url: 'http://138.197.70.172', options: {} };
+const config: SocketIoConfig = { url: 'http://165.227.60.169', options: {} };
 
 @NgModule({
   declarations: [AppComponent],

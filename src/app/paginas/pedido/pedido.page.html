@@ -121,9 +121,7 @@
 
 
       <h5 *ngIf="datosPlanchado.length>0"  style="color: #3c9d9b; border-bottom: 1px solid #3c9d9b;">Planchado:</h5>
-      <p *ngFor="let plan of datosPlanchado">{{plan.unidad}} ${{plan.precio}}</p>
-
-
+      
       <div *ngFor="let plan of datosPlanchado">
         <p >{{plan.unidad}} ${{plan.precio}}</p>
         <div *ngIf="plan.cantidad!=0" class="centrar">
@@ -180,15 +178,22 @@
   <div  *ngIf="pedido.status!='Cancelado'" class="centrar" style="margin: auto; height: auto; width: 95%;">
     <ion-button 
     (click)="asignarRepartidor()"
-    color=tertiary style="width: 49%;  margin: auto; font-size: 12px;">
+    color=tertiary *ngIf="asinar==true" style="width: 49%;  margin: auto; font-size: 12px;">
       Asingnar repartidor
     </ion-button>
-      <ion-button  color=tertiary style="width: 49%;  margin: auto; font-size: 12px;" >
-          finalizar
+
+        <ion-button  *ngIf="pedido.status=='A lavanderia'" color=tertiary  style="width: 49%;  margin: auto; font-size: 12px;" >
+          Confirmar entregra
         </ion-button>
-        <ion-button (click)="viewNserDatas()">
-            ingresar datos
+
+        <ion-button color=tertiary *ngIf="tipoPedido=='solo_entregar'" (click)="viewNserDatas()">
+            Ingresar datos
           </ion-button>
+
+          <ion-button color=tertiary   style="width: 49%;  margin: auto; font-size: 12px;">
+            Rechazar solicitud
+          </ion-button>
+
         </div>
 <!-------------ingresar datos inicio--------------------------------------------------------------------------------------------->
 

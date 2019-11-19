@@ -1,9 +1,9 @@
 <ion-header style="z-index: 100;">
   <ion-toolbar color="primary" >
     <ion-buttons slot="start">
-      <ion-button (click)="openFirst()">
-        <ion-icon name="menu" ></ion-icon>
-      </ion-button>
+      <ion-back-button >
+
+      </ion-back-button>
     </ion-buttons>
        <ion-input  [(ngModel)]="nombresDecliente" placeholder="Ingresa el nombre de un cliente"></ion-input>
 
@@ -28,41 +28,7 @@
 
 <ion-content>
 
-    <ion-menu side="start" menuId="first" style="position: fixed; z-index: 100;">
-        <ion-header>
-          <ion-toolbar color="secondary">
-            <img src="../../../assets/iconos/flaswash12.png" style="max-width:100%; height: auto; ">
-          
-          </ion-toolbar>
-        </ion-header>
-        <ion-content color="secondary">
-          
-         
-
-            <ion-item color="secondary" *ngFor="let op of menuflash"
-            (click)="ir(op.url)"
-            >
-                <img src="{{op.icon}}" style="width: 20px; margin: 3px;">
-              {{op.titulo}}
-            </ion-item>
-
-
-          
-            
-            <ion-item color="secondary" *ngIf="this.apiService.status_de_secion" (click)="cerrarSesion()">
-                <img src="../../../assets/iconos/close.png" style="width: 20px; margin: 3px;">
-                Cerrar sesion
-            </ion-item>
-
-            <ion-item color="secondary" *ngIf="!this.apiService.status_de_secion" (click)="closeFirst()"  [routerLink]="['/login']">
-              <img src="../../../assets/iconos/user.png" style="width: 20px; margin: 3px;">
-              iniciar sesion
-          </ion-item>
-           
-     
-        </ion-content>
-      </ion-menu>
-      <ion-router-outlet main></ion-router-outlet>
+   
 
 
 
@@ -94,17 +60,16 @@
 
 
 
-      <div class="filtros" id="filtro" > 
-       
-        <ion-header>
-          <ion-toolbar color="tertiary">
-            <ion-title>
-                Staus del pedido:
-            </ion-title>
-          </ion-toolbar>
-        </ion-header>
-        
+      <div class="filtros" id="filtro11" > 
+          <ion-header>
+              <ion-toolbar color="tertiary">
+                <ion-title>
+                    Staus del pedido:
+                </ion-title>
+              </ion-toolbar>
+            </ion-header>
         <div style="z-index: 70;">
+          
           <ion-item color="medium" *ngFor="let filtro of filtros">
             <ion-checkbox 
             [(ngModel)]="filtro.stado"
@@ -157,7 +122,7 @@
 
 
 
-      <h1 style="margin: 10px;">Pedidos:</h1>
+      <h1 style="margin: 10px;">Historial:</h1>
 
 
 
@@ -188,7 +153,7 @@
       <div class="centrar" style="cursor: pointer; width: 90%; margin: auto;
       margin-bottom: 10px;" 
       [ngClass]="{'quitar':pedido.ser_visto==false}"
-      *ngFor="let pedido  of pedidos | filtrosInicio: nombresDecliente">
+      *ngFor="let pedido  of pedidos | filtrosHistorial: nombresDecliente">
 
       <ion-button  
       (click)="irApedido(pedido)"
@@ -200,10 +165,8 @@
                   'lavanderia':pedido.status=='En proceso',
                   'encalino1':pedido.status=='Entregando',
                   'encalino2':pedido.status=='A lavandería',
-                  'resperando':pedido.status=='Lista y limpia',
                   'recojer':pedido.status=='Recogiendo',
                   'final':pedido.status=='Finalizado'
-
       }"
       
       >

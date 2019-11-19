@@ -1,20 +1,19 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'filtros'
+  name: 'filtrosHistorial'
 })
 export class FiltrosPipe implements PipeTransform {
 
-  
   transform(value: any,args: any): any {
     const resultado=[]
     
-   console.log("eb22222",value);
+   console.log("ebtrered",value);
    
     for(const post of value){
       //console.log("fillll ", post);
       
-        var elemet=""+post.title
+        var elemet=""+post.nombreCliente
         var valor=""+args
         if(elemet.toLowerCase().indexOf(valor.toLowerCase())>-1){
             console.log("echo");

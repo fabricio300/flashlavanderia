@@ -8,6 +8,7 @@ import { NativeGeocoder, NativeGeocoderResult, NativeGeocoderOptions } from '@io
 import { AlertController } from '@ionic/angular';
 import { error } from 'util';
 import { timeout } from 'q';
+import { Socket } from 'ngx-socket-io';
 
 
 @Component({
@@ -51,6 +52,7 @@ export class RegistroPage implements OnInit {
     private geolocation: Geolocation,
     private nativeGeocoder: NativeGeocoder,
     private alertacontroller: AlertController,
+    private socket: Socket,
   ) { 
       this.formRegistro=this.formBuilder.group({
        /* nombre:['',Validators.compose([
@@ -404,6 +406,7 @@ registrarLavanderia(){
   this.apiservice.registrar(itemInfoLavanderia).subscribe(response=>{ 
 
     localStorage.setItem('idLavanderia',''+response.id)
+    this.darAvisoNuenvaLavanderia()
     this.recargar=this.recargar+1
    
     
@@ -465,7 +468,7 @@ registrarLavanderia(){
     
    
     this.recargarpagina()
-    
+  
   })
 
 }
@@ -796,6 +799,7 @@ guadarEditLavanderia(){
     this.efectos.next('MenuEdit')
     this.en_proceso=false
     this.verAlerta('Los cambios realizados han sido exitosos','Cambios realizados','Proceso finalizado')
+    this.darAvisActulizacionLavanderia()
   })
 
 
@@ -895,6 +899,15 @@ await alerta.present()
 
 
 
+darAvisoNuenvaLavanderia(){
+    this.socket.emit('resgirtro_de_lavanderia',localStorage.getItem('idLavanderia'))
+    console.log("EEEviado");
+    
+}
 
+darAvisActulizacionLavanderia(){
+  this.socket.emit('lavanderia_actualizada',localStorage.getItem('idLavanderia'))
+  console.log("EEEviado222");
+}
 
 }

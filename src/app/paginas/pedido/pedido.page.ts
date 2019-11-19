@@ -24,7 +24,9 @@ export class PedidoPage implements OnInit {
 
   ver_insert_data=false
   repartidor=null
-
+  tipoPedido:any
+  id_repartidor:any
+  asinar=false
   constructor(
     private route: ActivatedRoute,
      private router: Router,
@@ -38,7 +40,7 @@ export class PedidoPage implements OnInit {
       this.coordenadas=this.direccionCliente.coordenadas
       //console.log("coordenadas=",this.coordenadas);
       this.verificarRespartidor(this.pedido.id)
-      this.setDatosServicios()
+   
 
   });
     
@@ -75,7 +77,27 @@ asignarRepartidor(){
 verificarRespartidor(id){
   this.apiservice.getPedido(id).subscribe(Response=>{
     console.log("EEe",Response);
-    if(Response.repartidor_id){
+
+    this.tipoPedido=Response.tipo_entrega
+    this.verCasoDeAsignacion()
+    console.log("iiiiiiiiiiiiiii",this.tipoPedido);
+    if(Response.datos_ropa!=null){
+     let datas:any=JSON.parse(Response.datos_ropa)
+     console.log(datas);
+     console.log("-----------------",datas.lavanderia);
+     this.datosLavanderia=datas.lavanderia
+     console.log("-----------------",datas.tintoreria);
+     this.datosTintoreria=datas.tintoreria
+     console.log("-----------------",datas.planchado);
+     this.datosPlanchado=datas.planchado
+     //this.setDatosServicios()
+    }else{
+      this.setDatosServicios()
+    }
+    this.id_repartidor=Response.repartidor_id
+
+    
+    if(Response.repartidor_id!=null){
       console.log("EEEEEEEEEEEEEEEEEE");
       this.apiservice.getRepartidor(Response.repartidor_id).subscribe(Response1=>{
         
@@ -231,8 +253,8 @@ cancelarDatos(){
 
 }
 
-guardarDatosDelPedido(){
-  
+async guardarDatosDelPedido(){
+  this.viewNserDatas()
   let datos_ropa:any=JSON.stringify({
       lavanderia:this.datosLavanderia,
       tintoreria:this.datosTintoreria,
@@ -242,9 +264,33 @@ guardarDatosDelPedido(){
     
   this.apiservice.setDatosRapaPedido(this.pedido.id,{datos_ropa:datos_ropa}).subscribe(Response=>{
     console.log("echoooooooooo");
-    this.viewNserDatas()
+  
     
   })
 }
+
+
+verCasoDeAsignacion(){
+  if(this.pedido.status=='Nuevo pedido' || this.pedido.status=='En proceso'){
+      switch(this.tipoPedido){
+        case 'solo_entregar':
+          if(this.pedido.status=='En proceso'){
+            this.asinar=true
+          }else this.asinar=false
+        break;
+        case 'solo_recojer':
+            if(this.pedido.status=='Nuevo pedido'){
+              this.asinar=true
+            }else this.asinar=false
+        break;
+        case 'completo':  this.asinar=true
+        break;
+
+      }
+  }else{
+    this.asinar=false
+  }
+}
+
 
 }
