@@ -28,6 +28,7 @@ agm-map{
     width: 100%;
     height: 90%;
     //background: orangered;
+    overflow: hidden;
     overflow-y: scroll;
 }
 
@@ -85,7 +86,13 @@ agm-map{
    
 }
 
+.negro{
+    color: black;
+}
 
+.blanco{
+    color: white;
+}
 
 
 .conimg1::content img,.conimg11::content img ,.conimg2::content img{

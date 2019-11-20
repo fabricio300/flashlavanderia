@@ -83,7 +83,7 @@ export class LoginPage implements OnInit {
   }
 
 
-  iniciarSesion(){
+  async iniciarSesion(){
     let item={
       correo_electronico:this.formInicio.get('correo').value,
       contraseña:this.formInicio.get('contrasenia').value

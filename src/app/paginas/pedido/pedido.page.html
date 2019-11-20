@@ -1,13 +1,15 @@
 <ion-header>
   <ion-toolbar color=primary>
       <ion-buttons slot="start">
-          <ion-back-button></ion-back-button>
+          <ion-back-button  (click)="bolberStatus()"></ion-back-button>
         </ion-buttons>
     <ion-title>Pedido</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+
+  
 <div style="width: 100%; height: 100%; overflow-y: scroll;">
 
   <div class="info">
@@ -42,8 +44,10 @@
       'cancelado':pedido.status=='Cancelado',
       'lavanderia':pedido.status=='En proceso',
       'encalino1':pedido.status=='Entregando',
-      'encalino2':pedido.status=='A lavanderia',
-      'recojer':pedido.status=='Recogiendo'
+      'encalino2':pedido.status=='A lavandería',
+      'recojer':pedido.status=='Recogiendo',
+      'resperando':pedido.status=='Lista y limpia',
+      'final':pedido.status=='Finalizado'
       }"
       >
 
@@ -145,7 +149,12 @@
     </div>
 
 
-
+    <h5 *ngIf="costos!=null"  style="color: #1d4d4f; border-bottom: 1px solid #1d4d4f; margin-left: 10px;">
+      total = $ 
+      {{ costos.precio_lavanderia}}
+    
+    </h5>
+      
 
     <div class="detalles" *ngIf="pedido.indicaciones!=null">
       <h3 style="color: goldenrod;">Indicaciones:</h3>
@@ -158,7 +167,11 @@
 
   </div>
 
+  
+  
+
   <div class="serviciosS" *ngIf="repartidor!=null" >
+    <h6 style="color: red; " *ngIf="pedido.status=='Nuevo pedido' || pedido.status=='En proceso'">Esperando respuesta del repartidor </h6>
     <h3 style="color: royalblue;">Repartidor asignado:</h3>
 
     <div class="centrar" style="width: 180px; height: auto; background: rebeccapurple; margin: 10px;
@@ -175,24 +188,46 @@
 
   </div>
 
-  <div  *ngIf="pedido.status!='Cancelado'" class="centrar" style="margin: auto; height: auto; width: 95%;">
-    <ion-button 
-    (click)="asignarRepartidor()"
-    color=tertiary *ngIf="asinar==true" style="width: 49%;  margin: auto; font-size: 12px;">
+  <div  *ngIf="pedido.status!='Cancelado'" class="centrar" style="margin: auto; height: auto; width: 100%; padding: 10px;">
+    
+    
+    <ion-button *ngIf="tipoPedido=='completo' && pedido.status=='Nuevo pedido'" color=tertiary  style="width: 49%;  margin: auto; font-size: 11px;"  (click)="asignarRepartidor()">
       Asingnar repartidor
     </ion-button>
 
-        <ion-button  *ngIf="pedido.status=='A lavanderia'" color=tertiary  style="width: 49%;  margin: auto; font-size: 12px;" >
-          Confirmar entregra
-        </ion-button>
+    <ion-button *ngIf="tipoPedido=='completo' && pedido.status=='En proceso'" color=tertiary  style="width: 49%;  margin: auto; font-size: 11px;"  (click)="asignarRepartidor()">
+      Asingnar repartidor
+    </ion-button>
 
-        <ion-button color=tertiary *ngIf="tipoPedido=='solo_entregar'" (click)="viewNserDatas()">
+
+    <ion-button *ngIf="tipoPedido=='solo_entregar' && pedido.status=='En proceso'" color=tertiary  style="width: 49%;  margin: auto; font-size: 11px;"  (click)="asignarRepartidor()">
+      Asingnar repartidor
+    </ion-button>
+
+    <ion-button *ngIf="tipoPedido=='solo_recojer' && pedido.status=='Nuevo pedido'" color=tertiary  style="width: 49%;  margin: auto; font-size: 11px;"  (click)="asignarRepartidor()">
+      Asingnar repartidor
+    </ion-button>
+
+        <ion-button color=tertiary *ngIf="tipoPedido=='solo_entregar'  && pedido.status=='Nuevo pedido'" (click)="viewNserDatas()" style="width: 49%;  margin: auto; font-size: 11px;">
             Ingresar datos
           </ion-button>
 
-          <ion-button color=tertiary   style="width: 49%;  margin: auto; font-size: 12px;">
+          <ion-button color=tertiary *ngIf="pedido.status=='Nuevo pedido'"   style="width: 49%;  margin: auto; font-size: 11px;">
             Rechazar solicitud
           </ion-button>
+
+          <ion-button color=tertiary *ngIf="tipoPedido=='solo_recojer' && pedido.status=='A lavandería'" (click)="comfirmarRecivido()"   style="width: 49%;  margin: auto; font-size: 11px;">
+              Comfirmar entrega
+            </ion-button>
+          
+            <ion-button color=tertiary *ngIf="tipoPedido=='completo' && pedido.status=='A lavandería'" (click)="comfirmarRecivido()"   style="width: 49%;  margin: auto; font-size: 11px;">
+              Comfirmar entrega
+            </ion-button>
+
+
+            <ion-button color=tertiary  *ngIf="tipoPedido=='solo_recojer' && pedido.status=='En proceso'"  (click)="ropaLavadaEspera()"   style="margin: auto; font-size: 11px;">
+                Ropa lista para entregar
+            </ion-button>
 
         </div>
 <!-------------ingresar datos inicio--------------------------------------------------------------------------------------------->

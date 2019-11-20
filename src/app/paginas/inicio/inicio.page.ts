@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterContentInit } from '@angular/core';
 import { MenuController } from '@ionic/angular';
-import { Router, NavigationExtras } from '@angular/router';
+import { Router, NavigationExtras,ActivatedRoute } from '@angular/router';
 
 import { Socket } from 'ngx-socket-io';
 import { ApiServiceService } from '../../api-service.service';
+import { NavController } from '@ionic/angular';
+import { NotificaService } from '../../notificaciones/notifica.service';
+
 
 
 @Component({
@@ -11,7 +14,11 @@ import { ApiServiceService } from '../../api-service.service';
   templateUrl: './inicio.page.html',
   styleUrls: ['./inicio.page.scss'],
 })
-export class InicioPage implements OnInit {
+export class InicioPage implements AfterContentInit{
+  ngAfterContentInit(): void {
+    this.pedidos=[]
+    this.getPedidosL()
+  }
   viewFilters=false
   busquedadTerminada=false
   refrescar=false
@@ -36,10 +43,10 @@ export class InicioPage implements OnInit {
      filtro:'Entregando',
      stado:true
    },
-   {
+  /* {
      filtro:'Cancelado',
      stado:true
-   },
+   },*/
  
    {
      filtro:'Nuevo pedido',
@@ -54,10 +61,10 @@ export class InicioPage implements OnInit {
      stado:true
    }
    ,
-   {
+   /*{
      filtro:'Finalizado',
      stado:true
-   },
+   },*/
    {
      filtro:'Lista y limpia',
      stado:true
@@ -149,11 +156,18 @@ export class InicioPage implements OnInit {
     private menu: MenuController,
     private router:Router,
     private socket: Socket,
-    private apiService:ApiServiceService
+    private apiService:ApiServiceService,
+    private route: ActivatedRoute,
+    public navCtrl: NavController,
+    private notificacion:NotificaService
   ) { 
+
+   
 
     if(localStorage.getItem('sesion')=='true'){
       this.apiService.status_de_secion=true
+      notificacion.suscrivirceAtema()
+     // this.getPedidosL()
     }
 
     console.log("este id es ",localStorage.getItem('idLavanderia'));
@@ -164,15 +178,33 @@ export class InicioPage implements OnInit {
       this.getPedidosL()
     })
 
-    this.getPedidosL()
+
+    socket.on('se_actualiso_el_pedido'+'id_lavanderia'+localStorage.getItem('idLavanderia'),(data)=>{
+      console.log('soket =',data);
+      this.pedidos=[]
+      this.getPedidosL()
+    })
+
+    setInterval(()=>{
+      if(localStorage.getItem('actualiza')!=null && localStorage.getItem('actualiza')=='si'){
+
+        localStorage.setItem('actualiza','no')
+        this.pedidos=[]
+        this.getPedidosL()
+      }
+    },1000)
+    
+    
     console.log("id lavanderia ",localStorage.getItem('idLavanderia'));
     
   }
 
   ngOnInit() {
     this.ocultarFiltro()
+    
   }
 
+ 
   openFirst() {
     this.menu.enable(true, 'first');
     this.menu.open('first');
@@ -195,8 +227,10 @@ export class InicioPage implements OnInit {
 
 
   ir(url){
+
     this.router.navigate([url])
     this.closeFirst()
+  
   }
 
   ocultarFiltro(){
@@ -219,11 +253,13 @@ export class InicioPage implements OnInit {
     };
     //console.log(pedido);
     this.router.navigate(['/pedido'], navigationExtras);
+    this.router.ngOnDestroy()
     //this.router.navigate(['/pedido'])
   }
 
 
   cerrarSesion(){
+    this.notificacion.desSuscribirce()
     this.closeFirst()
     this.apiService.status_de_secion=false
     localStorage.clear()
@@ -232,10 +268,11 @@ export class InicioPage implements OnInit {
   }
 
   getPedidosL(){
+    this.pedidos=[]
     if(localStorage.getItem('idLavanderia')!=null){
 
     this.apiService.getPedidos(localStorage.getItem('idLavanderia')).subscribe(Response=>{
-      this.pedidos=[]
+     
       this.busquedadTerminada=false
       //console.log(Response);
       let item={
@@ -272,8 +309,9 @@ export class InicioPage implements OnInit {
           }
 
           console.log("S",item);
-         
-          this.pedidos.push(item)
+            if(item.status!='Finalizado' && item.status!='Cancelado'){
+              this.pedidos.push(item)
+            }
         })
 
 
@@ -292,7 +330,7 @@ export class InicioPage implements OnInit {
         
       break;
 
-      case 'A lavanderia': return this.moto2
+      case 'A lavandería': return this.moto2
         
         break;
 

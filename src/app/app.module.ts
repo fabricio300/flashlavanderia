@@ -17,7 +17,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { NativeGeocoder } from '@ionic-native/native-geocoder/ngx';
 import { FCM } from '@ionic-native/fcm/ngx';
-
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx'
 
 
 const config: SocketIoConfig = { url: 'http://165.227.60.169', options: {} };
@@ -36,6 +36,7 @@ const config: SocketIoConfig = { url: 'http://165.227.60.169', options: {} };
     Geolocation,
     NativeGeocoder,
     FCM,
+    LocalNotifications,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]

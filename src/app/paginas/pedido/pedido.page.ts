@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router,NavigationExtras } from '@angular/router';
 import { ApiServiceService } from '../../api-service.service';
+import { Socket } from 'ngx-socket-io';
+import { NavController } from '@ionic/angular';
+import { NotificaService } from '../../notificaciones/notifica.service';
 
 
 @Component({
@@ -9,7 +12,14 @@ import { ApiServiceService } from '../../api-service.service';
   styleUrls: ['./pedido.page.scss'],
 })
 export class PedidoPage implements OnInit {
-
+  cancel='../../../assets/iconos/cross.png'
+  lava='../../../assets/iconos/washing-machine2.png'
+  moto0='../../../assets/iconos/vespa4.png'
+  moto1='../../../assets/iconos/vespa3.png'
+  moto2='../../../assets/iconos/vespa2.png'
+  nuevo='../../../assets/iconos/new-product.png'
+  esperando='../../../assets/iconos/help.png'
+  finalsizadp='../../../assets/iconos/check-mark.png'
  
   total=0
 
@@ -23,14 +33,25 @@ export class PedidoPage implements OnInit {
   datosPlanchado:any=[]
 
   ver_insert_data=false
+  ingresoDatos=false
+
   repartidor=null
   tipoPedido:any
   id_repartidor:any
+  id_cliente:any
   asinar=false
+  costos:any
+
+  yo_ingrese_Datos=false
+  
+
   constructor(
     private route: ActivatedRoute,
      private router: Router,
-     private apiservice:ApiServiceService
+     private apiservice:ApiServiceService,
+     private socket:Socket,
+     private  navCtrl:NavController,
+     private notificacion:NotificaService
   ) { 
     this.route.queryParams.subscribe(params => {
       this.pedido = JSON.parse(params.special);
@@ -42,12 +63,26 @@ export class PedidoPage implements OnInit {
       this.verificarRespartidor(this.pedido.id)
    
 
+      socket.on('se_actualiso_el_pedido'+'id_lavanderia'+localStorage.getItem('idLavanderia'),(data)=>{
+        console.log('soket =',data);
+       
+        this.verificarRespartidor(this.pedido.id)
+      })
   });
     
+    setInterval(()=>{
+        if(localStorage.getItem('esperaRepartidor')!=null && localStorage.getItem('esperaRepartidor')=='si'){
+          this.verificarRespartidor(this.pedido.id)
+          localStorage.setItem('esperaRepartidor','no')
+        }else{
+         
+        }
+    },1000)
     
   }
 
   ngOnInit() {
+    this.ingresoDatos=false
     document.getElementById('IngresarDatos').style.marginLeft="-150%"
   }
 
@@ -71,16 +106,36 @@ asignarRepartidor(){
   //this.router.navigate(['/pedido'])
 }
 
+bolberStatus(){
+  this.router.navigateByUrl('/inicio')
 
+  if(this.yo_ingrese_Datos==true){
+    localStorage.setItem('actualiza','si')
+  }else{
+    localStorage.setItem('actualiza','no')
+  }
+  
+
+}
 
 
 verificarRespartidor(id){
+  this.datosLavanderia=[]
+  this.datosTintoreria=[]
+  this.datosPlanchado=[]
   this.apiservice.getPedido(id).subscribe(Response=>{
     console.log("EEe",Response);
-
+    this.id_cliente=Response.usuario_id
+    this.pedido.status=Response.status
+    this.pedido.icon=this.getStatusIcon(Response.status)
     this.tipoPedido=Response.tipo_entrega
+    this.pedido.direccionCliente=Response.direccion_usuario
     this.verCasoDeAsignacion()
     console.log("iiiiiiiiiiiiiii",this.tipoPedido);
+    
+    this.costos=JSON.parse(Response.precio)
+
+    console.log("peccionsssss",this.costos);
     if(Response.datos_ropa!=null){
      let datas:any=JSON.parse(Response.datos_ropa)
      console.log(datas);
@@ -194,6 +249,8 @@ getTotal(){
 
     });
 
+      
+
   }
 
 
@@ -207,6 +264,8 @@ getTotal(){
       element.costo=parseInt(elemento.value)
 
     });
+
+
     if(this.datosPlanchado.length>0){
       this.datosPlanchado.forEach(element => {
         var elemento:any 
@@ -223,6 +282,9 @@ getTotal(){
 
   }
   
+  this.costos.precio_lavanderia=''+this.total
+
+  console.log("estos son los ultimimos costos",this.costos);
   
 }
 
@@ -255,6 +317,7 @@ cancelarDatos(){
 
 async guardarDatosDelPedido(){
   this.viewNserDatas()
+ 
   let datos_ropa:any=JSON.stringify({
       lavanderia:this.datosLavanderia,
       tintoreria:this.datosTintoreria,
@@ -264,7 +327,10 @@ async guardarDatosDelPedido(){
     
   this.apiservice.setDatosRapaPedido(this.pedido.id,{datos_ropa:datos_ropa}).subscribe(Response=>{
     console.log("echoooooooooo");
-  
+    this.yo_ingrese_Datos=true
+    this.actualizarCostes()
+    this.comfirmarRecivido()
+      
     
   })
 }
@@ -292,5 +358,101 @@ verCasoDeAsignacion(){
   }
 }
 
+
+getStatusIcon(status){
+
+  switch (status) {
+    case 'En proceso': return this.lava
+      
+    break;
+
+    case 'A lavandería': return this.moto2
+      
+      break;
+
+      case 'Cancelado': return this.cancel
+      
+        break;
+
+        case 'Entregando': return this.moto1
+      
+          break;
+          case 'Recogiendo': return this.moto0
+      
+            break;
+            case 'Nuevo pedido': return this.nuevo
+      
+              break;
+              case 'Lista y limpia': return this.esperando
+      
+              break;
+              case 'Finalizado': return this.finalsizadp
+        
+                break;
+  
+    default:
+      break;
+  }
+
+}
+
+actualizarStaus(){
+  console.log("id_cliente_avisado",this.id_cliente);
+  console.log("id_lavanderia_avisado",localStorage.getItem('idLavanderia'));
+  
+    this.socket.emit('nuevo_status','id_user'+this.id_cliente)
+    this.verificarRespartidor(this.pedido.id)
+    this.ingresoDatos=true
+}
+
+
+
+comfirmarRecivido(){
+  let item={
+    status:'En proceso'
+  }
+
+  let item2={
+    repartidor_id:null,
+    status:'En proceso'
+  }
+  this.apiservice.setStatusPedido(this.pedido.id,item).subscribe(Response=>{
+    this.apiservice.asignarRepartidor(item2,this.pedido.id).subscribe(Response1=>{
+      this.socket.emit('asignarReaptidor',this.id_repartidor)
+      this.notificacion.emviarMensaje('El servicio esta en proceso','La lavandería a recibido su ropa','user'+this.id_cliente)
+      this.notificacion.emviarMensaje('El servicio concluido','La lavandería a confirmado tu tarea','Repartidor'+this.id_repartidor)
+      this.actualizarStaus()
+      this.repartidor=null
+    })
+    
+  })
+}
+
+
+ropaLavadaEspera(){
+  let item={
+    status:'Lista y limpia'
+  }
+  this.apiservice.setStatusPedido(this.pedido.id,item).subscribe(Response=>{
+    this.actualizarStaus()
+    this.notificacion.emviarMensaje('El servicio listo','La lavandería esta esperando que recojas tu ropa','user'+this.id_cliente)
+  })
+
+}
+
+actualizarCostes(){
+  let item={
+    precio: JSON.stringify(this.costos),
+    status:'En proceso'
+  }
+
+  this.apiservice.actualizarCostos(this.pedido.id,item).subscribe(Response=>{
+
+      console.log("percios actualizados");
+      this.notificacion.emviarMensaje('El servicio esta en proceso','La lavandería a recibido su ropa','user'+this.id_cliente)
+
+  })
+  localStorage.setItem('recargar','si')
+}
 
 }

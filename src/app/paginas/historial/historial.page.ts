@@ -163,8 +163,8 @@ export class HistorialPage implements OnInit {
       this.busquedadTerminada=false
       //console.log(Response);
       let item={
-        nombreCliente:'nombre cliente 1',
-        status:'En proceso',
+        nombreCliente:'',
+        status:'',
         horaSolicitud: null,
         icon: '',
         id:'',
@@ -195,8 +195,8 @@ export class HistorialPage implements OnInit {
             ser_visto:true
           }
 
-          console.log("S",item);
-         if(item.status=='Finalizado',item.status=='Cancelado'){
+          console.log("S",item.status);
+         if(item.status=='Finalizado' || item.status=='Cancelado'){
           this.pedidos.push(item)
          }
           

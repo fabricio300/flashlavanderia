@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ApiServiceService } from '../../api-service.service';
 import { Router,ActivatedRoute } from '@angular/router';
 import {Location} from '@angular/common'; 
+import { Socket } from 'ngx-socket-io';
+import { NotificaService } from '../../notificaciones/notifica.service';
 
 @Component({
   selector: 'app-repartidor',
@@ -79,7 +81,9 @@ export class RepartidorPage implements OnInit {
     private apiservice:ApiServiceService,
     private router: Router,
     private route: ActivatedRoute,
-    private _location: Location
+    private _location: Location,
+    private socket:Socket,
+    private notifica:NotificaService
     ) {
       this.route.queryParams.subscribe(params => {
       
@@ -142,7 +146,7 @@ export class RepartidorPage implements OnInit {
           apellidos:element.apellidos,
           tel:element.telefono,
           empresa:'Kanguros',
-          matricula:'345thg',        
+          matricula:element.matricula,        
           foto:foto[0].imagen,
           lat:parseFloat(coordenas.lat),
           lon:parseFloat(coordenas.lon),
@@ -167,11 +171,36 @@ export class RepartidorPage implements OnInit {
     console.log("item ",item);
     
    this.apiservice.asignarRepartidor(item,this.pedido.id,).subscribe(Response=>{
-
+    localStorage.setItem('esperaRepartidor','si')
     console.log("rcho");
-
-    this._location.back(); 
+    this.evisarRepartidor()
+    this.router.navigate(['/pedido'])
     
    })
+  }
+
+
+  evisarRepartidor(){
+    console.log("iiiiifffff",this.repartidorActual.id);
+    
+
+
+    if(""+this.repartidorActual.id!=localStorage.getItem('idRepartidor')){
+      this.socket.emit('asignarReaptidor',this.repartidorActual.id)
+      console.log("avisadooooooooooooooooooooooooooooo repartidor");
+      localStorage.setItem('idRepartidor',this.repartidorActual.id)
+      this.notifica.emviarMensaje('Un pedido le ha sido asignado','Tienes una solicitud de pedido','Repartidor'+this.repartidorActual.id)
+
+    }else{
+      this.socket.emit('asignarReaptidor',localStorage.getItem('idRepartidor'))
+      this.notifica.emviarMensaje('Un pedido fue reasignado','Has sido liberado de un pedido','Repartidor'+localStorage.getItem('idRepartidor'))
+      this.socket.emit('asignarReaptidor',this.repartidorActual.id)
+      this.notifica.emviarMensaje('Un pedido le ha sido asignado','Tienes una solicitud de pedido','Repartidor'+this.repartidorActual.id)
+      localStorage.setItem('idRepartidor',this.repartidorActual.id)
+      console.log("avisadooooooooooooooooooooooooooooo repartidor");
+      
+    }
+    
+    
   }
 }

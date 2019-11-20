@@ -7,8 +7,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div style="width: 100%; height: 100%;">
+<ion-content color=secondary>
+  <div style="width: 100%; height: 100%; position: absolute; top: 0px; overflow: hidden;">
   
     <div class="mapa">
         <agm-map
@@ -73,7 +73,7 @@
               <div class="centrar"  [ngClass]="{'conimg1':repartidorActual.id!=repar.id,'conimg11':repartidorActual.id==repar.id}">
                   <img src="{{repar.foto}}" >
               </div>
-              <p style="font-size: 13px;" >
+              <p style="font-size: 13px;"  [ngClass]="{'negro':repartidorActual.id!=repar.id,'blanco':repartidorActual.id==repar.id}">
                   {{repar.nombre}}
               </p>
               
@@ -93,7 +93,7 @@
               <img src="../../../assets/iconos/information (1).png" width="20px;" style="margin: 2px;" > 
             Datos del repartidor:</label>
             
-            <div class="scrolRepartidores centrar">
+            <div class="scrolRepartidores centrar" style="overflow: hidden; overflow-y: scroll; ">
 
               <div id="ima" class="conimg2 centrar">
                   <img src="{{repartidorActual.foto}}" >
@@ -109,13 +109,15 @@
               <label >Matricula de veiculo:</label>
               <p>{{repartidorActual.matricula}}</p>
 
-              <label >Empresa:</label>
-              <p>{{repartidorActual.empresa}}</p>
+              <!--label >Empresa:</label>
+              <p>{{repartidorActual.empresa}}</p---->
               <ion-button
               [disabled]="height==0"
-              (click)="asignar()">
+              (click)="asignar()" style="font-size: 11px; width: 90%; height: 20px;">
                   Asignar
                 </ion-button>
+
+                
             </div>
 
         

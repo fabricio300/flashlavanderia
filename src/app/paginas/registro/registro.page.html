@@ -800,6 +800,7 @@
 
     <div class="parte" style=" height: 0px; " id="Imagenes">
         <h5 style="margin-left: 10px;">Imagenes de precentación:</h5>
+        <label style="margin-left: 10px; color: red;">Maximo 3 imagenes</label>
         <div  style="padding: 10px; z-index: 70; height: 100%;">
 
           <div class="contFotos ">
@@ -819,7 +820,9 @@
           </div>
 
           
-          <button class="AddService centrar" style="margin-right: 5px;">
+          <button
+          *ngIf="imagenes.length<3"
+          class="AddService centrar" style="margin-right: 5px;">
               <img src="../../../assets/iconos/upload.png" width="80%">
               <input
               style="position: absolute; width: 100%; height: 100%; outline: none; opacity: 0;"
