@@ -23,6 +23,7 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
+      this.platform.backButton.observers.pop()
       //this.statusBar.styleDefault();
       //this.splashScreen.hide();
       this.notificacion.suscrivirceAtema()

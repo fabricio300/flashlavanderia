@@ -86,6 +86,11 @@ export class PedidoPage implements OnInit {
     document.getElementById('IngresarDatos').style.marginLeft="-150%"
   }
 
+  ionViewWillEnter() {
+    console.log("Hola************************************************************");
+    //this.ngOnInit()
+    this.verificarRespartidor(this.pedido.id)
+  }
 
  
   
