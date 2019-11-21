@@ -70,14 +70,14 @@ export class PedidoPage implements OnInit {
       })
   });
     
-    setInterval(()=>{
+    /*setInterval(()=>{
         if(localStorage.getItem('esperaRepartidor')!=null && localStorage.getItem('esperaRepartidor')=='si'){
           this.verificarRespartidor(this.pedido.id)
           localStorage.setItem('esperaRepartidor','no')
         }else{
          
         }
-    },1000)
+    },1000)*/
     
   }
 
