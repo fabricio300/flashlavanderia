@@ -82,6 +82,9 @@ export class LoginPage implements OnInit {
         this.mostrarPart('part1')
   }
 
+  irARecuperarPassword(){
+    this.router.navigate(['/resetar'])
+  }
 
   async iniciarSesion(){
     let item={
