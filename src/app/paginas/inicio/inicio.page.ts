@@ -16,8 +16,8 @@ import { NotificaService } from '../../notificaciones/notifica.service';
 })
 export class InicioPage implements AfterContentInit{
   ngAfterContentInit(): void {
-    this.pedidos=[]
-    this.getPedidosL()
+    //this.pedidos=[]
+//this.getPedidosL()
   }
   viewFilters=false
   busquedadTerminada=false
@@ -185,14 +185,7 @@ export class InicioPage implements AfterContentInit{
       this.getPedidosL()
     })
 
-    /*setInterval(()=>{
-      if(localStorage.getItem('actualiza')!=null && localStorage.getItem('actualiza')=='si'){
-
-        localStorage.setItem('actualiza','no')
-        this.pedidos=[]
-        this.getPedidosL()
-      }
-    },1000)*/
+  
     
     
     console.log("id lavanderia ",localStorage.getItem('idLavanderia'));
@@ -207,6 +200,7 @@ export class InicioPage implements AfterContentInit{
   ionViewWillEnter() {
     console.log("Hola************************************************************");
     //this.ngOnInit()
+      this.pedidos=null
       this.pedidos=[]
       this.getPedidosL()
   }
