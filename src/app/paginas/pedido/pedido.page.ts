@@ -68,16 +68,15 @@ export class PedidoPage implements OnInit {
        
         this.verificarRespartidor(this.pedido.id)
       })
+
+
+      socket.on('lavanderia_rechada'+localStorage.getItem('idLavanderia'),(data)=>{
+        this.verificarRespartidor(this.pedido.id)
+      })
+
   });
     
-    /*setInterval(()=>{
-        if(localStorage.getItem('esperaRepartidor')!=null && localStorage.getItem('esperaRepartidor')=='si'){
-          this.verificarRespartidor(this.pedido.id)
-          localStorage.setItem('esperaRepartidor','no')
-        }else{
-         
-        }
-    },1000)*/
+  
     
   }
 
