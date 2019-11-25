@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'informacion', loadChildren: './paginas/informacion/informacion.module#InformacionPageModule' },
   { path: 'registro', loadChildren: './paginas/registro/registro.module#RegistroPageModule' },
   { path: 'historial', loadChildren: './paginas/historial/historial.module#HistorialPageModule' },  { path: 'resetar', loadChildren: './paginas/resetar/resetar.module#ResetarPageModule' },
+  { path: 'info-status', loadChildren: './paginas/info-status/info-status.module#InfoStatusPageModule' },
 
 ];
 
