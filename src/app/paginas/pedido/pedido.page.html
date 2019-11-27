@@ -212,8 +212,8 @@
             Ingresar datos
           </ion-button>
 
-          <ion-button color=tertiary *ngIf="pedido.status=='Nuevo pedido'"   style="width: 49%;  margin: auto; font-size: 11px;">
-            Rechazar solicitud
+          <ion-button color=tertiary *ngIf="pedido.status=='Nuevo pedido'"  (click)="rechazarSolicitud()"  style="width: 49%;  margin: auto; font-size: 11px;">
+            Rechazar solicitud 
           </ion-button>
 
           <ion-button color=tertiary *ngIf="tipoPedido=='solo_recojer' && pedido.status=='A lavandería'" (click)="comfirmarRecivido()"   style="width: 49%;  margin: auto; font-size: 11px;">

@@ -45,7 +45,7 @@
 
               <div style="width: 70%;">
                   <label>Lavado de {{lavado.servicio}} ${{lavado.precio}} por {{lavado.unidad}}</label>
-                  <p>Descripción: {{lavado.descripcion}}</p>
+                  <p><a style="color: #1089ff;">Descripción:</a> {{lavado.descripcion}}</p>
               </div>
 
 
@@ -72,7 +72,7 @@
             <div *ngFor="let tinto of tintoreria"  class="itemX centrar">
               <div style="width: 70%;">
                   <label>{{tinto.servicio}} ${{tinto.precio}} por {{tinto.unidad}}</label>
-                  <p>Descripción: {{tinto.descripcion}}</p>
+                  <p><a style="color: #1089ff;">Descripción:</a> {{tinto.descripcion}}</p>
               </div>
                 
                 <div class="centrar" style="width: 30%; height: auto; ">
@@ -104,7 +104,7 @@
                
                 <div style="width: 70%;">
                     <label> ${{plan.precio}} por {{plan.unidad}}</label>
-                    <p>Descripción: {{plan.descripcion}}</p>
+                    <p><a style="color: #1089ff;">Descripción:</a> {{plan.descripcion}}</p>
                 </div>
 
                   <div class="centrar" style="width: 30%; height: auto; ">
@@ -128,8 +128,8 @@
                 <h5 class="indentificador2">Ofertas y promociones:</h5>
                 <div *ngFor="let ofer of ofertas"  class="itemX centrar">
                   <div style="width: 70%;">
-                      <label>Titulo: {{ofer.titulo}}</label>
-                    <p>Descripción: {{ofer.descripcion}}</p>
+                      <label> <a style="color: #1089ff;">Titulo:</a> {{ofer.titulo}}</label>
+                    <p><a style="color: #1089ff;">Descripción:</a> {{ofer.descripcion}}</p>
                   </div>
                   
 
@@ -153,8 +153,8 @@
                   <h5 class="indentificador2">Otros:</h5>
                   <div *ngFor="let other of otros"  class="itemX centrar">
                     <div style="width: 70%;">
-                        <label>Titulo: {{other.titulo}}</label>
-                        <p>Descripción: {{other.descripcion}}</p>
+                        <label> <a style="color: #1089ff;">Titulo:</a>   {{other.titulo}}</label>
+                        <p>  <a style="color: #1089ff;">Descripción:</a> {{other.descripcion}}</p>
                     </div>
                      
 
@@ -225,7 +225,7 @@
             
              
               <ion-item  *ngIf="this.efectos.actual<3">
-              <ion-label>Servicio: </ion-label>
+              <ion-label style="color: #1089ff;">Servicio: </ion-label>
               <ion-input name="this.efectos.servicio"
               (click)="this.efectos.vewServicios(null)"
               [(ngModel)]="this.efectos.servicio"></ion-input>
@@ -257,7 +257,7 @@
 
 
               <ion-item  *ngIf="this.efectos.actual<4">
-                  <ion-label>Unidades:</ion-label>
+                  <ion-label style="color: #1089ff;">Unidades:</ion-label>
                   <ion-input style="z-index: 80;" [(ngModel)]="this.efectos.unidad"></ion-input>
               
                 <button class="fantasma" (click)="this.efectos.vewUnidades(null,null)"></button>
@@ -283,25 +283,25 @@
 
 
               <ion-item *ngIf="this.efectos.actual<4">
-                <ion-label>Precio:</ion-label>
+                <ion-label style="color: #1089ff;">Precio:</ion-label>
                 <ion-input type="number" [(ngModel)]="this.efectos.precio"></ion-input>
               </ion-item>
 
               <ion-item *ngIf="this.efectos.actual>3">
-                  <ion-label>Titulo:</ion-label>
+                  <ion-label style="color: #1089ff;">Titulo:</ion-label>
                   <ion-input [(ngModel)]="this.efectos.titulo" value="this.efectos.titulo"></ion-input>
               </ion-item>
 
               <ion-item>
            
-                  <ion-label>Descripción:</ion-label>
+                  <ion-label style="color: #1089ff;">Descripción:</ion-label>
               
                  
                   <ion-textarea 
                   [(ngModel)]="this.efectos.descripcion"
                   rows="7" 
 
-                  placeholder="Enter any notes here...">
+                  placeholder="Precios alternativos, condiciones del servicio, detalles del servicio, etc...">
                 </ion-textarea>
               </ion-item>
 

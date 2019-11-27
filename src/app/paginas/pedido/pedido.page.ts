@@ -60,7 +60,7 @@ export class PedidoPage implements OnInit {
       this.horaSolicitud=this.pedido.horaSolicitud
       this.coordenadas=this.direccionCliente.coordenadas
       //console.log("coordenadas=",this.coordenadas);
-      this.verificarRespartidor(this.pedido.id)
+     // this.verificarRespartidor(this.pedido.id)
    
 
       socket.on('se_actualiso_el_pedido'+'id_lavanderia'+localStorage.getItem('idLavanderia'),(data)=>{
@@ -83,11 +83,16 @@ export class PedidoPage implements OnInit {
   ngOnInit() {
     this.ingresoDatos=false
     document.getElementById('IngresarDatos').style.marginLeft="-150%"
+
+ 
   }
 
   ionViewWillEnter() {
     console.log("Hola************************************************************");
     //this.ngOnInit()
+    this.datosLavanderia=null
+    this.datosTintoreria=null
+    this.datosPlanchado=null
     this.verificarRespartidor(this.pedido.id)
   }
 
@@ -113,11 +118,7 @@ asignarRepartidor(){
 bolberStatus(){
   this.router.navigateByUrl('/inicio')
 
-  if(this.yo_ingrese_Datos==true){
-    localStorage.setItem('actualiza','si')
-  }else{
-    localStorage.setItem('actualiza','no')
-  }
+ 
   
 
 }
@@ -127,6 +128,7 @@ verificarRespartidor(id){
   this.datosLavanderia=[]
   this.datosTintoreria=[]
   this.datosPlanchado=[]
+  
   this.apiservice.getPedido(id).subscribe(Response=>{
     console.log("EEe",Response);
     this.id_cliente=Response.usuario_id
@@ -152,6 +154,8 @@ verificarRespartidor(id){
      //this.setDatosServicios()
     }else{
       this.setDatosServicios()
+      console.log("entra a el else");
+      
     }
     this.id_repartidor=Response.repartidor_id
 
@@ -194,6 +198,7 @@ viewNserDatas(){
 
 
 setDatosServicios(){
+ 
   this.pedido.servicios.lavanderia.forEach(element => {
       console.log(element);
       let item1={
@@ -331,11 +336,7 @@ async guardarDatosDelPedido(){
     
   this.apiservice.setDatosRapaPedido(this.pedido.id,{datos_ropa:datos_ropa}).subscribe(Response=>{
     console.log("echoooooooooo");
-    this.yo_ingrese_Datos=true
     this.actualizarCostes()
-    this.comfirmarRecivido()
-      
-    
   })
 }
 
@@ -458,5 +459,25 @@ actualizarCostes(){
   })
   localStorage.setItem('recargar','si')
 }
+
+
+rechazarSolicitud(){
+
+  this.apiservice.getDatosLavanderia(localStorage.getItem('idLavanderia')).subscribe(Response=>{
+    console.log("response=",Response);
+
+    let item={
+      status:'Cancelado'
+    }
+    this.apiservice.setStatusPedido(this.pedido.id,item).subscribe(Response1=>{
+      this.actualizarStaus()
+      this.notificacion.emviarMensaje('Solicitud de servicio rechazada','La lavandería '+Response.nombre_lavanderia+' a cancelado la solicitud de servicios.','user'+this.id_cliente)
+    })
+
+  })
+
+}
+
+
 
 }
