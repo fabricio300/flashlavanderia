@@ -65,12 +65,17 @@ export class PedidoPage implements OnInit {
 
       socket.on('se_actualiso_el_pedido'+'id_lavanderia'+localStorage.getItem('idLavanderia'),(data)=>{
         console.log('soket =',data);
-       
+        this.datosLavanderia=null
+        this.datosTintoreria=null
+        this.datosPlanchado=null
         this.verificarRespartidor(this.pedido.id)
       })
 
 
       socket.on('lavanderia_rechada'+localStorage.getItem('idLavanderia'),(data)=>{
+        this.datosLavanderia=null
+        this.datosTintoreria=null
+        this.datosPlanchado=null
         this.verificarRespartidor(this.pedido.id)
       })
 
@@ -128,7 +133,7 @@ verificarRespartidor(id){
   this.datosLavanderia=[]
   this.datosTintoreria=[]
   this.datosPlanchado=[]
-  
+  this.repartidor=null
   this.apiservice.getPedido(id).subscribe(Response=>{
     console.log("EEe",Response);
     this.id_cliente=Response.usuario_id

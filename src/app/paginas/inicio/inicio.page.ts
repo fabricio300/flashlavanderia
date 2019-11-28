@@ -198,6 +198,7 @@ export class InicioPage implements AfterContentInit{
   }
 
   ionViewWillEnter() {
+    this.ocultarFiltro()
     console.log("Hola************************************************************");
     //this.ngOnInit()
       this.pedidos=null
