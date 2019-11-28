@@ -835,7 +835,7 @@ guadarEditLavanderia(){
     
     this.efectos.next('MenuEdit')
     this.en_proceso=false
-    this.verAlerta('Intente con otro correo o comprueve su conexión a internet','El correro que ingreso ya esta registrado o su conexión a internet fallo','Error')
+    this.verAlerta('Ocurrio un error en el proceso','Algun elemento cambiado no es valido o su conexión a internet fallo','Error')
   }
 
   )
