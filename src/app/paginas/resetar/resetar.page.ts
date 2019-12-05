@@ -54,6 +54,7 @@ export class ResetarPage implements OnInit {
   }
 
   resetarPass(){
+    this.mostrar()
     console.log(this.randomString(15, '###aA!'));
     let pass = this.randomString(10, '##aA!')
    this.global.getUsuarioCorreo(this.formInicio.get('nombre').value).subscribe(response=>{
@@ -63,11 +64,13 @@ export class ResetarPage implements OnInit {
       }
       this.global.cambiarcontraseña(response[0].id,{contraseña:pass}).subscribe(response=>{
         this.global.restablecer({email:this.formInicio.get('nombre').value,password:pass}).subscribe(response=>{
+          this.mostrarno()
           alert("Revise su bandeja")
-          this.router.navigate(['/'])
+          this.retornar()
         })
       })
     }),error => {
+      this.mostrarno()
       console.log("err", error);
       alert("A ocurrido un problema de conexion")
     }
@@ -92,4 +95,14 @@ randomString(length, chars) {
   return result;
 }
 
+
+
+mostrar(){
+  document.getElementById('VistaDecarga').style.transition='0.5s'
+  document.getElementById('VistaDecarga').style.marginLeft='0px'
+}
+mostrarno(){
+  document.getElementById('VistaDecarga').style.transition='0.5s'
+  document.getElementById('VistaDecarga').style.marginLeft='200%'
+}
 }
