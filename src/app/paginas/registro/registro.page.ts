@@ -24,6 +24,7 @@ export class RegistroPage implements OnInit {
 
   private formRegistro : FormGroup
   private formValidar : FormGroup
+  private formCambiar : FormGroup
 
   tituloT='Registro'
   lavanderia=[]
@@ -97,6 +98,17 @@ export class RegistroPage implements OnInit {
       })
      
 
+      this.formCambiar=this.formBuilder.group({
+        contrasenia: ['',Validators.compose([
+          Validators.required,
+          Validators.pattern(this.contraseniaValida)
+        ])],
+        contrasenia2: ['',Validators.compose([
+          Validators.required,
+          Validators.pattern(this.contraseniaValida)
+        ])]
+      });
+  
   }
 
 
@@ -469,12 +481,18 @@ registrarLavanderia(){
    
     this.recargarpagina()
   
-  })
+  },Error=>{
+    this.efectos.next('Imagenes')
+    this.verAlerta('Intente con otro correo o compruebe su conexión a internet','Error correo registrado o un error de conexión','Error')
+  }
+  )
 
 }
 
 
 recargarpagina(){
+  console.log("-------------------------------------------entra--------------------------------");
+  
   let cantidad=1
   
   if(this.lavanderia.length>0){
@@ -813,7 +831,14 @@ guadarEditLavanderia(){
     this.en_proceso=false
     this.verAlerta('Los cambios realizados han sido exitosos','Cambios realizados','Proceso finalizado')
     this.darAvisActulizacionLavanderia()
-  })
+  },error=>{
+    
+    this.efectos.next('MenuEdit')
+    this.en_proceso=false
+    this.verAlerta('Ocurrio un error en el proceso','Algun elemento cambiado no es valido o su conexión a internet fallo','Error')
+  }
+
+  )
 
 
 
@@ -957,5 +982,51 @@ darAvisActulizacionLavanderia(){
   this.socket.emit('lavanderia_actualizada',localStorage.getItem('idLavanderia'))
   console.log("EEEviado222");
 }
+
+
+/*************************cambiar contraseña******************************************************************************* */
+async mostrarCambiar(){
+  document.getElementById('Change_pass').style.transition='0.5s'
+  document.getElementById('Change_pass').style.marginLeft='0px'
+}
+
+async mostrarCambiarNo(){
+  document.getElementById('Change_pass').style.transition='0.5s'
+  document.getElementById('Change_pass').style.marginLeft='-200%'
+}
+
+
+confirmar_igualdad(){
+  if(this.formCambiar.get('contrasenia').value==this.formCambiar.get('contrasenia2').value){
+    return true
+  }else{
+    return false
+  }
+}
+
+
+async cambiartContrasenia(){
+  this.en_proceso=true
+console.log('este es',localStorage.getItem('idLavanderia'));
+
+  if(this.confirmar_igualdad()){
+    let item={
+      contraseña:this.formCambiar.get('contrasenia').value
+    }
+    this.apiservice.nuevaContrasenia(localStorage.getItem('idLavanderia'),item).subscribe(Response=>{
+      this.en_proceso=false
+      console.log("contraseña camviada");
+      this.mostrarCambiarNo()
+      this.verAlerta('Proceso finalizado correctamente','Su contraseña a sido cambiada','Contraseña nueva' )
+
+    })
+
+  }else{
+    this.efectos.forInfo=13
+  }
+
+
+}
+
 
 }

@@ -69,11 +69,15 @@ export class ResetarPage implements OnInit {
       })
     }),error => {
       console.log("err", error);
+      alert("A ocurrido un problema de conexion")
     }
 
   }
 
   retornar(){
+    if(localStorage.getItem('sesion')=='true')
+      this.router.navigate(['/registro'])
+    else
     this.router.navigate(['/'])
   }
 

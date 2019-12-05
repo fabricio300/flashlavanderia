@@ -41,11 +41,15 @@ export class LoginPage implements OnInit {
 
      })
 
-    if(localStorage.getItem('sesion')=='true'){
-        this.apiService.status_de_secion=true
-        this.router.navigate(['inicio/'])
-    }
+   
     
+  }
+
+  ionViewWillEnter() {
+    if(localStorage.getItem('sesion')=='true'){
+      this.apiService.status_de_secion=true
+      this.router.navigate(['inicio/'])
+      }
   }
 
   ngOnInit() {
