@@ -23,7 +23,7 @@ export class InfoStatusPage implements OnInit {
     {
       status:'Nuevo pedido',
       icon:this.nuevo,
-      info:'Se ha solicitado los servicios de una lavandería determinada. En este staus se puede realizar la cancelación del servicio, una vez se realice el cambio de status no podrá cancelarse.',
+      info:'Se ha solicitado los servicios de una lavandería determinada. En este status se puede realizar la cancelación del servicio, una vez se realice el cambio de status no podrá cancelarse.',
     },
     {
       status:'Recogiendo',
@@ -53,7 +53,7 @@ export class InfoStatusPage implements OnInit {
     {
       status:'Finalizado',
       icon:this.finalsizadp,
-      info:'Indica que la solicitud a sido cumplida y la ropa lista se ha sido entregada correctamente.',
+      info:'Indica que la solicitud a sido cumplida y la ropa lista ha sido entregada correctamente.',
     },
     {
       status:'Cancelado',
