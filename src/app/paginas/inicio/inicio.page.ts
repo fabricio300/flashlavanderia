@@ -174,6 +174,7 @@ export class InicioPage implements AfterContentInit{
     
     socket.on('lavanderia'+localStorage.getItem('idLavanderia'),(data) => {
       console.log('soket =',data);
+      this.pedidos=null
       this.pedidos=[]
       this.getPedidosL()
     })
@@ -181,6 +182,7 @@ export class InicioPage implements AfterContentInit{
 
     socket.on('se_actualiso_el_pedido'+'id_lavanderia'+localStorage.getItem('idLavanderia'),(data)=>{
       console.log('soket =',data);
+      this.pedidos=null
       this.pedidos=[]
       this.getPedidosL()
     })

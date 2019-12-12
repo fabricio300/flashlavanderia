@@ -14,6 +14,7 @@ export class RepartidorPage implements OnInit {
 
   reparitidorAnterior=null
   pedido:any
+  bucando=true
   repartidorActual:any={
     id: null,
     nombre:'Nombre Repartidor',
@@ -128,6 +129,7 @@ export class RepartidorPage implements OnInit {
 
 
   getRepartidores(){
+    this.bucando=true
     this.apiservice.getRepartidores().subscribe(Response=>{
       //console.log(Response);
 
@@ -157,6 +159,7 @@ export class RepartidorPage implements OnInit {
           
           
       });
+      this.bucando=false
       console.log(this.repartidores);
     })
   }

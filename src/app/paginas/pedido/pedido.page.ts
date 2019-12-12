@@ -93,11 +93,14 @@ export class PedidoPage implements OnInit {
   }
 
   ionViewWillEnter() {
+    this.ingresoDatos=false
+    document.getElementById('IngresarDatos').style.marginLeft="-150%"
     console.log("Hola************************************************************");
     //this.ngOnInit()
     this.datosLavanderia=null
     this.datosTintoreria=null
     this.datosPlanchado=null
+   
     this.verificarRespartidor(this.pedido.id)
   }
 
@@ -134,6 +137,8 @@ verificarRespartidor(id){
   this.datosTintoreria=[]
   this.datosPlanchado=[]
   this.repartidor=null
+  this.pedido.status=null
+  this.pedido.icon=null
   this.apiservice.getPedido(id).subscribe(Response=>{
     console.log("EEe",Response);
     this.id_cliente=Response.usuario_id
@@ -460,9 +465,9 @@ actualizarCostes(){
 
       console.log("percios actualizados");
       this.notificacion.emviarMensaje('El servicio esta en proceso','La lavandería a recibido su ropa','user'+this.id_cliente)
-
+      this.ionViewWillEnter()
   })
-  localStorage.setItem('recargar','si')
+  
 }
 
 
@@ -477,6 +482,7 @@ rechazarSolicitud(){
     this.apiservice.setStatusPedido(this.pedido.id,item).subscribe(Response1=>{
       this.actualizarStaus()
       this.notificacion.emviarMensaje('Solicitud de servicio rechazada','La lavandería '+Response.nombre_lavanderia+' a cancelado la solicitud de servicios.','user'+this.id_cliente)
+      this.notificacion.emviarMensaje('El servicio cancelado','La lavandería '+Response.nombre_lavanderia+' a cancelado la solicitud de servicios.','Repartidor'+this.id_repartidor)
     })
 
   })
